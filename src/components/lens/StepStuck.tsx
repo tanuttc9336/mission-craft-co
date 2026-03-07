@@ -12,7 +12,7 @@ const challenges: LensChallenge[] = [
   'Audience trust is weak',
   'Brand feels inconsistent',
   'We need stronger positioning',
-  'We\'re not sure yet',
+  "We're not sure yet",
 ];
 
 export default function StepStuck() {
