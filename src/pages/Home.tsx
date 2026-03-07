@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { trackEvent } from '@/utils/analytics';
 import { ArrowRight } from 'lucide-react';
 import logo from '@/assets/undercat-logo.png';
+import CraftedByHuman from '@/components/CraftedByHuman';
 
 const pillars = [
   { letter: 'M', word: 'Masterful', desc: 'Craft that commands attention.' },
