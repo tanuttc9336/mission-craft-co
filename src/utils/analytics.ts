@@ -16,7 +16,17 @@ type EventName =
   | 'lens_email_result_click'
   | 'lens_continue_to_builder'
   | 'lens_explore_work_click'
-  | 'lens_book_call_click';
+  | 'lens_book_call_click'
+  | 'portal_login'
+  | 'portal_view_dashboard'
+  | 'portal_view_timeline'
+  | 'portal_view_deliverables'
+  | 'portal_view_reviews'
+  | 'portal_submit_feedback'
+  | 'portal_open_file'
+  | 'portal_view_brief'
+  | 'portal_view_next_steps'
+  | 'portal_logout';
 
 export function trackEvent(event: EventName, data?: Record<string, unknown>) {
   console.log(`[Analytics] ${event}`, data ?? '');
