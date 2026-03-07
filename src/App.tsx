@@ -11,6 +11,7 @@ import CaseDetail from "./pages/CaseDetail";
 import Builder from "./pages/Builder";
 import Blueprint from "./pages/Blueprint";
 import Contact from "./pages/Contact";
+import IdeaEngine from "./pages/IdeaEngine";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => (
               <Route path="/work/:id" element={<CaseDetail />} />
               <Route path="/builder" element={<Builder />} />
               <Route path="/blueprint" element={<Blueprint />} />
+              <Route path="/ideas" element={<IdeaEngine />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
