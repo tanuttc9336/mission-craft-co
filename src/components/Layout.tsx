@@ -11,6 +11,7 @@ const navLinks = [
   { to: '/builder', label: 'Builder' },
   { to: '/ideas', label: 'Ideas' },
   { to: '/contact', label: 'Contact' },
+  { to: '/login', label: 'Portal' },
 ];
 
 export default function Layout({ children }: { children: React.ReactNode }) {
