@@ -7,7 +7,6 @@ import { useEffect } from 'react';
 import { trackEvent } from '@/utils/analytics';
 import { ArrowRight } from 'lucide-react';
 import logo from '@/assets/undercat-logo.png';
-import CraftedByHuman from '@/components/CraftedByHuman';
 
 const pillars = [
   { letter: 'M', word: 'Masterful', desc: 'Craft that commands attention.' },
@@ -93,9 +92,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Crafted by Human */}
-      <CraftedByHuman />
 
       {/* Featured Work */}
       <section className="py-24 md:py-32 border-b border-border">
