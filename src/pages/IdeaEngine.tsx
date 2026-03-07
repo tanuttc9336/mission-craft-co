@@ -1,10 +1,9 @@
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { trackEvent } from '@/utils/analytics';
-import { Sparkles, Lightbulb, Target, Video, MousePointerClick, Loader2, ArrowRight, RotateCcw, Copy, Check } from 'lucide-react';
+import { Sparkles, Loader2, ArrowRight, RotateCcw, Copy, Check } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const industries = [
@@ -28,12 +27,18 @@ const tones = [
   'Cinematic', 'Raw & Authentic', 'Minimal & Clean', 'Energetic & Fast',
 ];
 
+interface ContentIdea {
+  title: string;
+  insight: string;
+  concept: string;
+  brandFit: string;
+  visualDirection: string;
+  format: string;
+  undercatReason: string;
+}
+
 interface ContentResults {
-  contentIdeas: string[];
-  campaignThemes: { title: string; description: string }[];
-  adAngles: string[];
-  shortFormVideoIdeas: string[];
-  ctaIdeas: string[];
+  ideas: ContentIdea[];
 }
 
 function ChipSelector({
@@ -69,29 +74,55 @@ function ChipSelector({
   );
 }
 
-function ResultSection({
-  icon,
-  title,
-  children,
-  delay = 0,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  children: React.ReactNode;
-  delay?: number;
-}) {
+function IdeaCard({ idea, index }: { idea: ContentIdea; index: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay }}
-      className="border border-border p-6"
+      transition={{ duration: 0.4, delay: index * 0.1 }}
+      className="border border-border"
     >
-      <div className="flex items-center gap-2 mb-4">
-        {icon}
-        <h3 className="font-display text-sm tracking-widest uppercase">{title}</h3>
+      {/* Header */}
+      <div className="border-b border-border p-6 flex items-start gap-4">
+        <span className="text-highlight font-display font-bold text-xl shrink-0 leading-none mt-1">
+          {String(index + 1).padStart(2, '0')}
+        </span>
+        <div>
+          <h3 className="font-display text-lg tracking-wide">{idea.title}</h3>
+          <p className="text-sm text-muted-foreground mt-1 italic">"{idea.insight}"</p>
+        </div>
       </div>
-      {children}
+
+      {/* Body */}
+      <div className="p-6 space-y-5">
+        <div>
+          <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-muted-foreground mb-1.5">Concept</p>
+          <p className="text-sm leading-relaxed">{idea.concept}</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-muted-foreground mb-1.5">Brand Fit</p>
+            <p className="text-sm leading-relaxed">{idea.brandFit}</p>
+          </div>
+          <div>
+            <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-muted-foreground mb-1.5">Visual Direction</p>
+            <p className="text-sm leading-relaxed">{idea.visualDirection}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between border-t border-border pt-4">
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-medium tracking-[0.2em] uppercase text-muted-foreground">Format</span>
+            <span className="px-3 py-1 border border-highlight bg-highlight/10 text-xs font-medium">{idea.format}</span>
+          </div>
+        </div>
+
+        <div className="border-t border-border pt-4">
+          <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-highlight mb-1.5">Why Undercat Would Recommend It</p>
+          <p className="text-sm text-muted-foreground leading-relaxed">{idea.undercatReason}</p>
+        </div>
+      </div>
     </motion.div>
   );
 }
@@ -150,22 +181,15 @@ export default function IdeaEngine() {
 
   const copyAll = () => {
     if (!results) return;
-    const text = [
-      '# CONTENT IDEAS',
-      ...results.contentIdeas.map((idea, i) => `${i + 1}. ${idea}`),
-      '',
-      '# CAMPAIGN THEMES',
-      ...results.campaignThemes.map(t => `**${t.title}** — ${t.description}`),
-      '',
-      '# AD ANGLES',
-      ...results.adAngles.map((a, i) => `${i + 1}. ${a}`),
-      '',
-      '# SHORT-FORM VIDEO IDEAS',
-      ...results.shortFormVideoIdeas.map((v, i) => `${i + 1}. ${v}`),
-      '',
-      '# CTA IDEAS',
-      ...results.ctaIdeas.map((c, i) => `${i + 1}. ${c}`),
-    ].join('\n');
+    const text = results.ideas.map((idea, i) => [
+      `## ${String(i + 1).padStart(2, '0')} — ${idea.title}`,
+      `**Insight:** ${idea.insight}`,
+      `**Concept:** ${idea.concept}`,
+      `**Brand Fit:** ${idea.brandFit}`,
+      `**Visual Direction:** ${idea.visualDirection}`,
+      `**Format:** ${idea.format}`,
+      `**Why Undercat Recommends:** ${idea.undercatReason}`,
+    ].join('\n')).join('\n\n---\n\n');
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -190,7 +214,7 @@ export default function IdeaEngine() {
           </div>
         </div>
         <p className="text-sm text-muted-foreground max-w-xl">
-          Tell us about your brand and goals. Our AI generates 10 content ideas, campaign themes, ad angles, video concepts, and CTA suggestions — instantly.
+          Tell us about your brand and goals. Our creative AI generates 5 sharp, strategically filtered content ideas — no filler, no fluff.
         </p>
       </motion.div>
 
@@ -240,7 +264,7 @@ export default function IdeaEngine() {
             <div className="w-12 h-12 bg-highlight flex items-center justify-center animate-pulse">
               <Sparkles size={24} className="text-primary" />
             </div>
-            <p className="text-sm text-muted-foreground tracking-wider uppercase">Crafting your ideas...</p>
+            <p className="text-sm text-muted-foreground tracking-wider uppercase">Filtering through Undercat standards...</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -256,7 +280,7 @@ export default function IdeaEngine() {
             {/* Header bar */}
             <div className="flex items-center justify-between border-b border-border pb-4">
               <div>
-                <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-muted-foreground">Results for</p>
+                <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-muted-foreground">Curated for</p>
                 <p className="text-sm font-medium mt-1">
                   {industry} · {objective} · {platform} · {tone}
                 </p>
@@ -267,88 +291,10 @@ export default function IdeaEngine() {
               </Button>
             </div>
 
-            {/* Content Ideas */}
-            <ResultSection
-              icon={<Lightbulb size={16} className="text-highlight" />}
-              title="10 Content Ideas"
-              delay={0}
-            >
-              <ol className="space-y-3">
-                {results.contentIdeas.map((idea, i) => (
-                  <li key={i} className="flex gap-3 text-sm">
-                    <span className="text-highlight font-display font-bold text-xs mt-0.5 shrink-0">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <span>{idea}</span>
-                  </li>
-                ))}
-              </ol>
-            </ResultSection>
-
-            {/* Campaign Themes */}
-            <ResultSection
-              icon={<Target size={16} className="text-highlight" />}
-              title="Campaign Themes"
-              delay={0.1}
-            >
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {results.campaignThemes.map((theme, i) => (
-                  <div key={i} className="border border-border p-4">
-                    <h4 className="font-display text-sm mb-2">{theme.title}</h4>
-                    <p className="text-xs text-muted-foreground">{theme.description}</p>
-                  </div>
-                ))}
-              </div>
-            </ResultSection>
-
-            {/* Ad Angles */}
-            <ResultSection
-              icon={<Target size={16} className="text-highlight" />}
-              title="Ad Angles"
-              delay={0.2}
-            >
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {results.adAngles.map((angle, i) => (
-                  <div key={i} className="flex gap-3 p-3 border border-border text-sm">
-                    <span className="text-highlight font-display font-bold text-xs shrink-0">{String(i + 1).padStart(2, '0')}</span>
-                    <span>{angle}</span>
-                  </div>
-                ))}
-              </div>
-            </ResultSection>
-
-            {/* Short-form Video Ideas */}
-            <ResultSection
-              icon={<Video size={16} className="text-highlight" />}
-              title="Short-Form Video Ideas"
-              delay={0.3}
-            >
-              <ol className="space-y-3">
-                {results.shortFormVideoIdeas.map((vid, i) => (
-                  <li key={i} className="flex gap-3 text-sm">
-                    <span className="text-highlight font-display font-bold text-xs mt-0.5 shrink-0">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <span>{vid}</span>
-                  </li>
-                ))}
-              </ol>
-            </ResultSection>
-
-            {/* CTA Ideas */}
-            <ResultSection
-              icon={<MousePointerClick size={16} className="text-highlight" />}
-              title="CTA Ideas"
-              delay={0.4}
-            >
-              <div className="flex flex-wrap gap-3">
-                {results.ctaIdeas.map((cta, i) => (
-                  <div key={i} className="px-4 py-2 border border-highlight bg-highlight/10 text-sm font-medium">
-                    {cta}
-                  </div>
-                ))}
-              </div>
-            </ResultSection>
+            {/* Idea Cards */}
+            {results.ideas.map((idea, i) => (
+              <IdeaCard key={i} idea={idea} index={i} />
+            ))}
 
             {/* Bottom CTA */}
             <motion.div
