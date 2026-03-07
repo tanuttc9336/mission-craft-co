@@ -94,6 +94,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Crafted by Human */}
+      <CraftedByHuman />
+
       {/* Featured Work */}
       <section className="py-24 md:py-32 border-b border-border">
         <div className="container">
