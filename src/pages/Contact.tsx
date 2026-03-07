@@ -20,14 +20,12 @@ export default function Contact() {
       submittedAt: new Date().toISOString(),
     };
 
-    // Mock API call
     fetch('/api/leads', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     }).catch(() => {});
 
-    // Store locally
     try {
       const stored = JSON.parse(localStorage.getItem('undercat-leads') ?? '[]');
       stored.push(payload);
@@ -40,8 +38,9 @@ export default function Contact() {
 
   if (submitted) {
     return (
-      <div className="container py-32 text-center max-w-lg">
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
+      <div className="container py-32 text-center max-w-lg relative">
+        <div className="liquid-orb liquid-orb-3 top-0 left-1/2 -translate-x-1/2 opacity-20" />
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="relative z-10">
           <CheckCircle size={48} className="mx-auto text-accent mb-6" />
           <h1 className="font-display text-3xl mb-4">Brief received.</h1>
           <p className="text-muted-foreground mb-2">We'll review your project details and be in touch within 1 business day.</p>
@@ -52,8 +51,10 @@ export default function Contact() {
   }
 
   return (
-    <div className="container py-16 md:py-24 max-w-lg">
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+    <div className="container py-16 md:py-24 max-w-lg relative">
+      <div className="liquid-orb liquid-orb-2 -top-32 -right-40 opacity-15" />
+
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="relative z-10">
         <h1 className="font-display text-3xl md:text-4xl mb-2">Let's talk.</h1>
         <p className="text-muted-foreground text-sm mb-10">Submit your details and we'll take it from here.</p>
 
@@ -71,7 +72,7 @@ export default function Contact() {
               onChange={e => updateLead({ notes: e.target.value })}
               maxLength={500}
               rows={3}
-              className="w-full bg-card border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 transition-shadow resize-none"
+              className="w-full bg-card border border-border rounded-lg px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-shadow resize-none"
             />
           </div>
 
@@ -80,7 +81,7 @@ export default function Contact() {
               type="checkbox"
               checked={brief.lead.consent}
               onChange={e => updateLead({ consent: e.target.checked })}
-              className="mt-1 rounded"
+              className="mt-1 rounded accent-accent"
             />
             <span className="text-xs text-muted-foreground">
               I consent to Undercat Creatives contacting me about this project and storing my information per their data policy. *
@@ -117,7 +118,7 @@ function Field({ label, value, onChange, type = 'text', required = false }: {
         onChange={e => onChange(e.target.value)}
         required={required}
         maxLength={120}
-        className="w-full bg-card border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 transition-shadow"
+        className="w-full bg-card border border-border rounded-lg px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-shadow"
       />
     </div>
   );
