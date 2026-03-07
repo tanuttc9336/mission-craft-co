@@ -101,18 +101,16 @@ export function BriefProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const prefillFromCase = useCallback((caseId: string) => {
-    const { cases } = require('@/data/cases');
-    const c = cases.find((x: any) => x.id === caseId);
+    const c = cases.find((x) => x.id === caseId);
     if (!c) return;
+    const goalMap: Record<string, Mission> = {
+      'Launch': 'launch', 'Leads': 'leads', 'Sales': 'sales',
+      'Awareness': 'awareness', 'Retention': 'retention', 'Employer Brand': 'employer-brand',
+    };
     setBrief(prev => ({
       ...prev,
       templateCaseId: caseId,
-      mission: c.goal.toLowerCase() === 'launch' ? 'launch' :
-               c.goal.toLowerCase() === 'leads' ? 'leads' :
-               c.goal.toLowerCase() === 'sales' ? 'sales' :
-               c.goal.toLowerCase() === 'awareness' ? 'awareness' :
-               c.goal.toLowerCase() === 'retention' ? 'retention' :
-               c.goal.toLowerCase() === 'employer brand' ? 'employer-brand' : null,
+      mission: goalMap[c.goal] ?? null,
     }));
     setCurrentStep(0);
   }, []);
