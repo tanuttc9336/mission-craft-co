@@ -136,6 +136,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Crafted by Human */}
+      <CraftedByHumanSection />
+
       {/* How It Works */}
       <section className="py-24 md:py-32 bg-primary text-primary-foreground">
         <div className="container">
