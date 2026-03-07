@@ -6,9 +6,6 @@ import { trackEvent } from '@/utils/analytics';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
-import CaseCard from '@/components/CaseCard';
-import { trackEvent } from '@/utils/analytics';
-import { motion } from 'framer-motion';
 
 type FilterGroup = { label: string; options: string[] };
 
