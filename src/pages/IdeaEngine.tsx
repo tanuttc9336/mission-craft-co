@@ -157,7 +157,10 @@ export default function IdeaEngine() {
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
 
-      setResults(data as ContentResults);
+      // Normalize: AI may return { ideas: [...] } or the array directly
+      const ideas = Array.isArray(data?.ideas) ? data.ideas : Array.isArray(data) ? data : [];
+      if (ideas.length === 0) throw new Error('No ideas were generated. Please try again.');
+      setResults({ ideas } as ContentResults);
       trackEvent('generate_blueprint');
     } catch (e: any) {
       console.error('Idea generation failed:', e);
