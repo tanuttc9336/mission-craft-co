@@ -18,7 +18,7 @@ export type LensChallenge =
   | 'Audience trust is weak'
   | 'Brand feels inconsistent'
   | 'We need stronger positioning'
-  | 'We're not sure yet';
+  | "We're not sure yet";
 
 export type LensCreativeMode = 'Safe / Commercial' | 'Elevated / Distinctive' | 'Bold / Campaign-Led';
 
