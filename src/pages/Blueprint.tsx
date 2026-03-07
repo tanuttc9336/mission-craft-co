@@ -5,6 +5,7 @@ import { trackEvent } from '@/utils/analytics';
 import { motion } from 'framer-motion';
 import { Download, Copy, Mail, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import logo from '@/assets/undercat-logo.png';
 
 export default function Blueprint() {
   const { brief, finalizeBrief } = useBrief();
@@ -34,7 +35,6 @@ export default function Blueprint() {
   const handleEmail = () => {
     if (!email) return;
     trackEvent('submit_lead', { via: 'blueprint_email' });
-    // Mock submission
     fetch('/api/leads', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -59,10 +59,10 @@ export default function Blueprint() {
   return (
     <div className="container py-16 md:py-24 max-w-3xl">
       {/* Actions Bar */}
-      <div className="no-print mb-12">
+      <div className="no-print mb-16">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
           <h1 className="font-display text-3xl md:text-4xl mb-2">Your Project Blueprint</h1>
-          <p className="text-muted-foreground text-sm mb-8">A high-level plan based on your brief. Not a full strategy — that starts after kickoff.</p>
+          <p className="text-muted-foreground text-sm mb-10">A high-level plan based on your brief. Not a full strategy — that starts after kickoff.</p>
 
           <div className="flex flex-wrap gap-3 mb-8">
             <Button variant="hero" onClick={handlePrint}>
@@ -78,7 +78,6 @@ export default function Blueprint() {
             </Button>
           </div>
 
-          {/* Email capture */}
           {!emailSent ? (
             <div className="flex gap-2 max-w-md">
               <input
@@ -86,29 +85,34 @@ export default function Blueprint() {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="your@email.com"
-                className="flex-1 bg-card border border-border rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
+                className="flex-1 bg-background border border-border px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-foreground transition-shadow"
               />
               <Button onClick={handleEmail} disabled={!email}>
                 <Mail size={14} /> Email to me
               </Button>
             </div>
           ) : (
-            <p className="text-sm text-accent font-medium">✓ We'll send this to {email} shortly.</p>
+            <p className="text-sm text-highlight font-medium">✓ We'll send this to {email} shortly.</p>
           )}
         </motion.div>
       </div>
 
       {/* Blueprint Document */}
-      <div className="bg-card rounded-lg border border-border shadow-elevated p-8 md:p-12 space-y-8" id="blueprint-doc">
-        <div className="border-b border-border pb-6">
-          <span className="font-display text-lg">Undercat<span className="text-accent">.</span></span>
-          <h2 className="font-display text-2xl md:text-3xl mt-2">Project Blueprint</h2>
-          <p className="text-xs text-muted-foreground mt-1">Generated {new Date(brief.createdAt).toLocaleDateString()} • ID: {brief.id.slice(0, 8)}</p>
+      <div className="bg-background border border-foreground p-8 md:p-12 space-y-8" id="blueprint-doc">
+        <div className="border-b border-border pb-6 flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <img src={logo} alt="Undercat" className="h-5 w-auto invert dark:invert-0" />
+              <span className="font-display text-xs font-bold tracking-wider uppercase">Undercat</span>
+            </div>
+            <h2 className="font-display text-2xl md:text-3xl">Project Blueprint</h2>
+            <p className="text-[10px] text-muted-foreground mt-1 tracking-wider uppercase">Generated {new Date(brief.createdAt).toLocaleDateString()} • ID: {brief.id.slice(0, 8)}</p>
+          </div>
         </div>
 
         {sections.map(s => (
           <div key={s.key}>
-            <h3 className="font-display text-lg mb-2">{s.title}</h3>
+            <h3 className="font-display text-sm tracking-wider mb-3">{s.title}</h3>
             <pre className="text-sm text-muted-foreground whitespace-pre-wrap font-body leading-relaxed">
               {blocks[s.key] ?? 'Not yet defined.'}
             </pre>
@@ -118,14 +122,14 @@ export default function Blueprint() {
 
       {/* JSON output for admin */}
       <details className="no-print mt-8">
-        <summary className="text-xs text-muted-foreground cursor-pointer hover:text-foreground">Admin: View JSON payload</summary>
-        <pre className="mt-4 bg-secondary rounded-lg p-4 text-xs overflow-auto max-h-96">
+        <summary className="text-[10px] text-muted-foreground cursor-pointer hover:text-foreground tracking-wider uppercase">Admin: View JSON payload</summary>
+        <pre className="mt-4 bg-secondary p-4 text-xs overflow-auto max-h-96 border border-border">
           {JSON.stringify(brief, null, 2)}
         </pre>
       </details>
 
       <div className="no-print mt-12 text-center">
-        <Button variant="ghost" asChild>
+        <Button variant="ghost" asChild className="text-xs tracking-wider uppercase">
           <Link to="/contact">Ready to go? Submit your details →</Link>
         </Button>
       </div>

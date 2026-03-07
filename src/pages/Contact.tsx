@@ -20,14 +20,12 @@ export default function Contact() {
       submittedAt: new Date().toISOString(),
     };
 
-    // Mock API call
     fetch('/api/leads', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     }).catch(() => {});
 
-    // Store locally
     try {
       const stored = JSON.parse(localStorage.getItem('undercat-leads') ?? '[]');
       stored.push(payload);
@@ -42,10 +40,10 @@ export default function Contact() {
     return (
       <div className="container py-32 text-center max-w-lg">
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
-          <CheckCircle size={48} className="mx-auto text-accent mb-6" />
-          <h1 className="font-display text-3xl mb-4">Brief received.</h1>
-          <p className="text-muted-foreground mb-2">We'll review your project details and be in touch within 1 business day.</p>
-          <p className="text-sm text-muted-foreground">Next steps: We'll send a scoping summary, then schedule a 15-min alignment call if it's a fit.</p>
+          <CheckCircle size={48} className="mx-auto text-highlight mb-6" />
+          <h1 className="font-display text-3xl mb-4">Brief Received.</h1>
+          <p className="text-muted-foreground text-sm mb-2">We'll review your project details and be in touch within 1 business day.</p>
+          <p className="text-xs text-muted-foreground">Next steps: We'll send a scoping summary, then schedule a 15-min alignment call if it's a fit.</p>
         </motion.div>
       </div>
     );
@@ -54,7 +52,7 @@ export default function Contact() {
   return (
     <div className="container py-16 md:py-24 max-w-lg">
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="font-display text-3xl md:text-4xl mb-2">Let's talk.</h1>
+        <h1 className="font-display text-3xl md:text-4xl mb-2">Let's Talk.</h1>
         <p className="text-muted-foreground text-sm mb-10">Submit your details and we'll take it from here.</p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -65,13 +63,13 @@ export default function Contact() {
           <Field label="Project Location" value={brief.lead.projectLocation} onChange={v => updateLead({ projectLocation: v })} />
 
           <div>
-            <label className="text-xs font-medium text-muted-foreground block mb-1.5">Notes (optional)</label>
+            <label className="text-[10px] font-medium tracking-wider uppercase text-muted-foreground block mb-2">Notes (optional)</label>
             <textarea
               value={brief.lead.notes}
               onChange={e => updateLead({ notes: e.target.value })}
               maxLength={500}
               rows={3}
-              className="w-full bg-card border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 transition-shadow resize-none"
+              className="w-full bg-background border border-border px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-foreground transition-shadow resize-none"
             />
           </div>
 
@@ -80,7 +78,7 @@ export default function Contact() {
               type="checkbox"
               checked={brief.lead.consent}
               onChange={e => updateLead({ consent: e.target.checked })}
-              className="mt-1 rounded"
+              className="mt-1"
             />
             <span className="text-xs text-muted-foreground">
               I consent to Undercat Creatives contacting me about this project and storing my information per their data policy. *
@@ -94,8 +92,8 @@ export default function Contact() {
           </div>
         </form>
 
-        <div className="mt-8 p-4 bg-secondary rounded-lg space-y-1">
-          <p className="text-xs font-medium text-foreground">Undercat OS</p>
+        <div className="mt-10 p-5 border border-border space-y-2">
+          <p className="text-[10px] font-bold tracking-wider uppercase text-foreground">Undercat OS</p>
           <p className="text-xs text-muted-foreground">• Contract + 50% deposit required before production starts</p>
           <p className="text-xs text-muted-foreground">• 2 revision rounds included</p>
           <p className="text-xs text-muted-foreground">• Final files released upon final payment</p>
@@ -110,14 +108,14 @@ function Field({ label, value, onChange, type = 'text', required = false }: {
 }) {
   return (
     <div>
-      <label className="text-xs font-medium text-muted-foreground block mb-1.5">{label}</label>
+      <label className="text-[10px] font-medium tracking-wider uppercase text-muted-foreground block mb-2">{label}</label>
       <input
         type={type}
         value={value}
         onChange={e => onChange(e.target.value)}
         required={required}
         maxLength={120}
-        className="w-full bg-card border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 transition-shadow"
+        className="w-full bg-background border border-border px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-foreground transition-shadow"
       />
     </div>
   );

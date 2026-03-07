@@ -15,7 +15,7 @@ export default function StepAudience() {
 
   return (
     <div>
-      <h2 className="font-display text-2xl md:text-3xl mb-2">Who are we talking to?</h2>
+      <h2 className="font-display text-2xl md:text-3xl mb-2">Who Are We Talking To?</h2>
       <p className="text-muted-foreground text-sm mb-8">Select one or more audience personas.</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -26,13 +26,13 @@ export default function StepAudience() {
               key={p.id}
               whileTap={{ scale: 0.97 }}
               onClick={() => toggle(p.id)}
-              className={`text-left p-5 rounded-lg border transition-all duration-200 ${
-                active ? 'border-accent bg-accent/10 shadow-soft' : 'border-border bg-card hover:border-accent/50'
+              className={`text-left p-5 border transition-all duration-200 ${
+                active ? 'border-foreground bg-primary text-primary-foreground' : 'border-border bg-background hover:border-foreground'
               }`}
             >
               <span className="font-medium text-sm">{p.label}</span>
-              <p className="text-xs text-muted-foreground mt-1">{p.description}</p>
-              <p className="text-xs text-muted-foreground mt-2">Tone: {p.tone}</p>
+              <p className={`text-xs mt-1 ${active ? 'opacity-70' : 'text-muted-foreground'}`}>{p.description}</p>
+              <p className={`text-xs mt-2 ${active ? 'opacity-60' : 'text-muted-foreground'}`}>Tone: {p.tone}</p>
             </motion.button>
           );
         })}

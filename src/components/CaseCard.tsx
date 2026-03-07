@@ -12,19 +12,19 @@ export default function CaseCard({ case: c, index = 0 }: { case: CaseStudy; inde
     >
       <Link to={`/work/${c.id}`} className="group block">
         <div
-          className="aspect-[4/3] rounded-lg overflow-hidden mb-4 shadow-card group-hover:shadow-elevated transition-shadow duration-300"
+          className="aspect-[4/3] overflow-hidden mb-4 border border-border group-hover:border-foreground transition-colors duration-300"
           style={{ background: c.gradient }}
         >
           <div className="w-full h-full flex items-end p-5">
-            <span className="font-display text-lg" style={{ color: 'hsl(0 0% 95%)' }}>
+            <span className="font-display text-base tracking-wide uppercase" style={{ color: 'hsl(0 0% 95%)' }}>
               {c.title}
             </span>
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
-          <span className="text-xs font-medium bg-secondary text-secondary-foreground px-3 py-1 rounded-full">{c.goal}</span>
-          <span className="text-xs font-medium bg-secondary text-secondary-foreground px-3 py-1 rounded-full">{c.industry}</span>
-          <span className="text-xs font-medium bg-secondary text-secondary-foreground px-3 py-1 rounded-full">{c.outputs[0]}</span>
+          <span className="text-[10px] font-medium tracking-widest uppercase bg-primary text-primary-foreground px-3 py-1">{c.goal}</span>
+          <span className="text-[10px] font-medium tracking-widest uppercase border border-border px-3 py-1">{c.industry}</span>
+          <span className="text-[10px] font-medium tracking-widest uppercase border border-border px-3 py-1">{c.outputs[0]}</span>
         </div>
       </Link>
     </motion.div>

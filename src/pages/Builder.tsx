@@ -46,11 +46,13 @@ export default function Builder() {
   return (
     <div className="container py-16 md:py-24 max-w-3xl">
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-4">
+      <div className="mb-10">
+        <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="font-display text-2xl md:text-3xl">Brief Builder</h1>
-            <p className="text-sm text-muted-foreground mt-1">Step {currentStep + 1} of {totalSteps} — {stepLabels[currentStep]}</p>
+            <p className="text-xs text-muted-foreground mt-1 tracking-wider uppercase">
+              Step {currentStep + 1} / {totalSteps} — {stepLabels[currentStep]}
+            </p>
           </div>
           <button onClick={resetBrief} className="text-muted-foreground hover:text-foreground transition-colors p-2" title="Reset">
             <RotateCcw size={16} />
@@ -59,24 +61,24 @@ export default function Builder() {
 
         {/* Progress Bar */}
         <div className="relative">
-          <div className="h-1.5 bg-secondary rounded-full overflow-hidden">
+          <div className="h-0.5 bg-border overflow-hidden">
             <motion.div
-              className="h-full bg-accent rounded-full"
+              className="h-full bg-foreground"
               initial={false}
               animate={{ width: `${clarityPercent}%` }}
               transition={{ duration: 0.4, ease: 'easeOut' }}
             />
           </div>
-          <p className="text-xs text-muted-foreground mt-2">Brief Clarity: {clarityPercent}%</p>
+          <p className="text-[10px] text-muted-foreground mt-2 tracking-wider uppercase">Brief Clarity: {clarityPercent}%</p>
         </div>
 
-        {/* Step dots */}
-        <div className="flex gap-1.5 mt-4">
+        {/* Step indicators */}
+        <div className="flex gap-1 mt-4">
           {stepLabels.map((_, i) => (
             <div
               key={i}
-              className={`h-1 flex-1 rounded-full transition-colors ${
-                i <= currentStep ? 'bg-accent' : 'bg-secondary'
+              className={`h-0.5 flex-1 transition-colors ${
+                i <= currentStep ? 'bg-foreground' : 'bg-border'
               }`}
             />
           ))}
@@ -103,6 +105,7 @@ export default function Builder() {
           variant="ghost"
           onClick={prevStep}
           disabled={currentStep === 0}
+          className="text-xs tracking-wider uppercase"
         >
           <ArrowLeft size={14} /> Back
         </Button>
