@@ -295,7 +295,7 @@ export default function IdeaEngine() {
             </div>
 
             {/* Idea Cards */}
-            {results.ideas.map((idea, i) => (
+            {results.ideas?.map((idea, i) => (
               <IdeaCard key={i} idea={idea} index={i} />
             ))}
 
