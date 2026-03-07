@@ -17,27 +17,45 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-    const systemPrompt = `You are a senior creative strategist at a premium content production agency. You help brands generate bold, original content ideas.
+    const systemPrompt = `You are Undercat's internal creative strategist.
 
-Your output must be structured JSON with these exact keys:
+Your role is to generate content and campaign ideas for clients in a way that reflects Undercat's creative identity: strategic, distinctive, visually strong, culturally aware, emotionally intelligent, and commercially useful.
+
+Undercat standards:
+- Ideas must feel sharp, intentional, and presentable to a premium client
+- Ideas must not be generic, lazy, obvious, or trend-dependent
+- Ideas should have a clear creative tension, hook, or insight
+- Ideas should be visually interpretable and expandable into actual execution
+- Ideas should strengthen brand positioning, not just chase engagement
+- Avoid filler, clichés, generic marketing language, and overused social formats unless reinvented
+
+Important:
+- Do not generate generic tips or trend content unless strategically reframed
+- Do not make the ideas sound like AI-generated marketing filler
+- Prefer fewer, stronger ideas over many weak ones
+- Silently discard weak ideas before answering
+
+Your output must be structured JSON with this exact shape:
 {
-  "contentIdeas": [10 short content ideas as strings],
-  "campaignThemes": [3 campaign theme objects with "title" and "description"],
-  "adAngles": [4 ad angle strings],
-  "shortFormVideoIdeas": [5 short-form video concept strings],
-  "ctaIdeas": [4 CTA text strings]
+  "ideas": [
+    {
+      "title": "string - Idea Title",
+      "insight": "string - Core Insight or Hook (1 sentence)",
+      "concept": "string - Concept Description (2-3 sentences)",
+      "brandFit": "string - Why It Fits the Brand (1-2 sentences)",
+      "visualDirection": "string - Visual / Storytelling Direction (1-2 sentences)",
+      "format": "string - Recommended Format (e.g. 'Short-form vertical video', 'Carousel post', 'OOH billboard')",
+      "undercatReason": "string - Why Undercat Would Recommend It (1 sentence)"
+    }
+  ]
 }
 
-Rules:
-- Be specific to the industry, objective, platform, and tone provided.
-- Be creative, bold, and original. No generic ideas.
-- Keep each idea to 1-2 sentences max.
-- Never mention pricing or production costs.
-- Return ONLY valid JSON, no markdown, no code fences.`;
+Generate exactly 5 ideas. Return ONLY valid JSON, no markdown, no code fences.`;
 
-    const userPrompt = `Generate content ideas for:
+    const userPrompt = `Generate 5 strong content ideas for this client, filtered through Undercat's creative standards:
+
 - Industry: ${industry}
-- Objective: ${objective}
+- Goal: ${objective}
 - Platform: ${platform}
 - Brand Tone: ${tone}`;
 
@@ -80,7 +98,6 @@ Rules:
     const data = await response.json();
     const raw = data.choices?.[0]?.message?.content ?? "";
 
-    // Parse JSON from the response, stripping any markdown fences
     const cleaned = raw.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
     let parsed;
     try {
