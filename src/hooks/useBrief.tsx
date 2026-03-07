@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { Brief, createEmptyBrief, RiskLevel } from '@/types/brief';
+import { Brief, createEmptyBrief, RiskLevel, Mission } from '@/types/brief';
 import { generateBlueprint } from '@/utils/blueprint';
+import { cases } from '@/data/cases';
 
 interface BriefContextType {
   brief: Brief;
