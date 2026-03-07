@@ -4,63 +4,66 @@
 
 @layer base {
   :root {
-    --background: 40 20% 98%;
-    --foreground: 220 15% 10%;
-    --card: 0 0% 100%;
-    --card-foreground: 220 15% 10%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 10%;
-    --primary: 220 15% 10%;
-    --primary-foreground: 40 20% 98%;
-    --secondary: 40 10% 94%;
-    --secondary-foreground: 220 15% 10%;
-    --muted: 40 8% 93%;
-    --muted-foreground: 220 5% 50%;
-    --accent: 42 55% 62%;
-    --accent-foreground: 220 15% 10%;
+    --background: 240 8% 5%;
+    --foreground: 240 5% 90%;
+    --card: 240 8% 8%;
+    --card-foreground: 240 5% 90%;
+    --popover: 240 8% 8%;
+    --popover-foreground: 240 5% 90%;
+    --primary: 240 5% 92%;
+    --primary-foreground: 240 8% 5%;
+    --secondary: 240 6% 12%;
+    --secondary-foreground: 240 5% 75%;
+    --muted: 240 6% 14%;
+    --muted-foreground: 240 4% 50%;
+    --accent: 268 35% 42%;
+    --accent-foreground: 260 20% 95%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --border: 40 10% 90%;
-    --input: 40 10% 88%;
-    --ring: 42 55% 62%;
+    --border: 240 6% 15%;
+    --input: 240 6% 13%;
+    --ring: 268 35% 42%;
     --radius: 0.75rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 240 8% 6%;
+    --sidebar-foreground: 240 5% 80%;
+    --sidebar-primary: 240 5% 90%;
+    --sidebar-primary-foreground: 240 8% 5%;
+    --sidebar-accent: 240 6% 12%;
+    --sidebar-accent-foreground: 240 5% 90%;
+    --sidebar-border: 240 6% 15%;
+    --sidebar-ring: 268 35% 42%;
 
     --font-display: 'Instrument Serif', Georgia, serif;
     --font-body: 'DM Sans', system-ui, sans-serif;
 
-    --shadow-soft: 0 2px 20px -4px hsl(220 15% 10% / 0.06);
-    --shadow-card: 0 1px 12px -2px hsl(220 15% 10% / 0.05);
-    --shadow-elevated: 0 8px 40px -8px hsl(220 15% 10% / 0.1);
+    --shadow-soft: 0 2px 24px -4px hsl(268 40% 20% / 0.15);
+    --shadow-card: 0 1px 16px -2px hsl(0 0% 0% / 0.3);
+    --shadow-elevated: 0 8px 48px -8px hsl(268 40% 15% / 0.25);
+
+    --liquid-purple: 268 35% 42%;
+    --liquid-lavender: 270 30% 65%;
   }
 
   .dark {
-    --background: 220 15% 6%;
-    --foreground: 40 20% 95%;
-    --card: 220 15% 8%;
-    --card-foreground: 40 20% 95%;
-    --popover: 220 15% 8%;
-    --popover-foreground: 40 20% 95%;
-    --primary: 40 20% 95%;
-    --primary-foreground: 220 15% 6%;
-    --secondary: 220 10% 14%;
-    --secondary-foreground: 40 20% 95%;
-    --muted: 220 10% 14%;
-    --muted-foreground: 220 5% 55%;
-    --accent: 42 55% 52%;
-    --accent-foreground: 40 20% 95%;
+    --background: 240 8% 5%;
+    --foreground: 240 5% 90%;
+    --card: 240 8% 8%;
+    --card-foreground: 240 5% 90%;
+    --popover: 240 8% 8%;
+    --popover-foreground: 240 5% 90%;
+    --primary: 240 5% 92%;
+    --primary-foreground: 240 8% 5%;
+    --secondary: 240 6% 12%;
+    --secondary-foreground: 240 5% 75%;
+    --muted: 240 6% 14%;
+    --muted-foreground: 240 4% 50%;
+    --accent: 268 35% 42%;
+    --accent-foreground: 260 20% 95%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 10% 18%;
-    --input: 220 10% 18%;
-    --ring: 42 55% 52%;
+    --border: 240 6% 15%;
+    --input: 240 6% 13%;
+    --ring: 268 35% 42%;
   }
 }
 
@@ -95,6 +98,99 @@
   }
 }
 
+/* Liquid Shadow System — ambient atmospheric forms */
+@keyframes liquid-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(30px, -20px) scale(1.05); }
+  50% { transform: translate(-10px, 15px) scale(0.97); }
+  75% { transform: translate(15px, 10px) scale(1.02); }
+}
+
+@keyframes liquid-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-25px, 20px) scale(1.03); }
+  66% { transform: translate(20px, -15px) scale(0.98); }
+}
+
+@keyframes liquid-drift-3 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  50% { transform: translate(15px, -25px) rotate(3deg) scale(1.04); }
+}
+
+.liquid-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.liquid-orb-1 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, hsl(var(--liquid-purple) / 0.12) 0%, transparent 70%);
+  animation: liquid-drift-1 25s ease-in-out infinite;
+}
+
+.liquid-orb-2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, hsl(var(--liquid-purple) / 0.08) 0%, transparent 70%);
+  animation: liquid-drift-2 30s ease-in-out infinite;
+}
+
+.liquid-orb-3 {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, hsl(var(--liquid-lavender) / 0.05) 0%, transparent 70%);
+  animation: liquid-drift-3 35s ease-in-out infinite;
+}
+
+.liquid-ink {
+  position: absolute;
+  border-radius: 40% 60% 60% 40% / 50% 40% 60% 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  will-change: transform;
+  background: radial-gradient(ellipse, hsl(var(--liquid-purple) / 0.1) 0%, transparent 70%);
+  animation: liquid-drift-2 40s ease-in-out infinite;
+}
+
+.liquid-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, hsl(240 8% 3% / 0.6) 100%);
+}
+
+/* Section atmosphere */
+.section-atmosphere {
+  position: relative;
+  overflow: hidden;
+}
+
+.section-atmosphere::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    hsl(var(--liquid-purple) / 0.02) 0%,
+    transparent 30%,
+    transparent 70%,
+    hsl(var(--liquid-purple) / 0.02) 100%
+  );
+  pointer-events: none;
+}
+
+/* Glass surface treatment */
+.glass-surface {
+  background: hsl(240 8% 8% / 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid hsl(240 6% 18% / 0.5);
+}
+
 @media print {
   body {
     background: white !important;
@@ -105,5 +201,8 @@
   }
   .print-only {
     display: block !important;
+  }
+  .liquid-orb, .liquid-ink, .liquid-vignette {
+    display: none !important;
   }
 }

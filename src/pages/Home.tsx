@@ -27,8 +27,13 @@ export default function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="min-h-[85vh] flex items-center">
-        <div className="container py-20">
+      <section className="min-h-[85vh] flex items-center relative overflow-hidden">
+        {/* Liquid shadow atmosphere */}
+        <div className="liquid-orb liquid-orb-1 -top-40 -right-40 opacity-70" />
+        <div className="liquid-orb liquid-orb-2 bottom-20 -left-32 opacity-50" />
+        <div className="liquid-ink w-[600px] h-[300px] top-1/3 right-1/4 opacity-40" />
+        
+        <div className="container py-20 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -55,8 +60,9 @@ export default function Home() {
       </section>
 
       {/* MEOW Pillars */}
-      <section className="py-20 md:py-28 border-t border-border">
-        <div className="container">
+      <section className="py-20 md:py-28 border-t border-border section-atmosphere">
+        <div className="liquid-orb liquid-orb-3 top-0 left-1/2 -translate-x-1/2 opacity-30" />
+        <div className="container relative z-10">
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -84,8 +90,9 @@ export default function Home() {
       </section>
 
       {/* Featured Work */}
-      <section className="py-20 md:py-28 border-t border-border">
-        <div className="container">
+      <section className="py-20 md:py-28 border-t border-border relative overflow-hidden">
+        <div className="liquid-orb liquid-orb-2 -top-20 -right-48 opacity-25" />
+        <div className="container relative z-10">
           <div className="flex items-end justify-between mb-12">
             <div>
               <p className="text-sm font-medium text-muted-foreground mb-2 tracking-widest uppercase">Featured Work</p>
@@ -104,8 +111,9 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 md:py-28 border-t border-border">
-        <div className="container">
+      <section className="py-20 md:py-28 border-t border-border section-atmosphere relative overflow-hidden">
+        <div className="liquid-ink w-[500px] h-[250px] bottom-0 left-1/4 opacity-30" />
+        <div className="container relative z-10">
           <p className="text-sm font-medium text-muted-foreground mb-12 tracking-widest uppercase">How It Works</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {steps.map((s, i) => (
