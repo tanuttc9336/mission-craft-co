@@ -113,6 +113,28 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Undercat Lens CTA */}
+      <section className="py-24 md:py-32 border-b border-border">
+        <div className="container">
+          <div className="max-w-2xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <p className="text-xs font-medium text-highlight mb-6 tracking-[0.3em] uppercase">Undercat Lens</p>
+              <h2 className="font-display text-3xl md:text-4xl mb-4">See Your Brand Through Undercat</h2>
+              <p className="text-sm text-muted-foreground mb-8 max-w-md mx-auto">
+                Discover what may be holding attention back — and what kind of creative direction could move it forward.
+              </p>
+              <Button variant="hero" size="xl" asChild>
+                <Link to="/lens">Start Your Lens <ArrowRight size={16} /></Link>
+              </Button>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* How It Works */}
       <section className="py-24 md:py-32 bg-primary text-primary-foreground">
         <div className="container">

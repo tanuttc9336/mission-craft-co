@@ -1,6 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { cases, industries, goals, allOutputs, allStyleDNA } from '@/data/cases';
 import CaseCard from '@/components/CaseCard';
+import { trackEvent } from '@/utils/analytics';
+import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+import { ArrowRight, Eye } from 'lucide-react';
 import { trackEvent } from '@/utils/analytics';
 import { motion } from 'framer-motion';
 
@@ -84,6 +89,20 @@ export default function Work() {
       {filtered.length === 0 && (
         <p className="text-center text-muted-foreground py-20 text-sm">No cases match your filters. Try adjusting.</p>
       )}
+
+      {/* Lens CTA */}
+      <div className="mt-20 border-t border-border pt-12 text-center">
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <Eye size={14} className="text-highlight" />
+          <p className="text-[10px] font-medium tracking-[0.3em] uppercase text-muted-foreground">Undercat Lens</p>
+        </div>
+        <p className="text-sm text-muted-foreground mb-6 max-w-sm mx-auto">
+          Want to see how Undercat would approach your brand?
+        </p>
+        <Button variant="default" size="lg" asChild>
+          <Link to="/lens">Start Your Lens <ArrowRight size={14} /></Link>
+        </Button>
+      </div>
     </div>
   );
 }
