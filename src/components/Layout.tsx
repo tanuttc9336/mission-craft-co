@@ -7,7 +7,6 @@ import logo from '@/assets/undercat-logo.png';
 const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/work', label: 'Work' },
-  { to: '/lens', label: 'Lens' },
   { to: '/builder', label: 'Builder' },
   { to: '/ideas', label: 'Ideas' },
   { to: '/contact', label: 'Contact' },

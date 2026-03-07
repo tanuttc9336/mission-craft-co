@@ -2,6 +2,3 @@ project_id = "cotanyifydbfnzzwhxsb"
 
 [functions.content-ideas]
 verify_jwt = false
-
-[functions.lens-generate]
-verify_jwt = false

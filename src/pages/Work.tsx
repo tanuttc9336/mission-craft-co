@@ -1,11 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import { cases, industries, goals, allOutputs, allStyleDNA } from '@/data/cases';
 import CaseCard from '@/components/CaseCard';
 import { trackEvent } from '@/utils/analytics';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
 
 type FilterGroup = { label: string; options: string[] };
 
@@ -87,16 +84,6 @@ export default function Work() {
       {filtered.length === 0 && (
         <p className="text-center text-muted-foreground py-20 text-sm">No cases match your filters. Try adjusting.</p>
       )}
-
-      {/* Lens CTA */}
-      <div className="mt-20 pt-16 border-t border-border max-w-xl">
-        <p className="text-[10px] font-medium text-muted-foreground mb-4 tracking-[0.3em] uppercase">Not sure what you need?</p>
-        <h3 className="font-display text-2xl mb-3">See Your Brand Through Undercat</h3>
-        <p className="text-muted-foreground text-sm mb-6">Get a personalized creative direction in a fast guided session.</p>
-        <Button variant="default" asChild>
-          <Link to="/lens">Start Your Lens <ArrowRight size={14} /></Link>
-        </Button>
-      </div>
     </div>
   );
 }
