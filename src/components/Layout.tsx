@@ -2,7 +2,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
-import logo from '@/assets/undercat-logo.png';
 
 const navLinks = [
   { to: '/', label: 'Home' },
@@ -17,16 +16,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      {/* Global vignette */}
-      <div className="liquid-vignette" />
-
-      <header className="no-print fixed top-0 left-0 right-0 z-50 glass-surface">
+      <header className="no-print fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="container flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center gap-2.5">
-            <img src={logo} alt="Undercat Creatives" className="h-8 w-8 invert" />
-            <span className="font-display text-xl tracking-tight text-foreground">
-              Undercat<span className="text-accent">.</span>
-            </span>
+          <Link to="/" className="font-display text-xl tracking-tight">
+            Undercat<span className="text-accent">.</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">
@@ -58,7 +51,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="md:hidden overflow-hidden border-b border-border bg-background/95 backdrop-blur-md"
+              className="md:hidden overflow-hidden border-b border-border bg-background"
             >
               <nav className="container py-4 flex flex-col gap-3">
                 {navLinks.map(link => (
@@ -79,14 +72,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </AnimatePresence>
       </header>
 
-      <main className="flex-1 pt-16 relative z-10">{children}</main>
+      <main className="flex-1 pt-16">{children}</main>
 
-      <footer className="no-print border-t border-border py-12 relative z-10">
+      <footer className="no-print border-t border-border py-12">
         <div className="container flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-2">
-            <img src={logo} alt="Undercat Creatives" className="h-6 w-6 invert opacity-60" />
-            <span className="font-display text-lg text-foreground">Undercat Creatives<span className="text-accent">.</span></span>
-          </div>
+          <span className="font-display text-lg">Undercat Creatives<span className="text-accent">.</span></span>
           <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} Undercat Creatives. All rights reserved.</p>
         </div>
       </footer>

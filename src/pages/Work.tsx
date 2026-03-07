@@ -43,16 +43,14 @@ export default function Work() {
   }, [filters]);
 
   return (
-    <div className="container py-16 md:py-24 relative">
-      <div className="liquid-orb liquid-orb-1 -top-60 -right-40 opacity-20" />
-      
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="relative z-10">
+    <div className="container py-16 md:py-24">
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="font-display text-4xl md:text-5xl mb-4">Our Work</h1>
         <p className="text-muted-foreground mb-12 max-w-lg">Every project starts with a clear mission. Here's what we've delivered.</p>
       </motion.div>
 
       {/* Filters */}
-      <div className="space-y-4 mb-12 relative z-10">
+      <div className="space-y-4 mb-12">
         {filterGroups.map(group => (
           <div key={group.label}>
             <span className="text-xs font-medium text-muted-foreground mr-3">{group.label}:</span>
@@ -64,8 +62,8 @@ export default function Work() {
                   onClick={() => toggleFilter(group.label, opt)}
                   className={`inline-block mr-2 mb-2 px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
                     active
-                      ? 'bg-accent text-accent-foreground border-accent'
-                      : 'bg-card text-foreground border-border hover:border-accent/40'
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-card text-foreground border-border hover:border-accent/50'
                   }`}
                 >
                   {opt}
@@ -77,7 +75,7 @@ export default function Work() {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filtered.map((c, i) => (
           <CaseCard key={c.id} case={c} index={i} />
         ))}

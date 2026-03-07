@@ -44,12 +44,9 @@ export default function Builder() {
   const isLast = currentStep === totalSteps - 1;
 
   return (
-    <div className="container py-16 md:py-24 max-w-3xl relative">
-      <div className="liquid-orb liquid-orb-2 -top-40 -left-48 opacity-20" />
-      <div className="liquid-orb liquid-orb-3 bottom-0 -right-32 opacity-15" />
-
+    <div className="container py-16 md:py-24 max-w-3xl">
       {/* Header */}
-      <div className="mb-8 relative z-10">
+      <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="font-display text-2xl md:text-3xl">Brief Builder</h1>
@@ -64,8 +61,7 @@ export default function Builder() {
         <div className="relative">
           <div className="h-1.5 bg-secondary rounded-full overflow-hidden">
             <motion.div
-              className="h-full rounded-full"
-              style={{ background: 'linear-gradient(90deg, hsl(268 35% 42%), hsl(270 30% 55%))' }}
+              className="h-full bg-accent rounded-full"
               initial={false}
               animate={{ width: `${clarityPercent}%` }}
               transition={{ duration: 0.4, ease: 'easeOut' }}
@@ -95,14 +91,14 @@ export default function Builder() {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -20 }}
           transition={{ duration: 0.25 }}
-          className="min-h-[400px] relative z-10"
+          className="min-h-[400px]"
         >
           <StepComponent />
         </motion.div>
       </AnimatePresence>
 
       {/* Navigation */}
-      <div className="flex items-center justify-between mt-12 pt-6 border-t border-border relative z-10">
+      <div className="flex items-center justify-between mt-12 pt-6 border-t border-border">
         <Button
           variant="ghost"
           onClick={prevStep}
