@@ -18,7 +18,7 @@ export default function StepChannels() {
 
   return (
     <div>
-      <h2 className="font-display text-2xl md:text-3xl mb-2">Where will this live?</h2>
+      <h2 className="font-display text-2xl md:text-3xl mb-2">Where Will This Live?</h2>
       <p className="text-muted-foreground text-sm mb-8">Select your target channels.</p>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-lg">
@@ -29,8 +29,8 @@ export default function StepChannels() {
               key={c.id}
               whileTap={{ scale: 0.97 }}
               onClick={() => toggle(c.id)}
-              className={`p-4 rounded-lg border text-center transition-all duration-200 ${
-                active ? 'border-accent bg-accent/10 shadow-soft' : 'border-border bg-card hover:border-accent/50'
+              className={`p-4 border text-center transition-all duration-200 ${
+                active ? 'border-foreground bg-primary text-primary-foreground' : 'border-border bg-background hover:border-foreground'
               }`}
             >
               <span className="text-sm font-medium">{c.label}</span>
@@ -40,11 +40,11 @@ export default function StepChannels() {
       </div>
 
       {allRatios.length > 0 && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-6 p-4 bg-secondary rounded-lg max-w-lg">
-          <p className="text-xs font-medium text-muted-foreground mb-2">Required aspect ratios:</p>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-6 p-4 border border-border max-w-lg">
+          <p className="text-[10px] font-medium tracking-wider uppercase text-muted-foreground mb-2">Required aspect ratios</p>
           <div className="flex flex-wrap gap-2">
             {allRatios.map(r => (
-              <span key={r} className="text-xs bg-card px-3 py-1 rounded-full border border-border">{r}</span>
+              <span key={r} className="text-xs bg-secondary px-3 py-1 border border-border">{r}</span>
             ))}
           </div>
         </motion.div>

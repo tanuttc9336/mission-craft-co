@@ -46,24 +46,24 @@ export default function Work() {
     <div className="container py-16 md:py-24">
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="font-display text-4xl md:text-5xl mb-4">Our Work</h1>
-        <p className="text-muted-foreground mb-12 max-w-lg">Every project starts with a clear mission. Here's what we've delivered.</p>
+        <p className="text-muted-foreground text-sm mb-16 max-w-lg">Every project starts with a clear mission. Here's what we've delivered.</p>
       </motion.div>
 
       {/* Filters */}
-      <div className="space-y-4 mb-12">
+      <div className="space-y-4 mb-16">
         {filterGroups.map(group => (
-          <div key={group.label}>
-            <span className="text-xs font-medium text-muted-foreground mr-3">{group.label}:</span>
+          <div key={group.label} className="flex flex-wrap items-center gap-2">
+            <span className="text-[10px] font-medium tracking-[0.2em] uppercase text-muted-foreground mr-2 min-w-[70px]">{group.label}</span>
             {group.options.map(opt => {
               const active = (filters[group.label] ?? []).includes(opt);
               return (
                 <button
                   key={opt}
                   onClick={() => toggleFilter(group.label, opt)}
-                  className={`inline-block mr-2 mb-2 px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                  className={`px-3 py-1.5 text-[10px] font-medium tracking-wider uppercase border transition-all ${
                     active
                       ? 'bg-primary text-primary-foreground border-primary'
-                      : 'bg-card text-foreground border-border hover:border-accent/50'
+                      : 'bg-background text-foreground border-border hover:border-foreground'
                   }`}
                 >
                   {opt}
@@ -82,7 +82,7 @@ export default function Work() {
       </div>
 
       {filtered.length === 0 && (
-        <p className="text-center text-muted-foreground py-20">No cases match your filters. Try adjusting.</p>
+        <p className="text-center text-muted-foreground py-20 text-sm">No cases match your filters. Try adjusting.</p>
       )}
     </div>
   );

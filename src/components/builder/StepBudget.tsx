@@ -30,21 +30,21 @@ export default function StepBudget() {
 
   return (
     <div>
-      <h2 className="font-display text-2xl md:text-3xl mb-2">Budget, timeline & constraints.</h2>
+      <h2 className="font-display text-2xl md:text-3xl mb-2">Budget, Timeline & Constraints.</h2>
       <p className="text-muted-foreground text-sm mb-8">Helps us scope accurately.</p>
 
       <div className="space-y-8 max-w-lg">
         <div>
-          <label className="text-xs font-medium text-muted-foreground block mb-3">Budget Range</label>
+          <label className="text-[10px] font-medium tracking-wider uppercase text-muted-foreground block mb-3">Budget Range</label>
           <div className="grid grid-cols-2 gap-2">
             {budgetOptions.map(b => (
               <button
                 key={b.id}
                 onClick={() => updateBrief({ budgetRange: b.id })}
-                className={`p-3 rounded-lg border text-sm font-medium transition-all ${
+                className={`p-3 border text-sm font-medium transition-all ${
                   brief.budgetRange === b.id
-                    ? 'border-accent bg-accent/10'
-                    : 'border-border bg-card hover:border-accent/50'
+                    ? 'border-foreground bg-primary text-primary-foreground'
+                    : 'border-border bg-background hover:border-foreground'
                 }`}
               >
                 {b.label}
@@ -54,16 +54,16 @@ export default function StepBudget() {
         </div>
 
         <div>
-          <label className="text-xs font-medium text-muted-foreground block mb-3">Timeline</label>
+          <label className="text-[10px] font-medium tracking-wider uppercase text-muted-foreground block mb-3">Timeline</label>
           <div className="grid grid-cols-2 gap-2">
             {timelineOptions.map(t => (
               <button
                 key={t.id}
                 onClick={() => updateBrief({ timeline: t.id })}
-                className={`p-3 rounded-lg border text-sm font-medium transition-all ${
+                className={`p-3 border text-sm font-medium transition-all ${
                   brief.timeline === t.id
-                    ? 'border-accent bg-accent/10'
-                    : 'border-border bg-card hover:border-accent/50'
+                    ? 'border-foreground bg-primary text-primary-foreground'
+                    : 'border-border bg-background hover:border-foreground'
                 }`}
               >
                 {t.label}
@@ -73,7 +73,7 @@ export default function StepBudget() {
         </div>
 
         <div>
-          <label className="text-xs font-medium text-muted-foreground block mb-3">Constraints</label>
+          <label className="text-[10px] font-medium tracking-wider uppercase text-muted-foreground block mb-3">Constraints</label>
           <div className="space-y-2">
             {constraintOptions.map(c => {
               const active = brief.constraints.includes(c.id as Constraint);
@@ -82,14 +82,14 @@ export default function StepBudget() {
                   key={c.id}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => toggleConstraint(c.id as Constraint)}
-                  className={`w-full text-left px-4 py-3 rounded-lg border text-sm transition-all flex items-center gap-3 ${
-                    active ? 'border-accent bg-accent/10' : 'border-border bg-card hover:border-accent/50'
+                  className={`w-full text-left px-4 py-3 border text-sm transition-all flex items-center gap-3 ${
+                    active ? 'border-foreground bg-primary text-primary-foreground' : 'border-border bg-background hover:border-foreground'
                   }`}
                 >
-                  <div className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-colors ${
-                    active ? 'bg-accent border-accent' : 'border-border'
+                  <div className={`w-4 h-4 border-2 flex items-center justify-center transition-colors ${
+                    active ? 'bg-primary-foreground border-primary-foreground' : 'border-muted-foreground'
                   }`}>
-                    {active && <span className="text-xs text-accent-foreground">✓</span>}
+                    {active && <span className="text-xs text-primary">✓</span>}
                   </div>
                   {c.label}
                 </motion.button>
@@ -100,8 +100,8 @@ export default function StepBudget() {
 
         <FitRiskIndicator level={brief.riskLevel} />
 
-        <div className="p-4 bg-secondary rounded-lg space-y-2">
-          <p className="text-xs font-medium text-foreground">Undercat OS Terms</p>
+        <div className="p-5 border border-foreground space-y-2">
+          <p className="text-[10px] font-bold tracking-wider uppercase text-foreground">Undercat OS Terms</p>
           <p className="text-xs text-muted-foreground">• Go/No-Go: scope confirmed + contract + 50% deposit</p>
           <p className="text-xs text-muted-foreground">• 2 revisions included, directional change = change order</p>
           <p className="text-xs text-muted-foreground">• No final files before final payment</p>

@@ -22,13 +22,13 @@ export default function StepStyleDNA() {
 
   return (
     <div>
-      <h2 className="font-display text-2xl md:text-3xl mb-2">Dial in the vibe.</h2>
+      <h2 className="font-display text-2xl md:text-3xl mb-2">Dial In The Vibe.</h2>
       <p className="text-muted-foreground text-sm mb-8">Slide to set the creative direction.</p>
 
       <div className="space-y-8 max-w-lg">
         {sliders.map(s => (
           <div key={s.key}>
-            <div className="flex justify-between text-xs font-medium text-muted-foreground mb-3">
+            <div className="flex justify-between text-[10px] font-medium tracking-wider uppercase text-muted-foreground mb-3">
               <span>{s.left}</span>
               <span>{s.right}</span>
             </div>
@@ -43,7 +43,7 @@ export default function StepStyleDNA() {
         ))}
       </div>
 
-      <div className="mt-8 p-4 bg-secondary rounded-lg max-w-lg">
+      <div className="mt-8 p-4 border border-border max-w-lg">
         <p className="text-sm font-display italic">{getStyleSentence(brief.styleDNA)}</p>
       </div>
     </div>
