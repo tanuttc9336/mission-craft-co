@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useBrief } from '@/hooks/useBrief';
+import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { trackEvent } from '@/utils/analytics';
 import { motion } from 'framer-motion';
