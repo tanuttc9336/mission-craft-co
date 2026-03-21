@@ -22,7 +22,7 @@ export default function Contact() {
     };
 
     // Insert into Supabase
-    supabase.from('contact_submissions').insert({
+    supabase.from('contact_submissions').insert([{
       name: brief.lead.name,
       company: brief.lead.company,
       email: brief.lead.email,
@@ -30,8 +30,8 @@ export default function Contact() {
       project_location: brief.lead.projectLocation || '',
       notes: brief.lead.notes || '',
       consent: brief.lead.consent,
-      brief_data: brief,
-    }).then(() => {}).catch(() => {});
+      brief_data: brief as any,
+    }]).then(() => {});
 
     try {
       const stored = JSON.parse(localStorage.getItem('undercat-leads') ?? '[]');
