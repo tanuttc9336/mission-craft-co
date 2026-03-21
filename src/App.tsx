@@ -16,6 +16,7 @@ import Blueprint from "./pages/Blueprint";
 import Contact from "./pages/Contact";
 import IdeaEngine from "./pages/IdeaEngine";
 import Lens from "./pages/Lens";
+import IndustryAutomotive from "./pages/IndustryAutomotive";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/portal/Login";
 import Dashboard from "./pages/portal/Dashboard";
@@ -53,6 +54,7 @@ const App = () => (
                 <Route path="/ideas" element={<Layout><IdeaEngine /></Layout>} />
                 <Route path="/lens" element={<Layout><Lens /></Layout>} />
                 <Route path="/contact" element={<Layout><Contact /></Layout>} />
+                <Route path="/industry/automotive" element={<Layout><IndustryAutomotive /></Layout>} />
 
                 {/* Portal auth */}
                 <Route path="/login" element={<Login />} />
