@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePortalAuth } from '@/hooks/usePortalAuth';
 import { motion } from 'framer-motion';
@@ -8,12 +8,16 @@ import { ArrowRight } from 'lucide-react';
 import logo from '@/assets/undercat-logo.png';
 
 export default function Login() {
-  const { login } = usePortalAuth();
+  const { login, user, isLoading } = usePortalAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!isLoading && user) navigate('/portal');
+  }, [user, isLoading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,7 +28,7 @@ export default function Login() {
     if (ok) {
       navigate('/portal');
     } else {
-      setError('Account not found. Try client@demo.com or admin@demo.com');
+      setError('Invalid credentials. Try demo accounts below.');
     }
   };
 
@@ -98,17 +102,17 @@ export default function Login() {
 
           <div className="mt-8 pt-6 border-t border-border">
             <p className="text-[10px] text-muted-foreground tracking-wide">
-              Demo accounts
+              Demo accounts (password: demo1234)
             </p>
             <div className="mt-2 space-y-1.5">
               <button
-                onClick={() => { setEmail('client@demo.com'); setPassword('demo'); }}
+                onClick={() => { setEmail('client@demo.com'); setPassword('demo1234'); }}
                 className="block text-xs text-foreground hover:underline"
               >
                 client@demo.com — Client view
               </button>
               <button
-                onClick={() => { setEmail('admin@demo.com'); setPassword('demo'); }}
+                onClick={() => { setEmail('admin@demo.com'); setPassword('demo1234'); }}
                 className="block text-xs text-foreground hover:underline"
               >
                 admin@demo.com — Admin view

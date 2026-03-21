@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Outlet, useNavigate, Link, useLocation } from 'react-router-dom';
 import { usePortalAuth } from '@/hooks/usePortalAuth';
+import { useProjects } from '@/hooks/usePortalData';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Clock, Package, Eye, FolderOpen,
   FileText, ArrowRight, User, LogOut, Menu, X, ChevronDown
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { mockProjects } from '@/data/portal-mock-data';
 import logo from '@/assets/undercat-logo.png';
 
 const navItems = [
@@ -29,12 +29,10 @@ export default function PortalLayout() {
   const [activeProjectId, setActiveProjectId] = useState<string>('');
   const [projectSwitcherOpen, setProjectSwitcherOpen] = useState(false);
 
-  const userProjects = user ? mockProjects.filter(p => user.projectIds.includes(p.id)) : [];
+  const { projects: userProjects, loading: projectsLoading } = useProjects(user?.projectIds ?? []);
 
   useEffect(() => {
-    if (!isLoading && !user) {
-      navigate('/login');
-    }
+    if (!isLoading && !user) navigate('/login');
   }, [user, isLoading, navigate]);
 
   useEffect(() => {
@@ -43,11 +41,9 @@ export default function PortalLayout() {
     }
   }, [userProjects, activeProjectId]);
 
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [location.pathname]);
+  useEffect(() => { setMobileOpen(false); }, [location.pathname]);
 
-  if (isLoading) {
+  if (isLoading || projectsLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-muted-foreground text-sm tracking-widest uppercase animate-pulse">Loading…</div>
@@ -57,7 +53,7 @@ export default function PortalLayout() {
 
   if (!user) return null;
 
-  const activeProject = mockProjects.find(p => p.id === activeProjectId);
+  const activeProject = userProjects.find(p => p.id === activeProjectId);
 
   return (
     <div className="min-h-screen flex bg-background text-foreground">
@@ -69,7 +65,6 @@ export default function PortalLayout() {
             <span className="font-display text-[10px] font-bold tracking-wider uppercase">Undercat</span>
           </Link>
 
-          {/* Project Switcher */}
           {userProjects.length > 1 && (
             <div className="relative">
               <button

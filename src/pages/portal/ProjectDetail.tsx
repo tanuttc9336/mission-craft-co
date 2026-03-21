@@ -1,17 +1,17 @@
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { mockProjects, getProjectHealth } from '@/data/portal-mock-data';
+import { useProjectData, getProjectHealth } from '@/hooks/usePortalData';
 import StatusBadge from '@/components/portal/StatusBadge';
 import RevisionCounter from '@/components/portal/RevisionCounter';
-import type { Project } from '@/types/portal';
 import { Link } from 'react-router-dom';
 import { Clock, Package, Eye, FolderOpen, FileText, ArrowRight } from 'lucide-react';
 
 export default function ProjectDetail() {
   const { id } = useParams();
-  const project = mockProjects.find(p => p.id === id) as Project | undefined;
+  const { project, loading } = useProjectData(id);
 
-  if (!project) return <p className="text-muted-foreground">Project not found.</p>;
+  if (loading) return <div className="text-muted-foreground text-sm animate-pulse p-6">Loading…</div>;
+  if (!project) return <p className="text-muted-foreground p-6">Project not found.</p>;
 
   const health = getProjectHealth(project);
 
@@ -25,15 +25,15 @@ export default function ProjectDetail() {
 
       <div className="flex flex-wrap items-center gap-3">
         <StatusBadge status={project.status} />
-        <span className="text-xs text-muted-foreground">Phase: {project.currentPhase}</span>
-        <span className="text-xs text-muted-foreground">Lead: {project.leadContact}</span>
+        <span className="text-xs text-muted-foreground">Phase: {project.current_phase}</span>
+        <span className="text-xs text-muted-foreground">Lead: {project.lead_contact}</span>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: 'Start', value: project.startDate },
-          { label: 'Target', value: project.targetDate },
-          { label: 'Bundle', value: project.scopeBundle },
+          { label: 'Start', value: project.start_date },
+          { label: 'Target', value: project.target_date },
+          { label: 'Bundle', value: project.scope_bundle },
           { label: 'Audience', value: project.audience },
         ].map(item => (
           <div key={item.label} className="border border-border bg-card p-4">
@@ -43,17 +43,13 @@ export default function ProjectDetail() {
         ))}
       </div>
 
-      <RevisionCounter included={project.revisionIncluded} used={project.revisionUsed} />
+      <RevisionCounter included={project.revision_included} used={project.revision_used} />
 
-      {/* Recent activity */}
       <div className="border border-border bg-card p-5 space-y-2">
         <h3 className="text-[10px] text-muted-foreground tracking-wider uppercase">Recent Activity</h3>
-        {project.recentActivity.map((a, i) => (
-          <p key={i} className="text-xs text-muted-foreground">{a}</p>
-        ))}
+        {project.recent_activity.map((a, i) => <p key={i} className="text-xs text-muted-foreground">{a}</p>)}
       </div>
 
-      {/* Quick links */}
       <div className="flex flex-wrap gap-2">
         {[
           { to: '/portal/timeline', label: 'Timeline', icon: Clock },
@@ -63,11 +59,7 @@ export default function ProjectDetail() {
           { to: '/portal/brief', label: 'Brief', icon: FileText },
           { to: '/portal/next-steps', label: 'Next Steps', icon: ArrowRight },
         ].map(a => (
-          <Link
-            key={a.to}
-            to={a.to}
-            className="flex items-center gap-2 px-4 py-2 border border-border text-xs tracking-wide uppercase hover:bg-secondary transition-colors"
-          >
+          <Link key={a.to} to={a.to} className="flex items-center gap-2 px-4 py-2 border border-border text-xs tracking-wide uppercase hover:bg-secondary transition-colors">
             <a.icon className="h-3 w-3" />
             {a.label}
           </Link>

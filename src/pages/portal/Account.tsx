@@ -2,16 +2,15 @@ import { usePortalAuth } from '@/hooks/usePortalAuth';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { mockProjects } from '@/data/portal-mock-data';
+import { useProjects } from '@/hooks/usePortalData';
 import { LogOut } from 'lucide-react';
 
 export default function Account() {
   const { user, logout } = usePortalAuth();
   const navigate = useNavigate();
+  const { projects } = useProjects(user?.projectIds ?? []);
 
   if (!user) return null;
-
-  const projects = mockProjects.filter(p => user.projectIds.includes(p.id));
 
   return (
     <div className="space-y-8">
@@ -27,13 +26,7 @@ export default function Account() {
           { label: 'Phone', value: user.phone || '—' },
           { label: 'Role', value: user.role === 'admin' ? 'Admin' : 'Client' },
         ].map((field, i) => (
-          <motion.div
-            key={field.label}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.03 }}
-            className="flex items-center justify-between p-4 border border-border bg-card"
-          >
+          <motion.div key={field.label} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }} className="flex items-center justify-between p-4 border border-border bg-card">
             <span className="text-[10px] text-muted-foreground tracking-wider uppercase">{field.label}</span>
             <span className="text-sm">{field.value}</span>
           </motion.div>
@@ -56,11 +49,7 @@ export default function Account() {
       </div>
 
       <div className="pt-4 border-t border-border">
-        <Button
-          variant="outline"
-          onClick={() => { logout(); navigate('/login'); }}
-          className="gap-2"
-        >
+        <Button variant="outline" onClick={() => { logout(); navigate('/login'); }} className="gap-2">
           <LogOut className="h-4 w-4" />
           Sign out
         </Button>
