@@ -74,25 +74,32 @@ export function PortalAuthProvider({ children }: { children: React.ReactNode }) 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        if (session?.user) {
-          const portalUser = await buildPortalUser(session.user);
-          setUser(portalUser);
-        } else {
-          setUser(null);
-        }
-        setIsLoading(false);
-      }
-    );
+    let initialised = false;
 
+    // 1. Use getSession for the initial load (avoids race with onAuthStateChange)
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (session?.user) {
         const portalUser = await buildPortalUser(session.user);
         setUser(portalUser);
       }
       setIsLoading(false);
+      initialised = true;
     });
+
+    // 2. Listen for subsequent auth changes (sign-in, sign-out, token refresh)
+    //    Skip the INITIAL_SESSION event to avoid double-calling buildPortalUser
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === 'INITIAL_SESSION') return; // handled by getSession above
+        if (session?.user) {
+          const portalUser = await buildPortalUser(session.user);
+          setUser(portalUser);
+        } else {
+          setUser(null);
+        }
+        if (!initialised) setIsLoading(false);
+      }
+    );
 
     return () => subscription.unsubscribe();
   }, []);
