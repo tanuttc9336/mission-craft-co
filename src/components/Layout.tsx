@@ -7,9 +7,9 @@ import logo from '@/assets/undercat-logo.png';
 const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/work', label: 'Work' },
+  { to: '/industry/automotive', label: 'Automotive' },
   { to: '/lens', label: 'Lens' },
   { to: '/builder', label: 'Builder' },
-  { to: '/ideas', label: 'Ideas' },
   { to: '/contact', label: 'Contact' },
   { to: '/login', label: 'Portal' },
 ];
@@ -33,7 +33,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 key={link.to}
                 to={link.to}
                 className={`text-xs font-medium tracking-widest uppercase transition-colors hover:text-foreground ${
-                  location.pathname === link.to ? 'text-foreground' : 'text-muted-foreground'
+                  (location.pathname === link.to || (link.to !== '/' && location.pathname.startsWith(link.to))) ? 'text-foreground' : 'text-muted-foreground'
                 }`}
               >
                 {link.label}
@@ -65,7 +65,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     to={link.to}
                     onClick={() => setMobileOpen(false)}
                     className={`text-xs font-medium tracking-widest uppercase py-2 ${
-                      location.pathname === link.to ? 'text-foreground' : 'text-muted-foreground'
+                      (location.pathname === link.to || (link.to !== '/' && location.pathname.startsWith(link.to))) ? 'text-foreground' : 'text-muted-foreground'
                     }`}
                   >
                     {link.label}
