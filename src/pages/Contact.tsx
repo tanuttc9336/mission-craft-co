@@ -21,11 +21,17 @@ export default function Contact() {
       submittedAt: new Date().toISOString(),
     };
 
-    fetch('/api/leads', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    }).catch(() => {});
+    // Insert into Supabase
+    supabase.from('contact_submissions').insert({
+      name: brief.lead.name,
+      company: brief.lead.company,
+      email: brief.lead.email,
+      phone: brief.lead.phone,
+      project_location: brief.lead.projectLocation || '',
+      notes: brief.lead.notes || '',
+      consent: brief.lead.consent,
+      brief_data: brief,
+    }).then(() => {}).catch(() => {});
 
     try {
       const stored = JSON.parse(localStorage.getItem('undercat-leads') ?? '[]');
