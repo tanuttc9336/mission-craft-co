@@ -2,9 +2,9 @@ export type Mission = 'awareness' | 'leads' | 'sales' | 'launch' | 'retention' |
 export type PersonaId = 'busy-marketer' | 'founder-owner' | 'luxury-buyer' | 'golf-beginner' | 'golf-serious' | 'foodie-local' | 'event-organizer' | 'hr-employer';
 export type Channel = 'tiktok' | 'ig-reels' | 'youtube' | 'meta-ads' | 'website-hero' | 'led-screen';
 export type BundleId = 'starter' | 'signature' | 'production' | 'custom';
-export type BudgetRange = '<100k' | '100-250k' | '250-500k' | '500k+';
+export type BudgetRange = '<100k' | '100-250k' | '250-500k' | '500k+' | 'not-defined';
 export type Timeline = 'asap' | '2-4-weeks' | 'flexible';
-export type Constraint = 'approvals-committee' | 'fixed-launch-date' | 'need-actors' | 'need-location' | 'brand-guidelines-ready';
+export type Constraint = 'approvals-committee' | 'fixed-launch-date' | 'need-actors' | 'need-location' | 'international-approvals' | 'multi-location';
 export type RiskLevel = 'green' | 'yellow' | 'red';
 export type EntryPath = 'fresh' | 'template' | 'existing-brief';
 
@@ -48,8 +48,10 @@ export interface Brief {
   riskLevel: RiskLevel;
   blueprintTextBlocks: Record<string, string>;
   lead: Lead;
+  additionalContext: string;
   entryPath: EntryPath;
   templateCaseId?: string;
+  matchedCaseIds: string[];
 }
 
 export interface CaseStudy {
@@ -89,7 +91,9 @@ export function createEmptyBrief(): Brief {
     constraints: [],
     riskLevel: 'green',
     blueprintTextBlocks: {},
+    additionalContext: '',
     lead: { name: '', company: '', email: '', phone: '', projectLocation: '', notes: '', consent: false },
     entryPath: 'fresh',
+    matchedCaseIds: [],
   };
 }

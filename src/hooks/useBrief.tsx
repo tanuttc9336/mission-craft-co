@@ -64,11 +64,15 @@ export function BriefProvider({ children }: { children: React.ReactNode }) {
           ...parsed,
           audienceText: parsed.audienceText ?? '',
           estimatedBudget: parsed.estimatedBudget ?? '',
+          additionalContext: parsed.additionalContext ?? '',
           entryPath: parsed.entryPath ?? 'fresh',
+          matchedCaseIds: parsed.matchedCaseIds ?? [],
           // Migrate old black-panther to production
           deliverablesBundle: parsed.deliverablesBundle === 'black-panther' ? 'production' : parsed.deliverablesBundle,
           // Migrate old timeline values
           timeline: (parsed.timeline === '1-2-months' || parsed.timeline === '3+-months') ? 'flexible' : parsed.timeline,
+          // Migrate old constraint: remove brand-guidelines-ready
+          constraints: (parsed.constraints ?? []).filter((c: string) => c !== 'brand-guidelines-ready'),
         };
       }
       return createEmptyBrief();

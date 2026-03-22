@@ -65,11 +65,12 @@ export const bundles: { id: BundleId; label: string; tagline: string; priceHint:
 ];
 
 export const constraintOptions: { id: string; label: string }[] = [
-  { id: 'approvals-committee', label: 'Approvals committee involved' },
   { id: 'fixed-launch-date', label: 'Fixed launch date' },
+  { id: 'approvals-committee', label: 'Approvals committee involved' },
+  { id: 'international-approvals', label: 'International / HQ approvals required' },
   { id: 'need-actors', label: 'Need actors / talent' },
   { id: 'need-location', label: 'Need location scouting' },
-  { id: 'brand-guidelines-ready', label: 'Brand guidelines ready' },
+  { id: 'multi-location', label: 'Multi-location shoot' },
 ];
 
 export const ctaTypes = ['Book Now', 'Learn More', 'Shop Now', 'Sign Up', 'Get a Quote', 'Watch More', 'Visit Us'];

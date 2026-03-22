@@ -1,46 +1,31 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useBrief } from '@/hooks/useBrief';
 import { trackEvent } from '@/utils/analytics';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ArrowRight, RotateCcw, Crosshair, FolderOpen } from 'lucide-react';
+import { ArrowLeft, ArrowRight, RotateCcw } from 'lucide-react';
 
 import PhaseMission from '@/components/briefing-room/PhaseMission';
 import PhaseVibe from '@/components/briefing-room/PhaseVibe';
-import PhaseScope from '@/components/briefing-room/PhaseScope';
+import PhaseDetails from '@/components/briefing-room/PhaseDetails';
 
 const phases = [
   { label: 'The Mission', component: PhaseMission },
   { label: 'The Vibe', component: PhaseVibe },
-  { label: 'The Scope', component: PhaseScope },
+  { label: 'The Details', component: PhaseDetails },
 ];
 
-const templateOptions = [
-  { id: 'audi-thailand', label: 'Audi Thailand', desc: 'Launch campaign' },
-  { id: 'greenline-golf-lab', label: 'Greenline Golf Lab', desc: 'Content strategy' },
-  { id: 'ranees-restaurant', label: "Ranee's Restaurant", desc: 'Social media content' },
-  { id: 'fc-bayern-bangkok', label: 'FC Bayern Bangkok', desc: 'Event content' },
-];
+const clientLogos = ['Audi', 'Ducati', 'FC Bayern', 'Greenline Golf Lab', 'SC Asset'];
 
 export default function BriefingRoom() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const { currentStep, totalSteps, clarityPercent, nextStep, prevStep, goToStep, resetBrief, prefillFromCase, finalizeBrief, brief } = useBrief();
+  const { currentStep, totalSteps, clarityPercent, nextStep, prevStep, goToStep, resetBrief, finalizeBrief, brief } = useBrief();
   const [showGateway, setShowGateway] = useState(true);
-  const [showTemplates, setShowTemplates] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
 
   useEffect(() => {
     trackEvent('page_view', { page: 'briefing-room' });
-
-    // If template query param, prefill and skip gateway
-    const template = searchParams.get('template');
-    if (template) {
-      prefillFromCase(template);
-      setShowGateway(false);
-    }
-
     // If brief already has data (returning user), skip gateway
     if (brief.mission || brief.audienceText || brief.channels.length > 0) {
       setShowGateway(false);
@@ -59,21 +44,13 @@ export default function BriefingRoom() {
     navigate('/blueprint');
   };
 
-  const handleStartFresh = () => {
+  const handleStart = () => {
     resetBrief();
     setShowGateway(false);
     trackEvent('briefing_room_entry', { path: 'fresh' });
   };
 
-  const handleSelectTemplate = (caseId: string) => {
-    prefillFromCase(caseId);
-    setShowGateway(false);
-    trackEvent('briefing_room_entry', { path: 'template', caseId });
-  };
-
-  const handleReset = () => {
-    setShowResetConfirm(true);
-  };
+  const handleReset = () => setShowResetConfirm(true);
 
   const confirmReset = () => {
     resetBrief();
@@ -83,8 +60,6 @@ export default function BriefingRoom() {
 
   const PhaseComponent = phases[currentStep]?.component;
   const isLast = currentStep === totalSteps - 1;
-
-  // Clarity blocks (4 blocks)
   const clarityBlocks = Math.round((clarityPercent / 100) * 4);
 
   // === GATEWAY ===
@@ -92,6 +67,15 @@ export default function BriefingRoom() {
     return (
       <div className="container py-16 md:py-24 max-w-2xl">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+          {/* Social proof — above the fold */}
+          <div className="flex items-center gap-3 mb-10">
+            <div className="h-px flex-1 bg-border" />
+            <p className="text-[10px] font-medium tracking-widest uppercase text-muted-foreground whitespace-nowrap">
+              {clientLogos.join(' · ')}
+            </p>
+            <div className="h-px flex-1 bg-border" />
+          </div>
+
           <p className="text-[10px] font-medium tracking-widest uppercase text-muted-foreground mb-4">
             Briefing Room
           </p>
@@ -99,66 +83,36 @@ export default function BriefingRoom() {
             Plan Your<br />Next Move.
           </h1>
           <p className="text-muted-foreground text-sm mb-2">
-            A 3-step mission planner that turns your idea into a production-ready brief.
+            A structured brief that helps us understand your project — so we can deliver exactly what you need.
           </p>
           <p className="text-muted-foreground text-sm mb-12">
             Takes about 3 minutes.
           </p>
 
-          {/* Entry Paths */}
-          {!showTemplates ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-              <motion.button
-                whileTap={{ scale: 0.98 }}
-                onClick={handleStartFresh}
-                className="text-left p-6 border border-border bg-background hover:border-foreground transition-all group"
-              >
-                <Crosshair size={20} className="mb-3 text-muted-foreground group-hover:text-foreground transition-colors" />
-                <span className="font-medium text-sm block mb-1">Start Fresh</span>
-                <p className="text-xs text-muted-foreground">Build from scratch</p>
-              </motion.button>
+          {/* Single CTA */}
+          <motion.button
+            whileTap={{ scale: 0.98 }}
+            onClick={handleStart}
+            className="w-full sm:w-auto px-10 py-4 bg-foreground text-background font-medium text-sm tracking-wider uppercase hover:opacity-90 transition-opacity"
+          >
+            Start Your Brief
+            <ArrowRight size={16} className="inline ml-2 -mt-0.5" />
+          </motion.button>
 
-              <motion.button
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setShowTemplates(true)}
-                className="text-left p-6 border border-border bg-background hover:border-foreground transition-all group"
-              >
-                <FolderOpen size={20} className="mb-3 text-muted-foreground group-hover:text-foreground transition-colors" />
-                <span className="font-medium text-sm block mb-1">Use a Template</span>
-                <p className="text-xs text-muted-foreground">Pre-fill from our past work</p>
-              </motion.button>
+          {/* Value props */}
+          <div className="mt-12 pt-8 border-t border-border grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div>
+              <p className="text-xs font-medium mb-1">Clear scope</p>
+              <p className="text-xs text-muted-foreground">Define what's in — and what's out — before we start.</p>
             </div>
-          ) : (
-            <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-              <div className="flex items-center justify-between mb-4">
-                <p className="text-[10px] font-medium tracking-widest uppercase text-muted-foreground">
-                  Choose a template
-                </p>
-                <button onClick={() => setShowTemplates(false)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-                  ← Back
-                </button>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {templateOptions.map(t => (
-                  <motion.button
-                    key={t.id}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => handleSelectTemplate(t.id)}
-                    className="text-left p-5 border border-border bg-background hover:border-foreground transition-all"
-                  >
-                    <span className="font-medium text-sm block mb-1">{t.label}</span>
-                    <p className="text-xs text-muted-foreground">{t.desc}</p>
-                  </motion.button>
-                ))}
-              </div>
-            </motion.div>
-          )}
-
-          {/* Social proof */}
-          <div className="pt-8 border-t border-border">
-            <p className="text-[10px] font-medium tracking-widest uppercase text-muted-foreground">
-              Trusted by Audi, Ducati, FC Bayern, Greenline Golf Lab
-            </p>
+            <div>
+              <p className="text-xs font-medium mb-1">Relevant references</p>
+              <p className="text-xs text-muted-foreground">See our work that matches your brief as you build it.</p>
+            </div>
+            <div>
+              <p className="text-xs font-medium mb-1">Instant Blueprint</p>
+              <p className="text-xs text-muted-foreground">Get a production-ready brief you can download and share.</p>
+            </div>
           </div>
         </motion.div>
       </div>

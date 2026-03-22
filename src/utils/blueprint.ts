@@ -1,9 +1,8 @@
 import { Brief } from '@/types/brief';
-import { missions, personas, channelOptions, bundles } from '@/data/builder';
+import { missions, channelOptions, bundles } from '@/data/builder';
 
 export function generateBlueprint(brief: Brief): Record<string, string> {
   const mission = missions.find(m => m.id === brief.mission);
-  const selectedPersonas = personas.filter(p => brief.audiencePersonas.includes(p.id));
   const selectedChannels = channelOptions.filter(c => brief.channels.includes(c.id));
   const bundle = bundles.find(b => b.id === brief.deliverablesBundle);
 
@@ -13,18 +12,9 @@ export function generateBlueprint(brief: Brief): Record<string, string> {
 
   blocks.objective = `${mission?.label ?? 'TBD'} — ${mission?.description ?? ''}. Funnel position: ${mission?.funnel ?? 'TBD'}.`;
 
-  // Audience: prefer free-text, supplement with personas
-  const audienceParts: string[] = [];
-  if (brief.audienceText.trim()) {
-    audienceParts.push(brief.audienceText.trim());
-  }
-  if (selectedPersonas.length > 0) {
-    audienceParts.push(
-      selectedPersonas.map(p => `${p.label}: ${p.description}. Recommended tone: ${p.tone}.`).join('\n')
-    );
-  }
-  blocks.audience = audienceParts.length > 0
-    ? audienceParts.join('\n\n')
+  // Audience: free-text
+  blocks.audience = brief.audienceText.trim()
+    ? brief.audienceText.trim()
     : 'Audience not yet defined.';
 
   blocks.channelPlan = selectedChannels.length
@@ -33,7 +23,7 @@ export function generateBlueprint(brief: Brief): Record<string, string> {
 
   blocks.deliverables = bundle
     ? `${bundle.label} Package (${bundle.priceHint}):\n${bundle.deliverables.map(d => `• ${d}`).join('\n')}`
-    : 'Custom scope — to be defined on scoping call.';
+    : 'Scope to be defined on discovery call.';
 
   blocks.timeline = [
     '1. Discovery & Strategy Alignment',
@@ -52,8 +42,8 @@ export function generateBlueprint(brief: Brief): Record<string, string> {
 
   // Simplified offer — just the one-liner
   blocks.offer = brief.offer.keyOffer
-    ? `Campaign: ${brief.offer.keyOffer}${brief.offer.productName ? `\nProduct/Service: ${brief.offer.productName}` : ''}${brief.offer.ctaType ? `\nCTA: ${brief.offer.ctaType}` : ''}`
-    : 'Offer details not yet provided.';
+    ? `Project: ${brief.offer.keyOffer}`
+    : 'Project details not yet provided.';
 
   blocks.assetChecklist = [
     'Brand guidelines (logo, colors, fonts)',
@@ -63,16 +53,90 @@ export function generateBlueprint(brief: Brief): Record<string, string> {
     'Stakeholder contact for approvals',
   ].map(a => `☐ ${a}`).join('\n');
 
+  // ─── In Scope / Out of Scope ───
+  blocks.inScope = generateInScope(brief);
+  blocks.outOfScope = generateOutOfScope(brief);
+
+  // Budget display
+  const budgetDisplay = brief.budgetRange && brief.budgetRange !== 'not-defined'
+    ? `฿${brief.budgetRange === '<100k' ? 'Under 100k' : brief.budgetRange === '500k+' ? '500k+' : brief.budgetRange}`
+    : brief.estimatedBudget || 'TBD';
+
   blocks.terms = [
     '• Go/No-Go: Scope confirmed + contract signed + 50% deposit received',
     '• 2 revision rounds included. Directional changes = Change Order.',
     '• No final files released before final payment.',
-    `• Estimated budget: ${brief.estimatedBudget || 'TBD'}`,
+    `• Budget range: ${budgetDisplay}`,
     `• Timeline preference: ${brief.timeline ?? 'TBD'}`,
     `• Risk assessment: ${brief.riskLevel.toUpperCase()}`,
   ].join('\n');
 
+  // Additional context
+  if (brief.additionalContext?.trim()) {
+    blocks.additionalContext = brief.additionalContext.trim();
+  }
+
   return blocks;
+}
+
+// ─── In Scope generator ───
+function generateInScope(brief: Brief): string {
+  const items: string[] = [];
+  const mission = missions.find(m => m.id === brief.mission);
+  const selectedChannels = channelOptions.filter(c => brief.channels.includes(c.id));
+  const bundle = bundles.find(b => b.id === brief.deliverablesBundle);
+
+  if (mission) {
+    items.push(`${mission.label} campaign — ${mission.description}`);
+  }
+
+  if (bundle && bundle.deliverables.length > 0) {
+    bundle.deliverables.forEach(d => items.push(d));
+  } else if (mission) {
+    // Use starter deliverables as scope indicator
+    mission.starterDeliverables.forEach(d => items.push(d));
+  }
+
+  if (selectedChannels.length > 0) {
+    const ratios = [...new Set(selectedChannels.flatMap(c => c.aspectRatios))];
+    items.push(`Platform delivery: ${selectedChannels.map(c => c.label).join(', ')}`);
+    items.push(`Aspect ratios: ${ratios.join(', ')}`);
+  }
+
+  items.push('2 revision rounds');
+  items.push('Final file delivery in production-ready formats');
+
+  return items.map(i => `✓ ${i}`).join('\n');
+}
+
+// ─── Out of Scope generator ───
+function generateOutOfScope(brief: Brief): string {
+  const items: string[] = [];
+  const selectedChannelIds = brief.channels;
+
+  // Standard exclusions
+  items.push('Additional revision rounds beyond 2 (Change Order required)');
+  items.push('Directional changes after approval (Change Order required)');
+
+  // If no photography bundle
+  if (brief.deliverablesBundle !== 'production') {
+    items.push('Photography / photo library');
+  }
+
+  // Platform-specific exclusions
+  if (!selectedChannelIds.includes('youtube')) {
+    items.push('YouTube long-form content');
+  }
+  if (!selectedChannelIds.includes('website-hero')) {
+    items.push('Website hero video');
+  }
+
+  // Common exclusions
+  items.push('Media buying / ad spend');
+  items.push('Subtitling / localization');
+  items.push('Music licensing (unless included in package)');
+
+  return items.map(i => `✗ ${i}`).join('\n');
 }
 
 function getStyleSummary(dna: Brief['styleDNA']): string {

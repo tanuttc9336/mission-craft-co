@@ -2,13 +2,16 @@ import { useBrief } from '@/hooks/useBrief';
 import { channelOptions } from '@/data/builder';
 import { Channel } from '@/types/brief';
 import { Slider } from '@/components/ui/slider';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useMemo } from 'react';
+import { matchForVibe, matchForMission } from '@/utils/caseMatch';
+import ExploreCard from './ExploreCard';
 
-const sliders: { key: keyof ReturnType<typeof useBrief>['brief']['styleDNA']; left: string; right: string }[] = [
-  { key: 'quietVsLoud', left: 'Quiet Luxury', right: 'Loud Energy' },
-  { key: 'cinematicVsUGC', left: 'Cinematic', right: 'UGC' },
-  { key: 'minimalVsMaximal', left: 'Minimal', right: 'Maximal' },
-  { key: 'funnyVsSerious', left: 'Funny', right: 'Serious' },
+const sliders: { key: keyof ReturnType<typeof useBrief>['brief']['styleDNA']; left: string; right: string; leftDesc: string; rightDesc: string }[] = [
+  { key: 'quietVsLoud', left: 'Quiet Luxury', right: 'Loud Energy', leftDesc: 'Understated, refined', rightDesc: 'Bold, high-impact' },
+  { key: 'cinematicVsUGC', left: 'Cinematic', right: 'UGC', leftDesc: 'Polished, produced', rightDesc: 'Raw, authentic' },
+  { key: 'minimalVsMaximal', left: 'Minimal', right: 'Maximal', leftDesc: 'Clean, focused', rightDesc: 'Rich, layered' },
+  { key: 'funnyVsSerious', left: 'Funny', right: 'Serious', leftDesc: 'Playful, witty', rightDesc: 'Authoritative, credible' },
 ];
 
 function getVibeSentence(dna: ReturnType<typeof useBrief>['brief']['styleDNA']): string {
@@ -19,6 +22,9 @@ function getVibeSentence(dna: ReturnType<typeof useBrief>['brief']['styleDNA']):
   parts.push(dna.funnyVsSerious < 40 ? 'with a touch of wit' : dna.funnyVsSerious > 60 ? 'with a serious tone' : 'with tonal flexibility');
   return `Your vibe: ${parts.join(', ')}.`;
 }
+
+// Filter out LED Screen from channel options
+const filteredChannels = channelOptions.filter(c => c.id !== 'led-screen');
 
 export default function PhaseVibe() {
   const { brief, updateStyleDNA, updateBrief } = useBrief();
@@ -33,19 +39,38 @@ export default function PhaseVibe() {
   const selectedChannels = channelOptions.filter(c => brief.channels.includes(c.id));
   const allRatios = [...new Set(selectedChannels.flatMap(c => c.aspectRatios))];
 
+  // Get Phase 1 matched case IDs to exclude duplicates
+  const phase1Matches = useMemo(
+    () => matchForMission(brief.mission, brief.audienceText),
+    [brief.mission, brief.audienceText]
+  );
+  const phase1Ids = phase1Matches.map(m => m.caseStudy.id);
+
+  // Match cases based on vibe DNA (excluding Phase 1 matches)
+  const vibeMatches = useMemo(
+    () => matchForVibe(brief.mission, brief.audienceText, brief.styleDNA, phase1Ids),
+    [brief.mission, brief.audienceText, brief.styleDNA, phase1Ids]
+  );
+
   return (
     <div className="space-y-10">
       {/* Style DNA Sliders */}
       <section>
-        <h2 className="font-display text-2xl md:text-3xl mb-2">Dial In The Vibe.</h2>
-        <p className="text-muted-foreground text-sm mb-6">Slide to set the creative direction.</p>
+        <h2 className="font-display text-2xl md:text-3xl mb-1">Dial In The Vibe.</h2>
+        <p className="text-muted-foreground text-sm mb-6">
+          This guides our creative direction — from casting to color grade.
+        </p>
 
         <div className="space-y-8 max-w-lg">
           {sliders.map(s => (
             <div key={s.key}>
-              <div className="flex justify-between text-[10px] font-medium tracking-wider uppercase text-muted-foreground mb-3">
+              <div className="flex justify-between text-[10px] font-medium tracking-wider uppercase text-muted-foreground mb-1">
                 <span>{s.left}</span>
                 <span>{s.right}</span>
+              </div>
+              <div className="flex justify-between text-[10px] text-muted-foreground/50 mb-3">
+                <span>{s.leftDesc}</span>
+                <span>{s.rightDesc}</span>
               </div>
               <Slider
                 value={[brief.styleDNA[s.key]]}
@@ -64,16 +89,17 @@ export default function PhaseVibe() {
         </div>
       </section>
 
-      {/* Divider */}
       <div className="h-px bg-border" />
 
-      {/* Channels */}
+      {/* Channels — without LED Screen */}
       <section>
-        <h2 className="font-display text-xl md:text-2xl mb-2">Where Will This Live?</h2>
-        <p className="text-muted-foreground text-sm mb-4">Select your target channels.</p>
+        <h2 className="font-display text-xl md:text-2xl mb-1">Where Will This Live?</h2>
+        <p className="text-muted-foreground text-sm mb-4">
+          This determines aspect ratios and edit styles we'll need.
+        </p>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-lg">
-          {channelOptions.map(c => {
+          {filteredChannels.map(c => {
             const active = brief.channels.includes(c.id);
             return (
               <motion.button
@@ -101,6 +127,33 @@ export default function PhaseVibe() {
           </motion.div>
         )}
       </section>
+
+      {/* ─── Explore: Vibe-Matched Work ─── */}
+      <AnimatePresence>
+        {vibeMatches.length > 0 && (
+          <motion.section
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="overflow-hidden"
+          >
+            <div className="pt-6 border-t border-border">
+              <p className="text-[10px] font-medium tracking-widest uppercase text-muted-foreground mb-4">
+                Your vibe matches
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {vibeMatches.map(mc => (
+                  <ExploreCard
+                    key={mc.caseStudy.id}
+                    caseStudy={mc.caseStudy}
+                    matchReason={mc.matchReason}
+                  />
+                ))}
+              </div>
+            </div>
+          </motion.section>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
