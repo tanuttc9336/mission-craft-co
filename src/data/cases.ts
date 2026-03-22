@@ -390,6 +390,87 @@ export const cases: CaseStudy[] = [
     scale: 'Starter',
     audience: 'Foodie Local',
   },
+
+  // ═══════════════════════════════════════════════════════
+  // 15. Lim Lao Ngow — Social Media Campaign
+  // ═══════════════════════════════════════════════════════
+  {
+    id: 'lim-lao-ngow',
+    title: 'Lim Lao Ngow — Social Media Campaign',
+    industry: 'Restaurant / F&B',
+    goal: 'Awareness',
+    outputs: ['Social Content', 'IG Reels', 'Food Films'],
+    styleDNA: ['Cinematic', 'Warm', 'Serious'],
+    thumbnail: 'https://i.ytimg.com/vi/PXiwvUQcSiI/hqdefault.jpg',
+    gradient: gradients[6 % gradients.length],
+    description: 'A social media campaign for Lim Lao Ngow — a Michelin-recognized Thai legacy restaurant. Translating decades of culinary heritage into cinematic short-form content. Every bowl tells a story; every frame honors the craft.',
+    deliverables: ['Social Media Campaign (3 Films)', 'IG Reels Pack', 'Brand Storytelling Content'],
+    approach: [
+      'Captured the soul of a heritage restaurant through cinematic food storytelling',
+      'Built a narrative around legacy, craft, and Michelin recognition',
+      'Created short-form vertical content designed for social discovery',
+      'Balanced tradition with modern visual language to reach new audiences',
+    ],
+    videoUrl: 'https://www.youtube.com/shorts/PXiwvUQcSiI',
+    videoIds: ['PXiwvUQcSiI', 'sKpA7gDMQMI'],
+    platforms: ['IG Reels', 'TikTok'],
+    scale: 'Starter',
+    audience: 'Foodie Local',
+  },
+
+  // ═══════════════════════════════════════════════════════
+  // 16. Sonle Residences — SC Asset Event
+  // ═══════════════════════════════════════════════════════
+  {
+    id: 'sonle-residences',
+    title: 'Sonle Residences — SC Asset Event',
+    industry: 'Real Estate',
+    goal: 'Launch',
+    outputs: ['Event Recap', 'Brand Film', 'Social Content'],
+    styleDNA: ['Cinematic', 'Quiet Luxury', 'Minimal'],
+    thumbnail: 'https://i.ytimg.com/vi/uYKSED1fMXk/hqdefault.jpg',
+    gradient: gradients[2 % gradients.length],
+    description: 'An event recap film for Sonle Residences by SC Asset — capturing the launch experience of a premium residential project. Where living becomes an experience, and every detail speaks to elevated lifestyle.',
+    deliverables: ['Event Recap Film', 'Social Highlights', 'Property Showcase Content'],
+    approach: [
+      'Captured the atmosphere and exclusivity of a premium property launch event',
+      'Showcased the residences through lifestyle-driven visuals, not just floor plans',
+      'Created content that conveys the living experience, not just the building',
+      'Delivered fast-turnaround social content for post-event engagement',
+    ],
+    videoUrl: 'https://www.youtube.com/shorts/uYKSED1fMXk',
+    videoIds: ['uYKSED1fMXk'],
+    platforms: ['IG Reels', 'YouTube'],
+    scale: 'Signature',
+    audience: 'Luxury Buyer',
+  },
+
+  // ═══════════════════════════════════════════════════════
+  // 17. Jeeno x Omazz x Redline — Event Recap
+  // ═══════════════════════════════════════════════════════
+  {
+    id: 'jeeno-omazz-redline',
+    title: 'Jeeno x Omazz x Redline — Event Recap',
+    industry: 'Lifestyle / Brand Collab',
+    goal: 'Awareness',
+    outputs: ['Event Recap', 'Social Content', 'IG Reels'],
+    styleDNA: ['Cinematic', 'Warm', 'Aspirational'],
+    thumbnail: 'https://i.ytimg.com/vi/1Gjl4t_OWd0/hqdefault.jpg',
+    gradient: gradients[8 % gradients.length],
+    description: 'An event recap for the Jeeno x Omazz x Redline collaboration — three brands united around excellence. Capturing the energy, the craftsmanship, and the lifestyle synergy of a premium brand collaboration event.',
+    deliverables: ['Event Recap Film', 'Social Highlights', 'Brand Collaboration Content'],
+    approach: [
+      'Captured the synergy between three distinct brands in one cohesive narrative',
+      'Highlighted the premium craftsmanship and lifestyle positioning of each partner',
+      'Created dynamic event content that works for all three brand channels',
+      'Delivered vertical-first content optimized for social platforms',
+    ],
+    videoUrl: 'https://www.youtube.com/shorts/1Gjl4t_OWd0',
+    videoIds: ['1Gjl4t_OWd0'],
+    platforms: ['IG Reels', 'TikTok'],
+    scale: 'Starter',
+    audience: 'Luxury Buyer',
+  },
 ];
 
 export const industries = [...new Set(cases.map(c => c.industry))];
