@@ -11,7 +11,7 @@ import PortalLayout from "@/components/portal/PortalLayout";
 import Home from "./pages/Home";
 import Work from "./pages/Work";
 import CaseDetail from "./pages/CaseDetail";
-import Builder from "./pages/Builder";
+import BriefingRoom from "./pages/BriefingRoom";
 import Blueprint from "./pages/Blueprint";
 import Contact from "./pages/Contact";
 import IdeaEngine from "./pages/IdeaEngine";
@@ -49,7 +49,8 @@ const App = () => (
                 <Route path="/" element={<Layout><Home /></Layout>} />
                 <Route path="/work" element={<Layout><Work /></Layout>} />
                 <Route path="/work/:id" element={<Layout><CaseDetail /></Layout>} />
-                <Route path="/builder" element={<Layout><Builder /></Layout>} />
+                <Route path="/briefing-room" element={<Layout><BriefingRoom /></Layout>} />
+                <Route path="/builder" element={<Layout><BriefingRoom /></Layout>} />
                 <Route path="/blueprint" element={<Layout><Blueprint /></Layout>} />
                 <Route path="/ideas" element={<Layout><IdeaEngine /></Layout>} />
                 <Route path="/lens" element={<Layout><Lens /></Layout>} />

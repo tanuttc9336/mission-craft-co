@@ -9,15 +9,15 @@ export const missions: { id: Mission; label: string; description: string; funnel
   { id: 'employer-brand', label: 'Employer Brand', description: 'Attract top talent through culture', funnel: 'Talent Funnel', starterDeliverables: ['Recruitment Film', 'Employee Spotlights', 'Culture Content'] },
 ];
 
-export const personas: { id: PersonaId; label: string; description: string; tone: string; channels: string[] }[] = [
-  { id: 'busy-marketer', label: 'Busy Marketer', description: 'Time-poor, needs results fast', tone: 'Direct, data-backed', channels: ['Meta Ads', 'LinkedIn'] },
-  { id: 'founder-owner', label: 'Founder / Owner', description: 'Vision-driven, wears many hats', tone: 'Inspiring, clear ROI', channels: ['YouTube', 'Website'] },
-  { id: 'luxury-buyer', label: 'Luxury Buyer', description: 'Values quality and exclusivity', tone: 'Refined, understated', channels: ['IG', 'Website', 'Events'] },
-  { id: 'golf-beginner', label: 'Golf Beginner', description: 'Curious, looking for approachable entry', tone: 'Friendly, encouraging', channels: ['TikTok', 'IG Reels', 'YouTube'] },
-  { id: 'golf-serious', label: 'Golf Serious Improver', description: 'Dedicated, wants performance-focused content', tone: 'Expert, credible', channels: ['YouTube', 'IG', 'Email'] },
-  { id: 'foodie-local', label: 'Foodie Local', description: 'Explores local dining, shares on social', tone: 'Warm, mouth-watering', channels: ['IG Reels', 'TikTok', 'Google'] },
-  { id: 'event-organizer', label: 'Event Organizer', description: 'Needs content that sells tickets', tone: 'Energetic, FOMO-driven', channels: ['TikTok', 'Meta Ads', 'LED'] },
-  { id: 'hr-employer', label: 'HR / Employer Brand', description: 'Seeks authentic culture storytelling', tone: 'Human, genuine', channels: ['LinkedIn', 'Careers Page', 'YouTube'] },
+export const personas: { id: PersonaId; label: string; description: string; tone: string; channels: string[]; keywords: string[] }[] = [
+  { id: 'busy-marketer', label: 'Busy Marketer', description: 'Time-poor, needs results fast', tone: 'Direct, data-backed', channels: ['Meta Ads', 'LinkedIn'], keywords: ['marketing', 'brand', 'marketer', 'advertising'] },
+  { id: 'founder-owner', label: 'Founder / Owner', description: 'Vision-driven, wears many hats', tone: 'Inspiring, clear ROI', channels: ['YouTube', 'Website'], keywords: ['founder', 'owner', 'ceo', 'startup', 'business'] },
+  { id: 'luxury-buyer', label: 'Luxury Buyer', description: 'Values quality and exclusivity', tone: 'Refined, understated', channels: ['IG', 'Website', 'Events'], keywords: ['luxury', 'premium', 'high-end', 'exclusive'] },
+  { id: 'golf-beginner', label: 'Golf Beginner', description: 'Curious, looking for approachable entry', tone: 'Friendly, encouraging', channels: ['TikTok', 'IG Reels', 'YouTube'], keywords: ['golf', 'beginner', 'new', 'learn'] },
+  { id: 'golf-serious', label: 'Golf Serious Improver', description: 'Dedicated, wants performance-focused content', tone: 'Expert, credible', channels: ['YouTube', 'IG', 'Email'], keywords: ['golf', 'serious', 'improve', 'performance', 'data'] },
+  { id: 'foodie-local', label: 'Foodie Local', description: 'Explores local dining, shares on social', tone: 'Warm, mouth-watering', channels: ['IG Reels', 'TikTok', 'Google'], keywords: ['food', 'restaurant', 'cafe', 'dining', 'eat'] },
+  { id: 'event-organizer', label: 'Event Organizer', description: 'Needs content that sells tickets', tone: 'Energetic, FOMO-driven', channels: ['TikTok', 'Meta Ads', 'LED'], keywords: ['event', 'concert', 'festival', 'ticket'] },
+  { id: 'hr-employer', label: 'HR / Employer Brand', description: 'Seeks authentic culture storytelling', tone: 'Human, genuine', channels: ['LinkedIn', 'Careers Page', 'YouTube'], keywords: ['hr', 'recruit', 'hire', 'talent', 'employer', 'culture'] },
 ];
 
 export const channelOptions: { id: Channel; label: string; aspectRatios: string[] }[] = [
@@ -29,11 +29,12 @@ export const channelOptions: { id: Channel; label: string; aspectRatios: string[
   { id: 'led-screen', label: 'LED Screen', aspectRatios: ['16:9', '32:9'] },
 ];
 
-export const bundles: { id: BundleId; label: string; tagline: string; deliverables: string[]; note: string }[] = [
+export const bundles: { id: BundleId; label: string; tagline: string; priceHint: string; deliverables: string[]; note: string }[] = [
   {
     id: 'starter',
     label: 'Starter',
     tagline: 'Fast and focused',
+    priceHint: '~80–150k',
     deliverables: ['1x Hero Video (30-60s)', '3x Social Cutdowns', '1x Revision Round (2 included)'],
     note: 'Ideal for testing a concept or a single platform push.',
   },
@@ -41,13 +42,15 @@ export const bundles: { id: BundleId; label: string; tagline: string; deliverabl
     id: 'signature',
     label: 'Signature',
     tagline: 'The sweet spot',
+    priceHint: '~150–300k',
     deliverables: ['1x Brand/Campaign Film (60-90s)', '6x Social Cutdowns', '2x Ad Creatives', 'Photo Selects (20+)', '2 Revision Rounds Included'],
     note: 'Our most popular package. Covers your core campaign needs.',
   },
   {
-    id: 'black-panther',
-    label: 'Black Panther',
+    id: 'production',
+    label: 'Production',
     tagline: 'Fully loaded, fully custom',
+    priceHint: '~300k+',
     deliverables: ['Multi-day Production', 'Full Video Suite (hero + cutdowns + ads)', 'Photography Library', 'Platform Strategy Guidance', 'Extended Edit Support', '2 Revision Rounds Included'],
     note: 'For brands that need it all. Tailored scope, premium execution.',
   },
@@ -55,6 +58,7 @@ export const bundles: { id: BundleId; label: string; tagline: string; deliverabl
     id: 'custom',
     label: 'Custom',
     tagline: 'Build your own',
+    priceHint: "Let's talk",
     deliverables: [],
     note: 'Tell us what you need. We\'ll scope it together on a call.',
   },
@@ -69,3 +73,14 @@ export const constraintOptions: { id: string; label: string }[] = [
 ];
 
 export const ctaTypes = ['Book Now', 'Learn More', 'Shop Now', 'Sign Up', 'Get a Quote', 'Watch More', 'Visit Us'];
+
+// Budget estimated from package selection
+export function estimateBudgetFromBundle(bundleId: BundleId | null): string {
+  switch (bundleId) {
+    case 'starter': return '80–150k';
+    case 'signature': return '150–300k';
+    case 'production': return '300k+';
+    case 'custom': return 'TBD';
+    default: return '';
+  }
+}

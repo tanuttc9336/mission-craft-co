@@ -227,7 +227,7 @@ export const mockProjects: Project[] = [
     status: 'delivered',
     startDate: '2025-12-01',
     targetDate: '2026-02-15',
-    scopeBundle: 'Black Panther Package',
+    scopeBundle: 'Production Package',
     audience: 'Music fans, 18–35, social-first',
     channels: ['Instagram', 'TikTok', 'YouTube', 'Outdoor Billboards'],
     styleDirection: 'Bold, energetic, memorable. Festival energy with production value.',
@@ -272,7 +272,7 @@ export const mockProjects: Project[] = [
       channels: ['Instagram', 'TikTok', 'YouTube', 'Outdoor Billboards'],
       styleDirection: 'Bold, energetic, memorable. Festival energy with production value.',
       constraints: ['Ticket launch: Feb 15', 'Artist lineup confirmed by Dec 20'],
-      package: 'Black Panther Package',
+      package: 'Production Package',
       revisionTerms: '2 revision rounds included. Both used.',
     },
     nextSteps: [

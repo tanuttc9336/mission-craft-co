@@ -13,8 +13,18 @@ export function generateBlueprint(brief: Brief): Record<string, string> {
 
   blocks.objective = `${mission?.label ?? 'TBD'} — ${mission?.description ?? ''}. Funnel position: ${mission?.funnel ?? 'TBD'}.`;
 
-  blocks.audience = selectedPersonas.length
-    ? selectedPersonas.map(p => `${p.label}: ${p.description}. Recommended tone: ${p.tone}.`).join('\n')
+  // Audience: prefer free-text, supplement with personas
+  const audienceParts: string[] = [];
+  if (brief.audienceText.trim()) {
+    audienceParts.push(brief.audienceText.trim());
+  }
+  if (selectedPersonas.length > 0) {
+    audienceParts.push(
+      selectedPersonas.map(p => `${p.label}: ${p.description}. Recommended tone: ${p.tone}.`).join('\n')
+    );
+  }
+  blocks.audience = audienceParts.length > 0
+    ? audienceParts.join('\n\n')
     : 'Audience not yet defined.';
 
   blocks.channelPlan = selectedChannels.length
@@ -22,7 +32,7 @@ export function generateBlueprint(brief: Brief): Record<string, string> {
     : 'Channels not yet selected.';
 
   blocks.deliverables = bundle
-    ? `${bundle.label} Package:\n${bundle.deliverables.map(d => `• ${d}`).join('\n')}`
+    ? `${bundle.label} Package (${bundle.priceHint}):\n${bundle.deliverables.map(d => `• ${d}`).join('\n')}`
     : 'Custom scope — to be defined on scoping call.';
 
   blocks.timeline = [
@@ -40,8 +50,9 @@ export function generateBlueprint(brief: Brief): Record<string, string> {
 
   blocks.styleSummary = styleSummary;
 
-  blocks.offer = brief.offer.productName
-    ? `Product/Service: ${brief.offer.productName}\nKey Offer: ${brief.offer.keyOffer}\nCTA: ${brief.offer.ctaType}`
+  // Simplified offer — just the one-liner
+  blocks.offer = brief.offer.keyOffer
+    ? `Campaign: ${brief.offer.keyOffer}${brief.offer.productName ? `\nProduct/Service: ${brief.offer.productName}` : ''}${brief.offer.ctaType ? `\nCTA: ${brief.offer.ctaType}` : ''}`
     : 'Offer details not yet provided.';
 
   blocks.assetChecklist = [
@@ -56,7 +67,7 @@ export function generateBlueprint(brief: Brief): Record<string, string> {
     '• Go/No-Go: Scope confirmed + contract signed + 50% deposit received',
     '• 2 revision rounds included. Directional changes = Change Order.',
     '• No final files released before final payment.',
-    `• Budget range: ${brief.budgetRange ?? 'TBD'}`,
+    `• Estimated budget: ${brief.estimatedBudget || 'TBD'}`,
     `• Timeline preference: ${brief.timeline ?? 'TBD'}`,
     `• Risk assessment: ${brief.riskLevel.toUpperCase()}`,
   ].join('\n');

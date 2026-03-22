@@ -7,9 +7,26 @@ import { Download, Copy, Mail, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import logo from '@/assets/undercat-logo.png';
 
+const sections: { title: string; key: string }[] = [
+  { title: 'Objective', key: 'objective' },
+  { title: 'Audience Summary', key: 'audience' },
+  { title: 'Offer', key: 'offer' },
+  { title: 'Style Direction', key: 'styleSummary' },
+  { title: 'Channel Plan', key: 'channelPlan' },
+  { title: 'Deliverables', key: 'deliverables' },
+  { title: 'Timeline Phases', key: 'timeline' },
+  { title: 'Creative Directions', key: 'creativeDirections' },
+  { title: 'Asset Checklist', key: 'assetChecklist' },
+  { title: 'Terms & Conditions', key: 'terms' },
+];
+
 export default function Blueprint() {
   const { brief, finalizeBrief } = useBrief();
-  const [blocks, setBlocks] = useState(brief.blueprintTextBlocks);
+  const [blocks, setBlocks] = useState<Record<string, string>>(
+    typeof brief.blueprintTextBlocks === 'object' && !Array.isArray(brief.blueprintTextBlocks)
+      ? brief.blueprintTextBlocks
+      : {}
+  );
   const [copied, setCopied] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const [email, setEmail] = useState(brief.lead.email);
@@ -17,7 +34,11 @@ export default function Blueprint() {
   useEffect(() => {
     trackEvent('page_view', { page: 'blueprint' });
     const final = finalizeBrief();
-    setBlocks(final.blueprintTextBlocks);
+    setBlocks(
+      typeof final.blueprintTextBlocks === 'object' && !Array.isArray(final.blueprintTextBlocks)
+        ? final.blueprintTextBlocks
+        : {}
+    );
   }, []);
 
   const handlePrint = () => {
@@ -43,25 +64,15 @@ export default function Blueprint() {
     setEmailSent(true);
   };
 
-  const sections: { title: string; key: string }[] = [
-    { title: 'Objective', key: 'objective' },
-    { title: 'Audience Summary', key: 'audience' },
-    { title: 'Offer', key: 'offer' },
-    { title: 'Style Direction', key: 'styleSummary' },
-    { title: 'Channel Plan', key: 'channelPlan' },
-    { title: 'Deliverables', key: 'deliverables' },
-    { title: 'Timeline Phases', key: 'timeline' },
-    { title: 'Creative Directions', key: 'creativeDirections' },
-    { title: 'Asset Checklist', key: 'assetChecklist' },
-    { title: 'Terms & Conditions', key: 'terms' },
-  ];
-
   return (
     <div className="container py-16 md:py-24 max-w-3xl">
       {/* Actions Bar */}
       <div className="no-print mb-16">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-          <h1 className="font-display text-3xl md:text-4xl mb-2">Your Project Blueprint</h1>
+          <p className="text-[10px] font-medium tracking-widest uppercase text-muted-foreground mb-2">
+            Briefing Room
+          </p>
+          <h1 className="font-display text-3xl md:text-4xl mb-2">Your Mission Brief</h1>
           <p className="text-muted-foreground text-sm mb-10">A high-level plan based on your brief. Not a full strategy — that starts after kickoff.</p>
 
           <div className="flex flex-wrap gap-3 mb-8">
@@ -105,7 +116,7 @@ export default function Blueprint() {
               <img src={logo} alt="Undercat" className="h-5 w-auto invert dark:invert-0" />
               <span className="font-display text-xs font-bold tracking-wider uppercase">Undercat</span>
             </div>
-            <h2 className="font-display text-2xl md:text-3xl">Project Blueprint</h2>
+            <h2 className="font-display text-2xl md:text-3xl">Mission Brief</h2>
             <p className="text-[10px] text-muted-foreground mt-1 tracking-wider uppercase">Generated {new Date(brief.createdAt).toLocaleDateString()} • ID: {brief.id.slice(0, 8)}</p>
           </div>
         </div>
@@ -128,9 +139,12 @@ export default function Blueprint() {
         </pre>
       </details>
 
-      <div className="no-print mt-12 text-center">
+      <div className="no-print mt-12 flex flex-col sm:flex-row gap-4 items-center justify-center">
+        <Button variant="hero" size="lg" asChild>
+          <Link to="/contact">Submit Your Brief</Link>
+        </Button>
         <Button variant="ghost" asChild className="text-xs tracking-wider uppercase">
-          <Link to="/contact">Ready to go? Submit your details →</Link>
+          <Link to="/briefing-room">← Edit Brief</Link>
         </Button>
       </div>
     </div>

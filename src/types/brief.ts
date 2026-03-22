@@ -1,11 +1,12 @@
 export type Mission = 'awareness' | 'leads' | 'sales' | 'launch' | 'retention' | 'employer-brand';
 export type PersonaId = 'busy-marketer' | 'founder-owner' | 'luxury-buyer' | 'golf-beginner' | 'golf-serious' | 'foodie-local' | 'event-organizer' | 'hr-employer';
 export type Channel = 'tiktok' | 'ig-reels' | 'youtube' | 'meta-ads' | 'website-hero' | 'led-screen';
-export type BundleId = 'starter' | 'signature' | 'black-panther' | 'custom';
+export type BundleId = 'starter' | 'signature' | 'production' | 'custom';
 export type BudgetRange = '<100k' | '100-250k' | '250-500k' | '500k+';
-export type Timeline = 'asap' | '2-4-weeks' | '1-2-months' | '3+-months';
+export type Timeline = 'asap' | '2-4-weeks' | 'flexible';
 export type Constraint = 'approvals-committee' | 'fixed-launch-date' | 'need-actors' | 'need-location' | 'brand-guidelines-ready';
 export type RiskLevel = 'green' | 'yellow' | 'red';
+export type EntryPath = 'fresh' | 'template' | 'existing-brief';
 
 export interface StyleDNA {
   quietVsLoud: number;
@@ -29,6 +30,7 @@ export interface Brief {
   createdAt: string;
   mission: Mission | null;
   audiencePersonas: PersonaId[];
+  audienceText: string;
   offer: {
     productName: string;
     keyOffer: string;
@@ -40,11 +42,14 @@ export interface Brief {
   deliverablesBundle: BundleId | null;
   customDeliverables: string[];
   budgetRange: BudgetRange | null;
+  estimatedBudget: string;
   timeline: Timeline | null;
   constraints: Constraint[];
   riskLevel: RiskLevel;
-  blueprintTextBlocks: { title: string; body: string }[];
+  blueprintTextBlocks: Record<string, string>;
   lead: Lead;
+  entryPath: EntryPath;
+  templateCaseId?: string;
 }
 
 export interface CaseStudy {
@@ -72,16 +77,19 @@ export function createEmptyBrief(): Brief {
     createdAt: new Date().toISOString(),
     mission: null,
     audiencePersonas: [],
+    audienceText: '',
     offer: { productName: '', keyOffer: '', proofPoints: ['', '', ''], ctaType: '' },
     styleDNA: { quietVsLoud: 30, cinematicVsUGC: 40, minimalVsMaximal: 30, funnyVsSerious: 60 },
     channels: [],
     deliverablesBundle: null,
     customDeliverables: [],
     budgetRange: null,
+    estimatedBudget: '',
     timeline: null,
     constraints: [],
     riskLevel: 'green',
-    blueprintTextBlocks: [],
+    blueprintTextBlocks: {},
     lead: { name: '', company: '', email: '', phone: '', projectLocation: '', notes: '', consent: false },
+    entryPath: 'fresh',
   };
 }

@@ -12,27 +12,43 @@ export default function Contact() {
 
   useEffect(() => { trackEvent('page_view', { page: 'contact' }); }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!brief.lead.name || !brief.lead.email || !brief.lead.consent) return;
+
+    setSubmitting(true);
+    setError('');
 
     const payload = {
       brief: { ...brief },
       submittedAt: new Date().toISOString(),
     };
 
-    // Insert into Supabase
-    supabase.from('contact_submissions').insert([{
-      name: brief.lead.name,
-      company: brief.lead.company,
-      email: brief.lead.email,
-      phone: brief.lead.phone,
-      project_location: brief.lead.projectLocation || '',
-      notes: brief.lead.notes || '',
-      consent: brief.lead.consent,
-      brief_data: brief as any,
-    }]).then(() => {});
+    try {
+      // Insert into Supabase with proper await + error handling
+      const { error: dbError } = await supabase.from('contact_submissions').insert([{
+        name: brief.lead.name,
+        company: brief.lead.company,
+        email: brief.lead.email,
+        phone: brief.lead.phone,
+        project_location: brief.lead.projectLocation || '',
+        notes: brief.lead.notes || '',
+        consent: brief.lead.consent,
+        brief_data: brief as any,
+      }]);
 
+      if (dbError) {
+        console.error('Supabase insert error:', dbError);
+        // Still proceed — save locally as fallback
+      }
+    } catch (err) {
+      console.error('Submit error:', err);
+    }
+
+    // Always save locally as backup
     try {
       const stored = JSON.parse(localStorage.getItem('undercat-leads') ?? '[]');
       stored.push(payload);
@@ -40,6 +56,7 @@ export default function Contact() {
     } catch {}
 
     trackEvent('submit_lead', { briefId: brief.id });
+    setSubmitting(false);
     setSubmitted(true);
   };
 
@@ -93,8 +110,8 @@ export default function Contact() {
           </label>
 
           <div className="pt-4 space-y-3">
-            <Button variant="hero" size="xl" type="submit" className="w-full" disabled={!brief.lead.consent || !brief.lead.name || !brief.lead.email}>
-              Submit Brief
+            <Button variant="hero" size="xl" type="submit" className="w-full" disabled={submitting || !brief.lead.consent || !brief.lead.name || !brief.lead.email}>
+              {submitting ? 'Submitting...' : 'Submit Brief'}
             </Button>
           </div>
         </form>

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { Brief, createEmptyBrief, RiskLevel, Mission } from '@/types/brief';
+import { Brief, createEmptyBrief, RiskLevel, Mission, EntryPath } from '@/types/brief';
 import { generateBlueprint } from '@/utils/blueprint';
+import { estimateBudgetFromBundle } from '@/data/builder';
 import { cases } from '@/data/cases';
 
 interface BriefContextType {
@@ -36,16 +37,18 @@ function calcRisk(brief: Brief): RiskLevel {
   return 'green';
 }
 
+// New: 4 factors × 25% each
 function calcClarity(brief: Brief): number {
   let filled = 0;
-  const total = 7;
+  const total = 4;
+  // Factor 1: Mission selected
   if (brief.mission) filled++;
-  if (brief.audiencePersonas.length > 0) filled++;
-  if (brief.offer.productName || brief.offer.keyOffer) filled++;
-  filled++; // styleDNA always has defaults
+  // Factor 2: Audience (text OR persona)
+  if (brief.audienceText.trim() || brief.audiencePersonas.length > 0) filled++;
+  // Factor 3: Style DNA + at least 1 channel
   if (brief.channels.length > 0) filled++;
-  if (brief.deliverablesBundle) filled++;
-  if (brief.budgetRange && brief.timeline) filled++;
+  // Factor 4: Package + Timeline selected
+  if (brief.deliverablesBundle && brief.timeline) filled++;
   return Math.round((filled / total) * 100);
 }
 
@@ -53,13 +56,30 @@ export function BriefProvider({ children }: { children: React.ReactNode }) {
   const [brief, setBrief] = useState<Brief>(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      return stored ? JSON.parse(stored) : createEmptyBrief();
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        // Migrate old briefs that might lack new fields
+        return {
+          ...createEmptyBrief(),
+          ...parsed,
+          audienceText: parsed.audienceText ?? '',
+          estimatedBudget: parsed.estimatedBudget ?? '',
+          entryPath: parsed.entryPath ?? 'fresh',
+          // Migrate old black-panther to production
+          deliverablesBundle: parsed.deliverablesBundle === 'black-panther' ? 'production' : parsed.deliverablesBundle,
+          // Migrate old timeline values
+          timeline: (parsed.timeline === '1-2-months' || parsed.timeline === '3+-months') ? 'flexible' : parsed.timeline,
+        };
+      }
+      return createEmptyBrief();
     } catch { return createEmptyBrief(); }
   });
 
   const [currentStep, setCurrentStep] = useState(() => {
     try {
-      return parseInt(localStorage.getItem(STEP_KEY) ?? '0', 10);
+      const stored = parseInt(localStorage.getItem(STEP_KEY) ?? '0', 10);
+      // Clamp old values (0-6) to new range (0-2)
+      return Math.min(stored, 2);
     } catch { return 0; }
   });
 
@@ -75,6 +95,17 @@ export function BriefProvider({ children }: { children: React.ReactNode }) {
     setBrief(prev => {
       const next = { ...prev, ...updates };
       next.riskLevel = calcRisk(next);
+      // Auto-compute estimated budget from package
+      if (updates.deliverablesBundle !== undefined) {
+        next.estimatedBudget = estimateBudgetFromBundle(next.deliverablesBundle);
+        // Derive budgetRange from bundle
+        switch (next.deliverablesBundle) {
+          case 'starter': next.budgetRange = '100-250k'; break;
+          case 'signature': next.budgetRange = '250-500k'; break;
+          case 'production': next.budgetRange = '500k+'; break;
+          default: next.budgetRange = null;
+        }
+      }
       return next;
     });
   }, []);
@@ -91,9 +122,10 @@ export function BriefProvider({ children }: { children: React.ReactNode }) {
     setBrief(prev => ({ ...prev, lead: { ...prev.lead, ...updates } }));
   }, []);
 
-  const nextStep = useCallback(() => setCurrentStep(s => Math.min(s + 1, 7)), []);
+  // 3 phases now
+  const nextStep = useCallback(() => setCurrentStep(s => Math.min(s + 1, 2)), []);
   const prevStep = useCallback(() => setCurrentStep(s => Math.max(s - 1, 0)), []);
-  const goToStep = useCallback((step: number) => setCurrentStep(step), []);
+  const goToStep = useCallback((step: number) => setCurrentStep(Math.max(0, Math.min(step, 2))), []);
 
   const resetBrief = useCallback(() => {
     setBrief(createEmptyBrief());
@@ -107,10 +139,48 @@ export function BriefProvider({ children }: { children: React.ReactNode }) {
       'Launch': 'launch', 'Leads': 'leads', 'Sales': 'sales',
       'Awareness': 'awareness', 'Retention': 'retention', 'Employer Brand': 'employer-brand',
     };
+
+    // Template prefills based on case study
+    const templateMap: Record<string, Partial<Brief>> = {
+      'audi-thailand': {
+        mission: 'launch',
+        styleDNA: { quietVsLoud: 25, cinematicVsUGC: 20, minimalVsMaximal: 30, funnyVsSerious: 70 },
+        channels: ['youtube', 'meta-ads', 'website-hero'],
+        deliverablesBundle: 'signature',
+        audienceText: 'Automotive enthusiasts and luxury car buyers in Thailand',
+      },
+      'greenline-golf-lab': {
+        mission: 'awareness',
+        styleDNA: { quietVsLoud: 30, cinematicVsUGC: 40, minimalVsMaximal: 25, funnyVsSerious: 65 },
+        channels: ['youtube', 'ig-reels', 'tiktok'],
+        deliverablesBundle: 'production',
+        audienceText: 'Serious golfers who want data-driven improvement',
+      },
+      'ranees-restaurant': {
+        mission: 'awareness',
+        styleDNA: { quietVsLoud: 35, cinematicVsUGC: 30, minimalVsMaximal: 35, funnyVsSerious: 50 },
+        channels: ['ig-reels', 'tiktok'],
+        deliverablesBundle: 'starter',
+        audienceText: 'Bangkok foodies who discover restaurants on social media',
+      },
+      'fc-bayern-bangkok': {
+        mission: 'awareness',
+        styleDNA: { quietVsLoud: 70, cinematicVsUGC: 30, minimalVsMaximal: 60, funnyVsSerious: 45 },
+        channels: ['youtube', 'ig-reels', 'meta-ads'],
+        deliverablesBundle: 'signature',
+        audienceText: 'Football fans and event-goers in Bangkok',
+      },
+    };
+
+    const template = templateMap[caseId];
+
     setBrief(prev => ({
       ...prev,
       templateCaseId: caseId,
-      mission: goalMap[c.goal] ?? null,
+      entryPath: 'template' as EntryPath,
+      mission: template?.mission ?? goalMap[c.goal] ?? null,
+      ...(template ?? {}),
+      estimatedBudget: estimateBudgetFromBundle(template?.deliverablesBundle ?? null),
     }));
     setCurrentStep(0);
   }, []);
@@ -125,7 +195,7 @@ export function BriefProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <BriefContext.Provider value={{
-      brief, currentStep, totalSteps: 7, clarityPercent: calcClarity(brief),
+      brief, currentStep, totalSteps: 3, clarityPercent: calcClarity(brief),
       updateBrief, updateOffer, updateStyleDNA, updateLead,
       nextStep, prevStep, goToStep, resetBrief, prefillFromCase, finalizeBrief,
     }}>

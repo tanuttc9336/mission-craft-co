@@ -11,6 +11,10 @@ const gradients = [
   'linear-gradient(135deg, hsl(270 20% 20%), hsl(270 25% 40%))',
   'linear-gradient(135deg, hsl(180 15% 15%), hsl(180 25% 35%))',
   'linear-gradient(135deg, hsl(10 30% 20%), hsl(10 40% 40%))',
+  'linear-gradient(135deg, hsl(140 35% 25%), hsl(140 45% 42%))',
+  'linear-gradient(135deg, hsl(15 45% 30%), hsl(15 55% 48%))',
+  'linear-gradient(135deg, hsl(210 25% 18%), hsl(210 35% 38%))',
+  'linear-gradient(135deg, hsl(50 40% 30%), hsl(50 50% 48%))',
 ];
 
 export const cases: CaseStudy[] = [
@@ -37,7 +41,7 @@ export const cases: CaseStudy[] = [
     videoUrl: 'https://www.youtube.com/watch?v=Obl9-pHXK94',
     videoIds: ['Obl9-pHXK94', '9tR8KgiJETM', 'qK0JDB5fqiw', 'XvX0OE81G9A'],
     platforms: ['YouTube', 'Website', 'IG Reels'],
-    scale: 'Black Panther',
+    scale: 'Production',
     audience: 'Luxury Buyer',
   },
 
@@ -273,6 +277,115 @@ export const cases: CaseStudy[] = [
     ],
     videoUrl: 'https://www.youtube.com/watch?v=6b0kVBu6R98',
     videoIds: ['6b0kVBu6R98'],
+    platforms: ['IG Reels', 'TikTok'],
+    scale: 'Starter',
+    audience: 'Foodie Local',
+  },
+
+  // ═══════════════════════════════════════════════════════
+  // 11. Greenline Golf Lab — Media Strategy & Content
+  // ═══════════════════════════════════════════════════════
+  {
+    id: 'greenline-golf-lab',
+    title: 'Greenline Golf Lab — Media Strategy & Content',
+    industry: 'Golf / Lifestyle',
+    goal: 'Awareness',
+    outputs: ['Social Content', 'IG Reels', 'YouTube Series', 'Brand Strategy'],
+    styleDNA: ['Cinematic', 'Minimal', 'Serious'],
+    thumbnail: 'https://i.ytimg.com/vi/k1g3pGY5_FE/hqdefault.jpg',
+    gradient: gradients[10],
+    description: 'A full media strategy and content production partnership with Greenline Golf Lab — Thailand\'s premium, data-driven golf performance destination. Undercat plans and produces the entire media output, turning complex biomechanics into simple, actionable feelings for every golfer. From the DNA Talk series to private session films and live lesson recaps, every piece is designed to position Greenline as the authority in golf performance.',
+    deliverables: ['DNA Talk YouTube Series (Ep.1–12)', 'Private Session Films', 'Live Lesson Recaps', 'Social Media Strategy', 'IG Reels Content Pack'],
+    approach: [
+      'Developed a complete media strategy to position Greenline as a premium golf performance brand',
+      'Created the DNA Talk series — translating biomechanics data into cinematic, educational content',
+      'Produced private session films that showcase Greenline\'s 1-on-1 coaching experience',
+      'Designed content for multiple platforms: YouTube long-form, IG Reels, and TikTok shorts',
+      'Every piece drives home one message: data-driven coaching that golfers can feel',
+    ],
+    videoUrl: 'https://www.youtube.com/watch?v=k1g3pGY5_FE',
+    videoIds: ['k1g3pGY5_FE', 'WHKnWnvq92o', 'JAPJ6WXCP84', '2dV6_RprHNM', 'mv7mWNTjlWE', 'ySxp3brtxa4', 'LjlAApGIXYQ'],
+    platforms: ['YouTube', 'IG Reels', 'TikTok'],
+    scale: 'Production',
+    audience: 'Golf Serious Improver',
+  },
+
+  // ═══════════════════════════════════════════════════════
+  // 12. Audi x Everwave — Cleanup Mission Thailand
+  // ═══════════════════════════════════════════════════════
+  {
+    id: 'audi-cleanup-mission',
+    title: 'Audi x Everwave — Cleanup Mission Thailand',
+    industry: 'CSR / Sustainability',
+    goal: 'Awareness',
+    outputs: ['Documentary', 'Brand Film', 'Social Content'],
+    styleDNA: ['Cinematic', 'Warm', 'Serious'],
+    thumbnail: 'https://i.ytimg.com/vi/2n2Iy_UJtN0/hqdefault.jpg',
+    gradient: gradients[11],
+    description: 'A documentary-style film for the Cleanup Mission Thailand — a collaboration between Everwave, AEF, and TerraCycle, supported by Audi. Capturing the mission to clean Thailand\'s waterways and raise awareness about ocean-bound plastic. Purpose-driven storytelling at its most impactful.',
+    deliverables: ['Documentary Film', 'Social Cutdowns', 'Campaign Recap Content'],
+    approach: [
+      'Followed the cleanup mission from preparation to execution',
+      'Balanced environmental storytelling with brand presence',
+      'Created emotionally compelling content that drives awareness and action',
+      'Delivered a documentary that works for both CSR reporting and public engagement',
+    ],
+    videoUrl: 'https://www.youtube.com/watch?v=2n2Iy_UJtN0',
+    videoIds: ['2n2Iy_UJtN0'],
+    platforms: ['YouTube', 'Website', 'Social Media'],
+    scale: 'Signature',
+    audience: 'Brand Manager',
+  },
+
+  // ═══════════════════════════════════════════════════════
+  // 13. FC Bayern Bangkok — Event Cinematics
+  // ═══════════════════════════════════════════════════════
+  {
+    id: 'fc-bayern-bangkok',
+    title: 'FC Bayern Bangkok — Event Cinematics',
+    industry: 'Sports & Entertainment',
+    goal: 'Awareness',
+    outputs: ['Event Recap', 'IG Reels', 'Social Content'],
+    styleDNA: ['Loud Energy', 'Cinematic', 'Warm'],
+    thumbnail: 'https://i.ytimg.com/vi/pHKzpUHoGbU/hqdefault.jpg',
+    gradient: gradients[12],
+    description: 'Event cinematics for the Audi x FC Bayern activation in Bangkok — capturing the energy of one of the world\'s biggest football clubs meeting Thai fans. From VIP moments to crowd reactions, every frame delivers the excitement.',
+    deliverables: ['Event Recap Reel', 'Social Highlights', 'IG Reels Pack'],
+    approach: [
+      'Captured the full energy of a premium sports brand activation',
+      'Mixed VIP and crowd perspectives for a complete event narrative',
+      'Fast-turnaround delivery for social posting within 48 hours',
+      'Delivered vertical-first content optimized for IG Reels and TikTok',
+    ],
+    videoUrl: 'https://www.youtube.com/shorts/pHKzpUHoGbU',
+    videoIds: ['pHKzpUHoGbU'],
+    platforms: ['IG Reels', 'TikTok', 'YouTube'],
+    scale: 'Signature',
+    audience: 'Event Organizer',
+  },
+
+  // ═══════════════════════════════════════════════════════
+  // 14. Ranee's Restaurant — Social Content
+  // ═══════════════════════════════════════════════════════
+  {
+    id: 'ranees-restaurant',
+    title: 'Ranee\'s Restaurant — Social Content',
+    industry: 'Restaurant / F&B',
+    goal: 'Awareness',
+    outputs: ['Social Content', 'IG Reels', 'Food Films'],
+    styleDNA: ['Warm', 'Playful', 'Aspirational'],
+    thumbnail: 'https://i.ytimg.com/vi/X3-hbS_wKLg/hqdefault.jpg',
+    gradient: gradients[13],
+    description: 'Social content production for Ranee\'s Restaurant — from signature dishes to pasta close-ups, every reel is crafted to make you hungry and want to visit. Warm, inviting, and designed to drive foot traffic.',
+    deliverables: ['IG Reels Pack', 'Food Feature Shorts', 'Social Content Calendar'],
+    approach: [
+      'Styled and shot food content that feels premium yet approachable',
+      'Created short-form vertical content optimized for IG Reels discovery',
+      'Focused on texture, steam, and motion to trigger cravings',
+      'Delivered content that works as both organic posts and paid promotion',
+    ],
+    videoUrl: 'https://www.youtube.com/shorts/X3-hbS_wKLg',
+    videoIds: ['X3-hbS_wKLg', 'Oq5BZdMwz40'],
     platforms: ['IG Reels', 'TikTok'],
     scale: 'Starter',
     audience: 'Foodie Local',

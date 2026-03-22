@@ -9,7 +9,7 @@ const navLinks = [
   { to: '/work', label: 'Work' },
   { to: '/industry/automotive', label: 'Automotive' },
   { to: '/lens', label: 'Lens' },
-  { to: '/builder', label: 'Builder' },
+  { to: '/briefing-room', label: 'Briefing Room' },
   { to: '/contact', label: 'Contact' },
   { to: '/login', label: 'Portal' },
 ];
