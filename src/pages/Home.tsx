@@ -18,8 +18,8 @@ const pillars = [
 
 const steps = [
   { num: '01', title: 'Explore', desc: 'Browse our work. Find what resonates.' },
-  { num: '02', title: 'Build', desc: 'Use the Brief Builder to shape your project.' },
-  { num: '03', title: 'Blueprint', desc: 'Get a 1-page project plan. Instantly.' },
+  { num: '02', title: 'Brief', desc: 'Use the Briefing Room to shape your project.' },
+  { num: '03', title: 'Blueprint', desc: 'Get a production-ready brief you can download and share.' },
 ];
 
 export default function Home() {
@@ -58,7 +58,7 @@ export default function Home() {
                 <Link to="/work">Explore Work <ArrowRight size={16} /></Link>
               </Button>
               <Button variant="heroOutline" size="xl" asChild className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground hover:text-primary">
-                <Link to="/builder">Build Your Project</Link>
+                <Link to="/briefing-room">Start Your Brief</Link>
               </Button>
             </div>
           </motion.div>
@@ -160,7 +160,7 @@ export default function Home() {
           </div>
           <div className="mt-20">
             <Button variant="hero" size="xl" asChild className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
-              <Link to="/builder">Start Building <ArrowRight size={16} /></Link>
+              <Link to="/briefing-room">Start Your Brief <ArrowRight size={16} /></Link>
             </Button>
           </div>
         </div>

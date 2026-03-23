@@ -65,8 +65,8 @@ export default function Contact() {
       <div className="container py-32 text-center max-w-lg">
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
           <CheckCircle size={48} className="mx-auto text-highlight mb-6" />
-          <h1 className="font-display text-3xl mb-4">Brief Received.</h1>
-          <p className="text-muted-foreground text-sm mb-2">We'll review your project details and be in touch within 1 business day.</p>
+          <h1 className="font-display text-3xl mb-4">Message Received.</h1>
+          <p className="text-muted-foreground text-sm mb-2">We'll review your details and be in touch within 1 business day.</p>
           <p className="text-xs text-muted-foreground">Next steps: We'll send a scoping summary, then schedule a 15-min alignment call if it's a fit.</p>
         </motion.div>
       </div>
@@ -111,13 +111,13 @@ export default function Contact() {
 
           <div className="pt-4 space-y-3">
             <Button variant="hero" size="xl" type="submit" className="w-full" disabled={submitting || !brief.lead.consent || !brief.lead.name || !brief.lead.email}>
-              {submitting ? 'Submitting...' : 'Submit Brief'}
+              {submitting ? 'Sending...' : 'Get in Touch'}
             </Button>
           </div>
         </form>
 
         <div className="mt-10 p-5 border border-border space-y-2">
-          <p className="text-[10px] font-bold tracking-wider uppercase text-foreground">Undercat OS</p>
+          <p className="text-[10px] font-bold tracking-wider uppercase text-foreground">How We Work</p>
           <p className="text-xs text-muted-foreground">• Contract + 50% deposit required before production starts</p>
           <p className="text-xs text-muted-foreground">• 2 revision rounds included</p>
           <p className="text-xs text-muted-foreground">• Final files released upon final payment</p>

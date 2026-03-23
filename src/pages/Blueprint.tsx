@@ -118,9 +118,9 @@ export default function Blueprint() {
             <Copy size={14} /> {copied ? 'Copied!' : 'Copy Text'}
           </Button>
           <Button variant="heroOutline" asChild>
-            <a href="#book-call" onClick={() => trackEvent('book_call_click')}>
+            <Link to="/contact" onClick={() => trackEvent('book_call_click')}>
               <Phone size={14} /> Book a Discovery Call
-            </a>
+            </Link>
           </Button>
         </motion.div>
       )}
@@ -273,15 +273,17 @@ export default function Blueprint() {
         )}
       </div>
 
-      {/* JSON output for admin */}
-      <details className="no-print mt-8">
-        <summary className="text-[10px] text-muted-foreground cursor-pointer hover:text-foreground tracking-wider uppercase">
-          Admin: View JSON payload
-        </summary>
-        <pre className="mt-4 bg-secondary p-4 text-xs overflow-auto max-h-96 border border-border">
-          {JSON.stringify(brief, null, 2)}
-        </pre>
-      </details>
+      {/* Admin JSON — hidden in production */}
+      {import.meta.env.DEV && (
+        <details className="no-print mt-8">
+          <summary className="text-[10px] text-muted-foreground cursor-pointer hover:text-foreground tracking-wider uppercase">
+            Admin: View JSON payload
+          </summary>
+          <pre className="mt-4 bg-secondary p-4 text-xs overflow-auto max-h-96 border border-border">
+            {JSON.stringify(brief, null, 2)}
+          </pre>
+        </details>
+      )}
     </div>
   );
 }

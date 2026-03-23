@@ -112,8 +112,8 @@ export default function CaseDetail() {
           </div>
         )}
 
-        <Button variant="hero" size="xl" onClick={() => navigate(`/builder?template=${c.id}`)}>
-          Build something like this <ArrowRight size={16} />
+        <Button variant="hero" size="xl" onClick={() => navigate('/briefing-room')}>
+          Start a brief like this <ArrowRight size={16} />
         </Button>
       </motion.div>
     </div>

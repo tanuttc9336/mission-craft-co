@@ -5,7 +5,7 @@ import CaseCard from '@/components/CaseCard';
 import { trackEvent } from '@/utils/analytics';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Eye } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 type FilterGroup = { label: string; options: string[] };
 
@@ -88,17 +88,14 @@ export default function Work() {
         <p className="text-center text-muted-foreground py-20 text-sm">No cases match your filters. Try adjusting.</p>
       )}
 
-      {/* Lens CTA */}
+      {/* Briefing Room CTA */}
       <div className="mt-20 border-t border-border pt-12 text-center">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <Eye size={14} className="text-highlight" />
-          <p className="text-[10px] font-medium tracking-[0.3em] uppercase text-muted-foreground">Undercat Lens</p>
-        </div>
+        <p className="text-[10px] font-medium tracking-[0.3em] uppercase text-muted-foreground mb-4">Ready to start?</p>
         <p className="text-sm text-muted-foreground mb-6 max-w-sm mx-auto">
-          Want to see how Undercat would approach your brand?
+          Have a project in mind? Build a brief and get a production-ready blueprint.
         </p>
         <Button variant="default" size="lg" asChild>
-          <Link to="/lens">Start Your Lens <ArrowRight size={14} /></Link>
+          <Link to="/briefing-room">Start Your Brief <ArrowRight size={14} /></Link>
         </Button>
       </div>
     </div>

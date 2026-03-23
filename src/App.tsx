@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { BriefProvider } from "@/hooks/useBrief";
 import { LensProvider } from "@/hooks/useLens";
 import { PortalAuthProvider } from "@/hooks/usePortalAuth";
@@ -16,7 +16,7 @@ import Blueprint from "./pages/Blueprint";
 import Contact from "./pages/Contact";
 import IdeaEngine from "./pages/IdeaEngine";
 import Lens from "./pages/Lens";
-import IndustryAutomotive from "./pages/IndustryAutomotive";
+import CapabilityPage from "./pages/CapabilityPage";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/portal/Login";
 import Dashboard from "./pages/portal/Dashboard";
@@ -50,12 +50,17 @@ const App = () => (
                 <Route path="/work" element={<Layout><Work /></Layout>} />
                 <Route path="/work/:id" element={<Layout><CaseDetail /></Layout>} />
                 <Route path="/briefing-room" element={<Layout><BriefingRoom /></Layout>} />
-                <Route path="/builder" element={<Layout><BriefingRoom /></Layout>} />
+                {/* Legacy /builder route → redirect */}
+                <Route path="/builder" element={<Navigate to="/briefing-room" replace />} />
                 <Route path="/blueprint" element={<Layout><Blueprint /></Layout>} />
                 <Route path="/ideas" element={<Layout><IdeaEngine /></Layout>} />
                 <Route path="/lens" element={<Layout><Lens /></Layout>} />
                 <Route path="/contact" element={<Layout><Contact /></Layout>} />
-                <Route path="/industry/automotive" element={<Layout><IndustryAutomotive /></Layout>} />
+                {/* Capability pages — "What We Do" */}
+                <Route path="/capabilities/:slug" element={<Layout><CapabilityPage /></Layout>} />
+                {/* Legacy industry routes → redirect to Work */}
+                <Route path="/industry/automotive" element={<Navigate to="/capabilities/brand-films" replace />} />
+                <Route path="/industry/:slug" element={<Navigate to="/work" replace />} />
 
                 {/* Portal auth */}
                 <Route path="/login" element={<Login />} />

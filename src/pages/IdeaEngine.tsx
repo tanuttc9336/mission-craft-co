@@ -309,7 +309,7 @@ export default function IdeaEngine() {
               <p className="text-sm text-muted-foreground mb-4">Ready to bring these ideas to life?</p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Button variant="hero" size="lg" asChild>
-                  <a href="/builder">Build Your Project <ArrowRight size={14} /></a>
+                  <a href="/briefing-room">Start Your Brief <ArrowRight size={14} /></a>
                 </Button>
                 <Button variant="heroOutline" size="lg" asChild>
                   <a href="/contact">Book a Call <ArrowRight size={14} /></a>

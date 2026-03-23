@@ -513,7 +513,7 @@ export default function Lens() {
                   <Link to="/work"><Briefcase size={14} /> Explore Work</Link>
                 </Button>
                 <Button variant="default" size="lg" asChild className="w-full" onClick={() => trackEvent('lens_continue_to_builder')}>
-                  <Link to="/builder">Build Your Project <ArrowRight size={14} /></Link>
+                  <Link to="/briefing-room">Start Your Brief <ArrowRight size={14} /></Link>
                 </Button>
                 <Button variant="heroOutline" size="lg" asChild className="w-full" onClick={() => trackEvent('lens_book_call_click')}>
                   <Link to="/contact"><Phone size={14} /> Book a Call</Link>
@@ -569,7 +569,7 @@ export default function Lens() {
               </div>
               <div>
                 <label className="text-[10px] font-medium tracking-[0.2em] uppercase text-muted-foreground mb-2 block">Phone (optional)</label>
-                <Input value={leadForm.phone} onChange={e => setLeadForm(p => ({ ...p, phone: e.target.value }))} placeholder="+1 (555) 000-0000" />
+                <Input value={leadForm.phone} onChange={e => setLeadForm(p => ({ ...p, phone: e.target.value }))} placeholder="(+66) 094-986-9882" />
               </div>
               <div className="flex items-start gap-3 pt-2">
                 <Checkbox
