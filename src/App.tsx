@@ -14,7 +14,7 @@ import CaseDetail from "./pages/CaseDetail";
 import BriefingRoom from "./pages/BriefingRoom";
 import Blueprint from "./pages/Blueprint";
 import Contact from "./pages/Contact";
-import IdeaEngine from "./pages/IdeaEngine";
+// IdeaEngine removed — redirected to /lens
 import Lens from "./pages/Lens";
 import CapabilityPage from "./pages/CapabilityPage";
 import NotFound from "./pages/NotFound";
@@ -53,7 +53,8 @@ const App = () => (
                 {/* Legacy /builder route → redirect */}
                 <Route path="/builder" element={<Navigate to="/briefing-room" replace />} />
                 <Route path="/blueprint" element={<Layout><Blueprint /></Layout>} />
-                <Route path="/ideas" element={<Layout><IdeaEngine /></Layout>} />
+                {/* IdeaEngine retired — redirect to Lens */}
+                <Route path="/ideas" element={<Navigate to="/lens" replace />} />
                 <Route path="/lens" element={<Layout><Lens /></Layout>} />
                 <Route path="/contact" element={<Layout><Contact /></Layout>} />
                 {/* Capability pages — "What We Do" */}
