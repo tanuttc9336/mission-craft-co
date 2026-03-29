@@ -17,6 +17,7 @@ import Contact from "./pages/Contact";
 // IdeaEngine removed — redirected to /lens
 import Lens from "./pages/Lens";
 import CapabilityPage from "./pages/CapabilityPage";
+import IndustryGolfPage from "./pages/IndustryGolfPage";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/portal/Login";
 import Dashboard from "./pages/portal/Dashboard";
@@ -59,6 +60,8 @@ const App = () => (
                 <Route path="/contact" element={<Layout><Contact /></Layout>} />
                 {/* Capability pages — "What We Do" */}
                 <Route path="/capabilities/:slug" element={<Layout><CapabilityPage /></Layout>} />
+                {/* Industry pages */}
+                <Route path="/industries/golf" element={<Layout><IndustryGolfPage /></Layout>} />
                 {/* Legacy industry routes → redirect to Work */}
                 <Route path="/industry/automotive" element={<Navigate to="/capabilities/brand-films" replace />} />
                 <Route path="/industry/:slug" element={<Navigate to="/work" replace />} />

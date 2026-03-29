@@ -3,26 +3,131 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronDown, Instagram, Youtube, Phone, Mail, MapPin } from 'lucide-react';
 import { capabilityConfigs } from '@/data/capabilityConfig';
+import { industryConfigs } from '@/data/industryConfig';
 import logo from '@/assets/undercat-logo.png';
 
-const navLinks = [
-  { to: '/', label: 'Home' },
-  { to: '/work', label: 'Work' },
-  { to: '/capabilities', label: 'What We Do', hasDropdown: true },
-  { to: '/briefing-room', label: 'Briefing Room' },
-  { to: '/contact', label: 'Contact' },
-];
+type DropdownKey = 'capabilities' | 'industries' | null;
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<DropdownKey>(null);
+  const [mobileAccordion, setMobileAccordion] = useState<DropdownKey>(null);
 
-  const isActiveLink = (to: string) => {
-    if (to === '/') return location.pathname === '/';
-    return location.pathname.startsWith(to);
+  const isActive = (prefix: string) => {
+    if (prefix === '/') return location.pathname === '/';
+    return location.pathname.startsWith(prefix);
   };
+
+  const linkCls = (active: boolean) =>
+    `text-xs font-medium tracking-widest uppercase transition-colors hover:text-foreground ${active ? 'text-foreground' : 'text-muted-foreground'}`;
+
+  /* ─── Dropdown renderer (desktop) ─── */
+  const DesktopDropdown = ({ id, label, prefix, items }: {
+    id: DropdownKey;
+    label: string;
+    prefix: string;
+    items: { to: string; label: string; disabled?: boolean }[];
+  }) => (
+    <div
+      className="relative"
+      onMouseEnter={() => setOpenDropdown(id)}
+      onMouseLeave={() => setOpenDropdown(null)}
+    >
+      <button className={`${linkCls(isActive(prefix))} flex items-center gap-1`}>
+        {label}
+        <ChevronDown size={12} className={`transition-transform ${openDropdown === id ? 'rotate-180' : ''}`} />
+      </button>
+      <AnimatePresence>
+        {openDropdown === id && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            transition={{ duration: 0.15 }}
+            className="absolute top-full left-1/2 -translate-x-1/2 pt-3"
+          >
+            <div className="bg-background border border-border py-2 min-w-[220px] shadow-lg">
+              {items.map(item => (
+                item.disabled ? (
+                  <span
+                    key={item.to}
+                    className="block px-5 py-2.5 text-xs font-medium tracking-wider uppercase text-muted-foreground/40 cursor-default"
+                  >
+                    {item.label} <span className="text-[10px] normal-case tracking-normal opacity-60">— soon</span>
+                  </span>
+                ) : (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    className={`block px-5 py-2.5 text-xs font-medium tracking-wider uppercase transition-colors hover:bg-secondary ${
+                      location.pathname === item.to ? 'text-foreground bg-secondary' : 'text-muted-foreground'
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                )
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+
+  /* ─── Accordion renderer (mobile) ─── */
+  const MobileAccordion = ({ id, label, prefix, items }: {
+    id: DropdownKey;
+    label: string;
+    prefix: string;
+    items: { to: string; label: string; disabled?: boolean }[];
+  }) => (
+    <div>
+      <button
+        onClick={() => setMobileAccordion(mobileAccordion === id ? null : id)}
+        className={`w-full text-left ${linkCls(isActive(prefix))} py-3 flex items-center justify-between`}
+      >
+        {label}
+        <ChevronDown size={12} className={`transition-transform ${mobileAccordion === id ? 'rotate-180' : ''}`} />
+      </button>
+      <AnimatePresence>
+        {mobileAccordion === id && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden pl-4 border-l border-border ml-2"
+          >
+            {items.map(item => (
+              item.disabled ? (
+                <span
+                  key={item.to}
+                  className="block text-xs font-medium tracking-widest uppercase py-2.5 text-muted-foreground/40"
+                >
+                  {item.label} <span className="text-[10px] normal-case tracking-normal opacity-60">— soon</span>
+                </span>
+              ) : (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  onClick={() => { setMobileOpen(false); setMobileAccordion(null); }}
+                  className={`block text-xs font-medium tracking-widest uppercase py-2.5 ${
+                    location.pathname === item.to ? 'text-foreground' : 'text-muted-foreground'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              )
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+
+  /* ─── Dropdown data ─── */
+  const capabilityItems = capabilityConfigs.map(c => ({ to: `/capabilities/${c.slug}`, label: c.label }));
+  const industryItems = industryConfigs.map(c => ({ to: `/industries/${c.slug}`, label: c.label, disabled: !c.available }));
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
@@ -35,61 +140,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map(link => (
-              link.hasDropdown ? (
-                <div
-                  key={link.to}
-                  className="relative"
-                  onMouseEnter={() => setDropdownOpen(true)}
-                  onMouseLeave={() => setDropdownOpen(false)}
-                >
-                  <button
-                    className={`text-xs font-medium tracking-widest uppercase transition-colors hover:text-foreground flex items-center gap-1 ${
-                      isActiveLink(link.to) ? 'text-foreground' : 'text-muted-foreground'
-                    }`}
-                  >
-                    {link.label}
-                    <ChevronDown size={12} className={`transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
-                  </button>
-
-                  <AnimatePresence>
-                    {dropdownOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 8 }}
-                        transition={{ duration: 0.15 }}
-                        className="absolute top-full left-1/2 -translate-x-1/2 pt-3"
-                      >
-                        <div className="bg-background border border-border py-2 min-w-[220px] shadow-lg">
-                          {capabilityConfigs.map(config => (
-                            <Link
-                              key={config.slug}
-                              to={`/capabilities/${config.slug}`}
-                              className={`block px-5 py-2.5 text-xs font-medium tracking-wider uppercase transition-colors hover:bg-secondary ${
-                                location.pathname === `/capabilities/${config.slug}` ? 'text-foreground bg-secondary' : 'text-muted-foreground'
-                              }`}
-                            >
-                              {config.label}
-                            </Link>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ) : (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  className={`text-xs font-medium tracking-widest uppercase transition-colors hover:text-foreground ${
-                    isActiveLink(link.to) ? 'text-foreground' : 'text-muted-foreground'
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              )
-            ))}
+            <Link to="/" className={linkCls(isActive('/'))}>Home</Link>
+            <Link to="/work" className={linkCls(isActive('/work'))}>Work</Link>
+            <DesktopDropdown id="capabilities" label="What We Do" prefix="/capabilities" items={capabilityItems} />
+            <DesktopDropdown id="industries" label="Industries" prefix="/industries" items={industryItems} />
+            <Link to="/briefing-room" className={linkCls(isActive('/briefing-room'))}>Briefing Room</Link>
+            <Link to="/contact" className={linkCls(isActive('/contact'))}>Contact</Link>
           </nav>
 
           {/* Mobile toggle */}
@@ -112,55 +168,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               className="md:hidden overflow-hidden border-b border-border bg-background"
             >
               <nav className="container py-6 flex flex-col gap-1">
-                {navLinks.map(link => (
-                  link.hasDropdown ? (
-                    <div key={link.to}>
-                      <button
-                        onClick={() => setMobileDropdownOpen(!mobileDropdownOpen)}
-                        className={`w-full text-left text-xs font-medium tracking-widest uppercase py-3 flex items-center justify-between ${
-                          isActiveLink(link.to) ? 'text-foreground' : 'text-muted-foreground'
-                        }`}
-                      >
-                        {link.label}
-                        <ChevronDown size={12} className={`transition-transform ${mobileDropdownOpen ? 'rotate-180' : ''}`} />
-                      </button>
-                      <AnimatePresence>
-                        {mobileDropdownOpen && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            className="overflow-hidden pl-4 border-l border-border ml-2"
-                          >
-                            {capabilityConfigs.map(config => (
-                              <Link
-                                key={config.slug}
-                                to={`/capabilities/${config.slug}`}
-                                onClick={() => { setMobileOpen(false); setMobileDropdownOpen(false); }}
-                                className={`block text-xs font-medium tracking-widest uppercase py-2.5 ${
-                                  location.pathname === `/capabilities/${config.slug}` ? 'text-foreground' : 'text-muted-foreground'
-                                }`}
-                              >
-                                {config.label}
-                              </Link>
-                            ))}
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  ) : (
-                    <Link
-                      key={link.to}
-                      to={link.to}
-                      onClick={() => setMobileOpen(false)}
-                      className={`text-xs font-medium tracking-widest uppercase py-3 ${
-                        isActiveLink(link.to) ? 'text-foreground' : 'text-muted-foreground'
-                      }`}
-                    >
-                      {link.label}
-                    </Link>
-                  )
-                ))}
+                <Link to="/" onClick={() => setMobileOpen(false)} className={`${linkCls(isActive('/'))} py-3`}>Home</Link>
+                <Link to="/work" onClick={() => setMobileOpen(false)} className={`${linkCls(isActive('/work'))} py-3`}>Work</Link>
+                <MobileAccordion id="capabilities" label="What We Do" prefix="/capabilities" items={capabilityItems} />
+                <MobileAccordion id="industries" label="Industries" prefix="/industries" items={industryItems} />
+                <Link to="/briefing-room" onClick={() => setMobileOpen(false)} className={`${linkCls(isActive('/briefing-room'))} py-3`}>Briefing Room</Link>
+                <Link to="/contact" onClick={() => setMobileOpen(false)} className={`${linkCls(isActive('/contact'))} py-3`}>Contact</Link>
               </nav>
             </motion.div>
           )}
@@ -199,6 +212,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 {capabilityConfigs.map(c => (
                   <Link key={c.slug} to={`/capabilities/${c.slug}`} className="text-xs text-muted-foreground hover:text-foreground transition-colors">{c.label}</Link>
                 ))}
+                <Link to="/industries/golf" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Golf Industry</Link>
               </div>
             </div>
 
