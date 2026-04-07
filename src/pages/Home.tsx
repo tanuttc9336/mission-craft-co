@@ -6,6 +6,7 @@ import Chapter03_MakeIt from '@/components/chapters/Chapter03_MakeIt';
 import Chapter04_MakeItRight from '@/components/chapters/Chapter04_MakeItRight';
 import Chapter05_MakeItWork from '@/components/chapters/Chapter05_MakeItWork';
 import Chapter06_AudiCaseStudy from '@/components/chapters/Chapter06_AudiCaseStudy';
+import Chapter07_GreenlineCaseStudy from '@/components/chapters/Chapter07_GreenlineCaseStudy';
 
 function ChapterStub({ id, label, height = '100vh' }: { id: string; label: string; height?: string }) {
   return (
@@ -26,7 +27,7 @@ export default function Home() {
         <Chapter04_MakeItRight />
         <Chapter05_MakeItWork />
         <Chapter06_AudiCaseStudy />
-        <ChapterStub id="07-the-work-greenline" label="07 · The Work — Greenline" height="500vh" />
+        <Chapter07_GreenlineCaseStudy />
         <ChapterStub id="08-the-standard" label="08 · The Standard" height="600vh" />
         <ChapterStub id="09-the-pass" label="09 · The Pass" height="300vh" />
       </main>
