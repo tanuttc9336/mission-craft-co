@@ -2,6 +2,7 @@ import { LenisProvider } from '@/lib/lenis-provider';
 import Chapter00_TheVoid from '@/components/chapters/Chapter00_TheVoid';
 import Chapter01_ListenFirst from '@/components/chapters/Chapter01_ListenFirst';
 import Chapter02_PointTheDirection from '@/components/chapters/Chapter02_PointTheDirection';
+import Chapter03_MakeIt from '@/components/chapters/Chapter03_MakeIt';
 
 function ChapterStub({ id, label, height = '100vh' }: { id: string; label: string; height?: string }) {
   return (
@@ -18,7 +19,7 @@ export default function Home() {
         <Chapter00_TheVoid />
         <Chapter01_ListenFirst />
         <Chapter02_PointTheDirection />
-        <ChapterStub id="03-make-it" label="03 · Make It" height="350vh" />
+        <Chapter03_MakeIt />
         <ChapterStub id="04-make-it-right" label="04 · Make It Right" height="400vh" />
         <ChapterStub id="05-make-it-work" label="05 · Make It Work" height="350vh" />
         <ChapterStub id="06-the-work-audi" label="06 · The Work — Audi" height="500vh" />
