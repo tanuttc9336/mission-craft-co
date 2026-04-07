@@ -7,6 +7,7 @@ import Chapter04_MakeItRight from '@/components/chapters/Chapter04_MakeItRight';
 import Chapter05_MakeItWork from '@/components/chapters/Chapter05_MakeItWork';
 import Chapter06_AudiCaseStudy from '@/components/chapters/Chapter06_AudiCaseStudy';
 import Chapter07_GreenlineCaseStudy from '@/components/chapters/Chapter07_GreenlineCaseStudy';
+import Chapter08_TheStandard from '@/components/chapters/Chapter08_TheStandard';
 
 function ChapterStub({ id, label, height = '100vh' }: { id: string; label: string; height?: string }) {
   return (
@@ -28,7 +29,7 @@ export default function Home() {
         <Chapter05_MakeItWork />
         <Chapter06_AudiCaseStudy />
         <Chapter07_GreenlineCaseStudy />
-        <ChapterStub id="08-the-standard" label="08 · The Standard" height="600vh" />
+        <Chapter08_TheStandard />
         <ChapterStub id="09-the-pass" label="09 · The Pass" height="300vh" />
       </main>
     </LenisProvider>
