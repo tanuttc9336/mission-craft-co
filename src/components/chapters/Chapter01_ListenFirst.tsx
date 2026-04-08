@@ -1,7 +1,8 @@
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { motion, useReducedMotion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Chapter } from '@/components/scroll/Chapter';
+import { trackEvent } from '@/lib/analytics';
 
 function Placeholder({ label, className }: { label: string; className?: string }) {
   return (
@@ -18,6 +19,20 @@ export default function Chapter01_ListenFirst() {
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
+  });
+
+  // ── Analytics ───────────────────────────────────────────────────────────
+  const reachedRef = useRef(false);
+  const completedRef = useRef(false);
+  useMotionValueEvent(scrollYProgress, 'change', (v) => {
+    if (v > 0.05 && !reachedRef.current) {
+      reachedRef.current = true;
+      trackEvent('chapter_reached', { chapter: 1 });
+    }
+    if (v > 0.95 && !completedRef.current) {
+      completedRef.current = true;
+      trackEvent('chapter_completed', { chapter: 1 });
+    }
   });
 
   const stepOpacity     = useTransform(scrollYProgress, [0.00, 0.15], [0, 1]);

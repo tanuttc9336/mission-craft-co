@@ -1,6 +1,7 @@
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { motion, useReducedMotion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import { useRef } from 'react';
 import { Chapter } from '@/components/scroll/Chapter';
+import { trackEvent } from '@/lib/analytics';
 
 // ── Locked copy — do not paraphrase ─────────────────────────────────────────
 const QUOTE = '\u201cGood work isn\u2019t just beautiful \u2014 it makes the brand understood the right way.\u201d';
@@ -53,6 +54,20 @@ export default function Chapter08_TheStandard() {
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
+  });
+
+  // ── Analytics ───────────────────────────────────────────────────────────
+  const reachedRef = useRef(false);
+  const completedRef = useRef(false);
+  useMotionValueEvent(scrollYProgress, 'change', (v) => {
+    if (v > 0.05 && !reachedRef.current) {
+      reachedRef.current = true;
+      trackEvent('chapter_reached', { chapter: 8 });
+    }
+    if (v > 0.95 && !completedRef.current) {
+      completedRef.current = true;
+      trackEvent('chapter_completed', { chapter: 8 });
+    }
   });
 
   // Each beat spans 0.16 of progress; MEOW spans 0.20

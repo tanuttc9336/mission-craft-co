@@ -1,8 +1,9 @@
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { motion, useReducedMotion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import { useRef } from 'react';
 import { ScrollSequence } from '@/components/scroll/ScrollSequence';
 import { StickyCaption } from '@/components/scroll/StickyCaption';
 import { asset } from '@/lib/asset-urls';
+import { trackEvent } from '@/lib/analytics';
 
 // TODO: swap placeholder URLs for real R2 frames once chapter-07-greenline/ assets are uploaded
 const FRAMES = Array.from({ length: 80 }, (_, i) =>
@@ -62,6 +63,20 @@ export default function Chapter07_GreenlineCaseStudy() {
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
+  });
+
+  // ── Analytics ───────────────────────────────────────────────────────────
+  const reachedRef = useRef(false);
+  const completedRef = useRef(false);
+  useMotionValueEvent(scrollYProgress, 'change', (v) => {
+    if (v > 0.05 && !reachedRef.current) {
+      reachedRef.current = true;
+      trackEvent('chapter_reached', { chapter: 7 });
+    }
+    if (v > 0.95 && !completedRef.current) {
+      completedRef.current = true;
+      trackEvent('chapter_completed', { chapter: 7 });
+    }
   });
 
   // ── Reduced-motion fallback ───────────────────────────────────────────────

@@ -9,10 +9,14 @@ import Chapter06_AudiCaseStudy from '@/components/chapters/Chapter06_AudiCaseStu
 import Chapter07_GreenlineCaseStudy from '@/components/chapters/Chapter07_GreenlineCaseStudy';
 import Chapter08_TheStandard from '@/components/chapters/Chapter08_TheStandard';
 import Chapter09_ThePass from '@/components/chapters/Chapter09_ThePass';
+import FloatingLogo from '@/components/chrome/FloatingLogo';
+import SkipLink from '@/components/chrome/SkipLink';
 
 export default function Home() {
   return (
     <LenisProvider>
+      <SkipLink />
+      <FloatingLogo />
       <main id="main" className="bg-black text-white">
         <Chapter00_TheVoid />
         <Chapter01_ListenFirst />

@@ -1,7 +1,9 @@
-import { useReducedMotion } from 'framer-motion';
+import { useRef } from 'react';
+import { useReducedMotion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { ScrollSequence } from '@/components/scroll/ScrollSequence';
 import { StickyCaption } from '@/components/scroll/StickyCaption';
 import { asset } from '@/lib/asset-urls';
+import { trackEvent } from '@/lib/analytics';
 
 // TODO: swap placeholder URLs for real R2 frames once chapter-06-audi/ assets are uploaded
 const FRAMES = Array.from({ length: 80 }, (_, i) =>
@@ -21,12 +23,33 @@ function PlaceholderPoster({ className }: { className?: string }) {
 }
 
 export default function Chapter06_AudiCaseStudy() {
+  const sectionRef = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end end'],
+  });
+
+  // ── Analytics ───────────────────────────────────────────────────────────
+  const reachedRef = useRef(false);
+  const completedRef = useRef(false);
+  useMotionValueEvent(scrollYProgress, 'change', (v) => {
+    if (v > 0.05 && !reachedRef.current) {
+      reachedRef.current = true;
+      trackEvent('chapter_reached', { chapter: 6 });
+    }
+    if (v > 0.95 && !completedRef.current) {
+      completedRef.current = true;
+      trackEvent('chapter_completed', { chapter: 6 });
+    }
+  });
 
   // ── Reduced-motion fallback ───────────────────────────────────────────────
   if (reduce) {
     return (
       <section
+        ref={sectionRef}
         id="06-the-work-audi"
         data-chapter="06-the-work-audi"
         className="relative w-full bg-black"
@@ -57,6 +80,7 @@ export default function Chapter06_AudiCaseStudy() {
   // ── Animated path ─────────────────────────────────────────────────────────
   return (
     <section
+      ref={sectionRef}
       id="06-the-work-audi"
       data-chapter="06-the-work-audi"
       className="relative w-full"
