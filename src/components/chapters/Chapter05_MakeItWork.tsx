@@ -2,6 +2,7 @@ import { motion, useReducedMotion, useScroll, useTransform, useMotionValueEvent 
 import { useRef } from 'react';
 import { Chapter } from '@/components/scroll/Chapter';
 import { trackEvent } from '@/lib/analytics';
+import { useDomOpacity } from '@/lib/use-dom-opacity';
 
 function Placeholder({ label, className }: { label: string; className?: string }) {
   return (
@@ -34,23 +35,28 @@ export default function Chapter05_MakeItWork() {
     }
   });
 
-  const stepOpacity      = useTransform(scrollYProgress, [0.00, 0.12], [0, 1]);
   const stepY            = useTransform(scrollYProgress, [0.00, 0.12], [20, 0]);
-  const headlineOpacity  = useTransform(scrollYProgress, [0.05, 0.15], [0, 1]);
   const headlineY        = useTransform(scrollYProgress, [0.05, 0.15], [20, 0]);
-
-  const compositeOpacity = useTransform(scrollYProgress, [0.15, 0.35], [0, 1]);
   const compositeY       = useTransform(scrollYProgress, [0.15, 0.35], [30, 0]);
-
-  const phoneOpacity     = useTransform(scrollYProgress, [0.40, 0.57], [0, 1]);
   const phoneY           = useTransform(scrollYProgress, [0.40, 0.57], [40, 0]);
-  const laptopOpacity    = useTransform(scrollYProgress, [0.57, 0.70], [0, 1]);
   const laptopY          = useTransform(scrollYProgress, [0.57, 0.70], [40, 0]);
-  const tvOpacity        = useTransform(scrollYProgress, [0.70, 0.85], [0, 1]);
   const tvY              = useTransform(scrollYProgress, [0.70, 0.85], [40, 0]);
-
-  const bodyOpacity      = useTransform(scrollYProgress, [0.85, 0.97], [0, 1]);
   const bodyY            = useTransform(scrollYProgress, [0.85, 0.97], [16, 0]);
+
+  const stepRef      = useRef<HTMLDivElement>(null);
+  const headlineRef  = useRef<HTMLHeadingElement>(null);
+  const compositeRef = useRef<HTMLDivElement>(null);
+  const phoneRef     = useRef<HTMLDivElement>(null);
+  const laptopRef    = useRef<HTMLDivElement>(null);
+  const tvRef        = useRef<HTMLDivElement>(null);
+  const bodyRef      = useRef<HTMLParagraphElement>(null);
+  useDomOpacity(stepRef,      scrollYProgress, [0.00, 0.12]);
+  useDomOpacity(headlineRef,  scrollYProgress, [0.05, 0.15]);
+  useDomOpacity(compositeRef, scrollYProgress, [0.15, 0.35]);
+  useDomOpacity(phoneRef,     scrollYProgress, [0.40, 0.57]);
+  useDomOpacity(laptopRef,    scrollYProgress, [0.57, 0.70]);
+  useDomOpacity(tvRef,        scrollYProgress, [0.70, 0.85]);
+  useDomOpacity(bodyRef,      scrollYProgress, [0.85, 0.97]);
 
   if (reduce) {
     return (
@@ -90,12 +96,13 @@ export default function Chapter05_MakeItWork() {
 
           {/* Header */}
           <div className="shrink-0 flex flex-wrap items-baseline gap-x-5 gap-y-1">
-            <motion.div style={{ opacity: stepOpacity, y: stepY }} className="flex items-baseline gap-4">
+            <motion.div ref={stepRef} style={{ opacity: 0, y: stepY }} className="flex items-baseline gap-4">
               <span className="font-display text-5xl md:text-7xl font-bold text-white/15 leading-none">05</span>
               <p className="text-white/40 text-[11px] tracking-[0.3em] uppercase">Make It Work</p>
             </motion.div>
             <motion.h2
-              style={{ opacity: headlineOpacity, y: headlineY }}
+              ref={headlineRef}
+              style={{ opacity: 0, y: headlineY }}
               className="font-display text-xl md:text-3xl font-bold text-white leading-tight max-w-2xl"
             >
               Built for the platforms it actually has to live on.
@@ -104,7 +111,8 @@ export default function Chapter05_MakeItWork() {
 
           {/* Multi-format composite — same still in 3 aspect ratios */}
           <motion.div
-            style={{ opacity: compositeOpacity, y: compositeY }}
+            ref={compositeRef}
+            style={{ opacity: 0, y: compositeY }}
             className="shrink-0 flex items-end justify-center gap-3 md:gap-5"
           >
             <div className="flex flex-col items-center gap-1">
@@ -124,14 +132,14 @@ export default function Chapter05_MakeItWork() {
           {/* Device mockups */}
           <div className="flex-1 min-h-0 flex items-end justify-center gap-4 md:gap-8 pb-2">
             {/* Phone — IG Reels */}
-            <motion.div style={{ opacity: phoneOpacity, y: phoneY }} className="flex flex-col items-center gap-2 h-full max-h-[22vh]">
+            <motion.div ref={phoneRef} style={{ opacity: 0, y: phoneY }} className="flex flex-col items-center gap-2 h-full max-h-[22vh]">
               <div className="flex-1 min-h-0 aspect-[9/16] overflow-hidden rounded-lg border border-white/10">
                 <Placeholder label="chapter-05/deliver-platform-still-01.jpg" className="w-full h-full" />
               </div>
               <p className="text-[9px] text-white/30 font-mono shrink-0">IG Reels</p>
             </motion.div>
             {/* Laptop — YouTube */}
-            <motion.div style={{ opacity: laptopOpacity, y: laptopY }} className="flex flex-col items-center gap-2 h-full max-h-[22vh]">
+            <motion.div ref={laptopRef} style={{ opacity: 0, y: laptopY }} className="flex flex-col items-center gap-2 h-full max-h-[22vh]">
               <div className="flex-1 min-h-0 aspect-video overflow-hidden rounded border border-white/10">
                 <Placeholder label="chapter-05/deliver-platform-still-02.jpg" className="w-full h-full" />
               </div>
@@ -139,7 +147,7 @@ export default function Chapter05_MakeItWork() {
               <p className="text-[9px] text-white/30 font-mono shrink-0">YouTube</p>
             </motion.div>
             {/* Event screen / TV */}
-            <motion.div style={{ opacity: tvOpacity, y: tvY }} className="flex flex-col items-center gap-2 h-full max-h-[22vh]">
+            <motion.div ref={tvRef} style={{ opacity: 0, y: tvY }} className="flex flex-col items-center gap-2 h-full max-h-[22vh]">
               <div className="flex-1 min-h-0 aspect-[16/9] overflow-hidden rounded border-2 border-white/10">
                 <Placeholder label="chapter-05/deliver-platform-still-03.jpg" className="w-full h-full" />
               </div>
@@ -149,7 +157,8 @@ export default function Chapter05_MakeItWork() {
 
           {/* Body copy */}
           <motion.p
-            style={{ opacity: bodyOpacity, y: bodyY }}
+            ref={bodyRef}
+            style={{ opacity: 0, y: bodyY }}
             className="text-white/60 text-sm md:text-base leading-relaxed shrink-0 max-w-lg"
           >
             We deliver in the formats your channels use, and we stay close enough to keep the work growing after it ships.

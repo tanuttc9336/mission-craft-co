@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Chapter } from '@/components/scroll/Chapter';
 import { trackEvent } from '@/lib/analytics';
+import { useDomOpacity } from '@/lib/use-dom-opacity';
 
 function Placeholder({ label, className }: { label: string; className?: string }) {
   return (
@@ -35,18 +36,26 @@ export default function Chapter01_ListenFirst() {
     }
   });
 
-  const stepOpacity     = useTransform(scrollYProgress, [0.00, 0.15], [0, 1]);
   const stepY           = useTransform(scrollYProgress, [0.00, 0.15], [20, 0]);
-  const still1Opacity   = useTransform(scrollYProgress, [0.15, 0.40], [0, 1]);
   const still1Scale     = useTransform(scrollYProgress, [0.15, 0.40], [1.04, 1]);
-  const headlineOpacity = useTransform(scrollYProgress, [0.20, 0.38], [0, 1]);
   const headlineY       = useTransform(scrollYProgress, [0.20, 0.38], [20, 0]);
-  const still2Opacity   = useTransform(scrollYProgress, [0.40, 0.65], [0, 1]);
   const still2Scale     = useTransform(scrollYProgress, [0.40, 0.65], [1.04, 1]);
-  const bodyOpacity     = useTransform(scrollYProgress, [0.65, 0.82], [0, 1]);
   const bodyY           = useTransform(scrollYProgress, [0.65, 0.82], [20, 0]);
-  const ctaOpacity      = useTransform(scrollYProgress, [0.76, 0.90], [0, 1]);
   const ctaY            = useTransform(scrollYProgress, [0.76, 0.90], [20, 0]);
+
+  // ── Opacity refs (DOM bypass for Framer Motion v12 sticky bug) ──
+  const stepRef     = useRef<HTMLDivElement>(null);
+  const still1Ref   = useRef<HTMLDivElement>(null);
+  const still2Ref   = useRef<HTMLDivElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const bodyRef     = useRef<HTMLParagraphElement>(null);
+  const ctaRef      = useRef<HTMLDivElement>(null);
+  useDomOpacity(stepRef,     scrollYProgress, [0.00, 0.15]);
+  useDomOpacity(still1Ref,   scrollYProgress, [0.15, 0.40]);
+  useDomOpacity(headlineRef, scrollYProgress, [0.20, 0.38]);
+  useDomOpacity(still2Ref,   scrollYProgress, [0.40, 0.65]);
+  useDomOpacity(bodyRef,     scrollYProgress, [0.65, 0.82]);
+  useDomOpacity(ctaRef,      scrollYProgress, [0.76, 0.90]);
 
   if (reduce) {
     return (
@@ -81,12 +90,12 @@ export default function Chapter01_ListenFirst() {
 
           {/* Left — stills */}
           <div className="flex flex-col gap-4 justify-center px-8 md:px-10 py-14">
-            <motion.div style={{ opacity: still1Opacity }} className="overflow-hidden">
+            <motion.div ref={still1Ref} style={{ opacity: 0 }} className="overflow-hidden">
               <motion.div style={{ scale: still1Scale }}>
                 <Placeholder label="chapter-01/listen-brief-still.jpg" className="aspect-[4/3] w-full" />
               </motion.div>
             </motion.div>
-            <motion.div style={{ opacity: still2Opacity }} className="overflow-hidden">
+            <motion.div ref={still2Ref} style={{ opacity: 0 }} className="overflow-hidden">
               <motion.div style={{ scale: still2Scale }}>
                 <Placeholder label="chapter-01/listen-conversation-still.jpg" className="aspect-[4/3] w-full" />
               </motion.div>
@@ -95,26 +104,28 @@ export default function Chapter01_ListenFirst() {
 
           {/* Right — text */}
           <div className="flex flex-col justify-center px-8 md:px-14 py-14 gap-6">
-            <motion.div style={{ opacity: stepOpacity, y: stepY }}>
+            <motion.div ref={stepRef} style={{ opacity: 0, y: stepY }}>
               <span className="font-display text-[7rem] md:text-[9rem] font-bold text-white/15 leading-none block">01</span>
               <p className="text-white/40 text-[11px] tracking-[0.3em] uppercase mt-1">Listen First</p>
             </motion.div>
 
             <motion.h2
-              style={{ opacity: headlineOpacity, y: headlineY }}
+              ref={headlineRef}
+              style={{ opacity: 0, y: headlineY }}
               className="font-display text-2xl md:text-4xl font-bold text-white leading-tight"
             >
               Before the brief. Before the camera.
             </motion.h2>
 
             <motion.p
-              style={{ opacity: bodyOpacity, y: bodyY }}
+              ref={bodyRef}
+              style={{ opacity: 0, y: bodyY }}
               className="text-white/60 text-base leading-relaxed max-w-sm"
             >
               We listen until we understand what the brand wants to say, to whom, and to what end. Every answer that comes after this starts here.
             </motion.p>
 
-            <motion.div style={{ opacity: ctaOpacity, y: ctaY }}>
+            <motion.div ref={ctaRef} style={{ opacity: 0, y: ctaY }}>
               <Link
                 to="/briefing-room"
                 className="text-sm text-white/50 hover:text-white transition-colors tracking-wide"

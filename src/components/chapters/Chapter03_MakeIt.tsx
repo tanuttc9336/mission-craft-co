@@ -1,7 +1,8 @@
-import { motion, useReducedMotion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
+import { motion, useReducedMotion, useScroll, useTransform, useMotionValueEvent, type MotionValue } from 'framer-motion';
 import { useRef } from 'react';
 import { Chapter } from '@/components/scroll/Chapter';
 import { trackEvent } from '@/lib/analytics';
+import { useDomOpacity } from '@/lib/use-dom-opacity';
 
 function Placeholder({ label, className }: { label: string; className?: string }) {
   return (
@@ -33,13 +34,14 @@ function BtsStill({
 }: {
   label: string;
   range: [number, number];
-  progress: ReturnType<typeof useScroll>['scrollYProgress'];
+  progress: MotionValue<number>;
 }) {
-  const opacity = useTransform(progress, [range[0], range[1]], [0, 1]);
-  const scale   = useTransform(progress, [range[0], range[1]], [1.06, 1]);
+  const scale = useTransform(progress, [range[0], range[1]], [1.06, 1]);
+  const ref = useRef<HTMLDivElement>(null);
+  useDomOpacity(ref, progress, range);
   return (
     <div className="relative overflow-hidden">
-      <motion.div style={{ opacity, scale }} className="absolute inset-0">
+      <motion.div ref={ref} style={{ opacity: 0, scale }} className="absolute inset-0">
         <Placeholder label={label} className="w-full h-full" />
       </motion.div>
     </div>
@@ -69,12 +71,16 @@ export default function Chapter03_MakeIt() {
     }
   });
 
-  const stepOpacity     = useTransform(scrollYProgress, [0.00, 0.15], [0, 1]);
-  const stepY           = useTransform(scrollYProgress, [0.00, 0.15], [20, 0]);
-  const headlineOpacity = useTransform(scrollYProgress, [0.05, 0.15], [0, 1]);
-  const headlineY       = useTransform(scrollYProgress, [0.05, 0.15], [20, 0]);
-  const bodyOpacity     = useTransform(scrollYProgress, [0.80, 0.95], [0, 1]);
-  const bodyY           = useTransform(scrollYProgress, [0.80, 0.95], [16, 0]);
+  const stepY     = useTransform(scrollYProgress, [0.00, 0.15], [20, 0]);
+  const headlineY = useTransform(scrollYProgress, [0.05, 0.15], [20, 0]);
+  const bodyY     = useTransform(scrollYProgress, [0.80, 0.95], [16, 0]);
+
+  const stepRef     = useRef<HTMLDivElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const bodyRef     = useRef<HTMLParagraphElement>(null);
+  useDomOpacity(stepRef,     scrollYProgress, [0.00, 0.15]);
+  useDomOpacity(headlineRef, scrollYProgress, [0.05, 0.15]);
+  useDomOpacity(bodyRef,     scrollYProgress, [0.80, 0.95]);
 
   if (reduce) {
     return (
@@ -116,7 +122,8 @@ export default function Chapter03_MakeIt() {
 
           {/* Header row */}
           <motion.div
-            style={{ opacity: stepOpacity, y: stepY }}
+            ref={stepRef}
+            style={{ opacity: 0, y: stepY }}
             className="flex items-baseline gap-5 shrink-0"
           >
             <span className="font-display text-5xl md:text-7xl font-bold text-white/15 leading-none">03</span>
@@ -124,7 +131,8 @@ export default function Chapter03_MakeIt() {
           </motion.div>
 
           <motion.h2
-            style={{ opacity: headlineOpacity, y: headlineY }}
+            ref={headlineRef}
+            style={{ opacity: 0, y: headlineY }}
             className="font-display text-xl md:text-3xl font-bold text-white leading-tight shrink-0 max-w-2xl"
           >
             Production at the standard the project needs.
@@ -144,7 +152,8 @@ export default function Chapter03_MakeIt() {
 
           {/* Body copy */}
           <motion.p
-            style={{ opacity: bodyOpacity, y: bodyY }}
+            ref={bodyRef}
+            style={{ opacity: 0, y: bodyY }}
             className="text-white/60 text-sm md:text-base leading-relaxed shrink-0 max-w-lg"
           >
             Never under-delivered. Never over-complicated. The scope comes from the work, not the invoice.

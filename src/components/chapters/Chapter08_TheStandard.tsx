@@ -1,7 +1,8 @@
-import { motion, useReducedMotion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
+import { motion, useReducedMotion, useScroll, useTransform, useMotionValueEvent, type MotionValue } from 'framer-motion';
 import { useRef } from 'react';
 import { Chapter } from '@/components/scroll/Chapter';
 import { trackEvent } from '@/lib/analytics';
+import { useDomOpacityKeyframes } from '@/lib/use-dom-opacity';
 
 // ── Locked copy — do not paraphrase ─────────────────────────────────────────
 const QUOTE = '\u201cGood work isn\u2019t just beautiful \u2014 it makes the brand understood the right way.\u201d';
@@ -33,18 +34,24 @@ const MEOW =
   'Every piece is held to the MEOW standard \u2014 Masterful, Engaging, Original, Wow.';
 
 // ── Scroll-linked beat: fade-in, hold, fade-out ──────────────────────────────
-function beat(
-  progress: ReturnType<typeof useScroll>['scrollYProgress'],
+function beatY(
+  progress: MotionValue<number>,
   start: number,
   end: number,
   last = false
 ) {
   const fadeIn  = start + (end - start) * 0.25;
   const fadeOut = last ? end : end - (end - start) * 0.25;
-  return {
-    opacity: useTransform(progress, [start, fadeIn, fadeOut, end], [0, 1, 1, last ? 1 : 0]),
-    y:       useTransform(progress, [start, fadeIn, fadeOut, end], [24, 0, 0, last ? 0 : -16]),
-  };
+  return useTransform(progress, [start, fadeIn, fadeOut, end], [24, 0, 0, last ? 0 : -16]);
+}
+
+function beatKeyframes(start: number, end: number, last = false): [number[], number[]] {
+  const fadeIn  = start + (end - start) * 0.25;
+  const fadeOut = last ? end : end - (end - start) * 0.25;
+  return [
+    [start, fadeIn, fadeOut, end],
+    [0, 1, 1, last ? 1 : 0],
+  ];
 }
 
 export default function Chapter08_TheStandard() {
@@ -71,14 +78,36 @@ export default function Chapter08_TheStandard() {
   });
 
   // Each beat spans 0.16 of progress; MEOW spans 0.20
-  const quoteStyle  = beat(scrollYProgress, 0.00, 0.16);
-  const p1Style     = beat(scrollYProgress, 0.16, 0.32);
-  const p2Style     = beat(scrollYProgress, 0.32, 0.48);
-  const p3Style     = beat(scrollYProgress, 0.48, 0.64);
-  const p4Style     = beat(scrollYProgress, 0.64, 0.80);
-  const meowStyle   = beat(scrollYProgress, 0.80, 1.00, true); // last — no fade-out
+  const quoteY = beatY(scrollYProgress, 0.00, 0.16);
+  const p1Y    = beatY(scrollYProgress, 0.16, 0.32);
+  const p2Y    = beatY(scrollYProgress, 0.32, 0.48);
+  const p3Y    = beatY(scrollYProgress, 0.48, 0.64);
+  const p4Y    = beatY(scrollYProgress, 0.64, 0.80);
+  const meowY  = beatY(scrollYProgress, 0.80, 1.00, true);
 
-  const beatStyles = [p1Style, p2Style, p3Style, p4Style];
+  const beatYs = [p1Y, p2Y, p3Y, p4Y];
+
+  const quoteRef = useRef<HTMLDivElement>(null);
+  const p1Ref    = useRef<HTMLDivElement>(null);
+  const p2Ref    = useRef<HTMLDivElement>(null);
+  const p3Ref    = useRef<HTMLDivElement>(null);
+  const p4Ref    = useRef<HTMLDivElement>(null);
+  const meowRef  = useRef<HTMLDivElement>(null);
+  const beatRefs = [p1Ref, p2Ref, p3Ref, p4Ref];
+
+  const [quoteIn, quoteOut] = beatKeyframes(0.00, 0.16);
+  const [p1In, p1Out]       = beatKeyframes(0.16, 0.32);
+  const [p2In, p2Out]       = beatKeyframes(0.32, 0.48);
+  const [p3In, p3Out]       = beatKeyframes(0.48, 0.64);
+  const [p4In, p4Out]       = beatKeyframes(0.64, 0.80);
+  const [meowInArr, meowOutArr] = beatKeyframes(0.80, 1.00, true);
+
+  useDomOpacityKeyframes(quoteRef, scrollYProgress, quoteIn, quoteOut);
+  useDomOpacityKeyframes(p1Ref,    scrollYProgress, p1In,    p1Out);
+  useDomOpacityKeyframes(p2Ref,    scrollYProgress, p2In,    p2Out);
+  useDomOpacityKeyframes(p3Ref,    scrollYProgress, p3In,    p3Out);
+  useDomOpacityKeyframes(p4Ref,    scrollYProgress, p4In,    p4Out);
+  useDomOpacityKeyframes(meowRef,  scrollYProgress, meowInArr, meowOutArr);
 
   // ── Reduced-motion fallback ─────────────────────────────────────────────
   if (reduce) {
@@ -121,7 +150,8 @@ export default function Chapter08_TheStandard() {
 
         {/* ── Philosophy quote — 0.00 → 0.16 ── */}
         <motion.div
-          style={{ opacity: quoteStyle.opacity, y: quoteStyle.y }}
+          ref={quoteRef}
+          style={{ opacity: 0, y: quoteY }}
           className="absolute inset-0 flex items-center justify-center px-8 md:px-16 pointer-events-none"
         >
           <blockquote className="font-display text-4xl sm:text-5xl md:text-7xl lg:text-[5.5rem] font-bold leading-tight tracking-tight text-white text-center max-w-5xl">
@@ -133,7 +163,8 @@ export default function Chapter08_TheStandard() {
         {PRINCIPLES.map((p, i) => (
           <motion.div
             key={p.num}
-            style={{ opacity: beatStyles[i].opacity, y: beatStyles[i].y }}
+            ref={beatRefs[i]}
+            style={{ opacity: 0, y: beatYs[i] }}
             className="absolute inset-0 flex items-center justify-center px-8 md:px-16 pointer-events-none"
           >
             <div className="text-center max-w-3xl space-y-4">
@@ -150,7 +181,8 @@ export default function Chapter08_TheStandard() {
 
         {/* ── MEOW footer — 0.80 → 1.00 ── */}
         <motion.div
-          style={{ opacity: meowStyle.opacity, y: meowStyle.y }}
+          ref={meowRef}
+          style={{ opacity: 0, y: meowY }}
           className="absolute inset-0 flex items-end justify-center pb-12 md:pb-16 px-8 pointer-events-none"
         >
           <p className="text-white/45 text-xs md:text-sm tracking-[0.2em] uppercase text-center max-w-2xl">
