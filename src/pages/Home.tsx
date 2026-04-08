@@ -8,19 +8,12 @@ import Chapter05_MakeItWork from '@/components/chapters/Chapter05_MakeItWork';
 import Chapter06_AudiCaseStudy from '@/components/chapters/Chapter06_AudiCaseStudy';
 import Chapter07_GreenlineCaseStudy from '@/components/chapters/Chapter07_GreenlineCaseStudy';
 import Chapter08_TheStandard from '@/components/chapters/Chapter08_TheStandard';
-
-function ChapterStub({ id, label, height = '100vh' }: { id: string; label: string; height?: string }) {
-  return (
-    <section id={id} style={{ height }} className="relative w-full flex items-center justify-center bg-black text-white/40 border-b border-white/5">
-      <span className="text-xs tracking-widest uppercase">{label}</span>
-    </section>
-  );
-}
+import Chapter09_ThePass from '@/components/chapters/Chapter09_ThePass';
 
 export default function Home() {
   return (
     <LenisProvider>
-      <main className="bg-black text-white">
+      <main id="main" className="bg-black text-white">
         <Chapter00_TheVoid />
         <Chapter01_ListenFirst />
         <Chapter02_PointTheDirection />
@@ -30,7 +23,7 @@ export default function Home() {
         <Chapter06_AudiCaseStudy />
         <Chapter07_GreenlineCaseStudy />
         <Chapter08_TheStandard />
-        <ChapterStub id="09-the-pass" label="09 · The Pass" height="300vh" />
+        <Chapter09_ThePass />
       </main>
     </LenisProvider>
   );
