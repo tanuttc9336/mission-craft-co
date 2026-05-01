@@ -31,3 +31,5 @@ dist-*/
 
 # Vite cache + ephemeral
 vite.config.ts.timestamp-*
+bun.lockb
+bun.lock
