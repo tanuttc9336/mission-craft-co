@@ -1,5 +1,6 @@
 import { motion, useReducedMotion, useScroll, useTransform, useMotionValueEvent, type MotionValue } from 'framer-motion';
 import { useRef } from 'react';
+import { useChapterCursor } from '@/contexts/CursorContext';
 import { Chapter } from '@/components/scroll/Chapter';
 import { trackEvent } from '@/lib/analytics';
 import { useDomOpacity } from '@/lib/use-dom-opacity';
@@ -50,6 +51,7 @@ function BtsStill({
 
 export default function Chapter03_MakeIt() {
   const containerRef = useRef<HTMLDivElement>(null);
+  useChapterCursor(containerRef, 'square');
   const reduce = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
@@ -116,6 +118,28 @@ export default function Chapter03_MakeIt() {
 
         {/* Black base */}
         <div className="absolute inset-0 bg-black/80" />
+
+        {/* Construction Blocks — bricks stacking up from the bottom */}
+        <div className="absolute bottom-6 left-6 md:left-10 pointer-events-none flex flex-col-reverse items-start gap-[3px] z-20">
+          {Array.from({ length: 10 }).map((_, i) => {
+            const t = 0.12 + i * 0.07;
+            const blockY = useTransform(scrollYProgress, [t, t + 0.08], [60, 0]);
+            const blockO = useTransform(scrollYProgress, [t, t + 0.08], [0, 1]);
+            return (
+              <motion.div
+                key={i}
+                className="bg-white/10 border border-white/15"
+                style={{
+                  width: `${16 + (i % 3) * 6}px`,
+                  height: '14px',
+                  y: blockY,
+                  opacity: blockO,
+                  marginLeft: `${(i % 2) * 8}px`,
+                }}
+              />
+            );
+          })}
+        </div>
 
         {/* Layout */}
         <div className="absolute inset-0 flex flex-col px-8 md:px-12 py-10 gap-4">

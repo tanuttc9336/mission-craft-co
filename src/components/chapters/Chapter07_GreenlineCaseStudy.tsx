@@ -1,5 +1,6 @@
 import { motion, useReducedMotion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import { useRef } from 'react';
+import { useChapterCursor } from '@/contexts/CursorContext';
 import { ScrollSequence } from '@/components/scroll/ScrollSequence';
 import { StickyCaption } from '@/components/scroll/StickyCaption';
 import { asset } from '@/lib/asset-urls';
@@ -58,6 +59,7 @@ function LabStillOverlay({
 
 export default function Chapter07_GreenlineCaseStudy() {
   const containerRef = useRef<HTMLDivElement>(null);
+  useChapterCursor(containerRef, 'default');
   const reduce = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
@@ -129,6 +131,27 @@ export default function Chapter07_GreenlineCaseStudy() {
         containerHeight="500vh"
         posterSrc={POSTER}
       />
+
+      {/* Parallax Diagonal Lines — cinematic depth */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-[1]">
+        {[
+          { x: '25%', rotate: -30, speed: 0.4, opacity: 0.035 },
+          { x: '65%', rotate: 40, speed: 0.25, opacity: 0.03 },
+        ].map((line, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-px bg-white"
+            style={{
+              left: line.x,
+              top: '-20%',
+              height: '140%',
+              rotate: line.rotate,
+              opacity: line.opacity,
+              y: useTransform(scrollYProgress, [0, 1], [0, -200 * line.speed]),
+            }}
+          />
+        ))}
+      </div>
 
       {/* Lab still overlays — cut in between caption beats */}
       {/* Lab 1: between caption 1 end (0.25) and caption 2 start (0.45) */}

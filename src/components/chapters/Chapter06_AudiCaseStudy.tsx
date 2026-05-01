@@ -1,5 +1,6 @@
 import { useRef } from 'react';
-import { useReducedMotion, useScroll, useMotionValueEvent } from 'framer-motion';
+import { motion, useReducedMotion, useScroll, useMotionValueEvent, useTransform } from 'framer-motion';
+import { useChapterCursor } from '@/contexts/CursorContext';
 import { ScrollSequence } from '@/components/scroll/ScrollSequence';
 import { StickyCaption } from '@/components/scroll/StickyCaption';
 import { asset } from '@/lib/asset-urls';
@@ -24,6 +25,7 @@ function PlaceholderPoster({ className }: { className?: string }) {
 
 export default function Chapter06_AudiCaseStudy() {
   const sectionRef = useRef<HTMLElement>(null);
+  useChapterCursor(sectionRef, 'default');
   const reduce = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
@@ -92,6 +94,28 @@ export default function Chapter06_AudiCaseStudy() {
             Case 01 · Audi Thailand
           </p>
         </div>
+      </div>
+
+      {/* Parallax Diagonal Lines — cinematic depth */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-[1]">
+        {[
+          { x: '15%', rotate: 35, speed: 0.3, opacity: 0.04 },
+          { x: '75%', rotate: -25, speed: 0.5, opacity: 0.03 },
+          { x: '45%', rotate: 45, speed: 0.2, opacity: 0.025 },
+        ].map((line, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-px bg-white"
+            style={{
+              left: line.x,
+              top: '-20%',
+              height: '140%',
+              rotate: line.rotate,
+              opacity: line.opacity,
+              y: useTransform(scrollYProgress, [0, 1], [0, -200 * line.speed]),
+            }}
+          />
+        ))}
       </div>
 
       {/* Canvas image sequence — manages its own 500vh sticky container */}

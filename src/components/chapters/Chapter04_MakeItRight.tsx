@@ -1,5 +1,6 @@
 import { motion, useReducedMotion, useScroll, useTransform, useMotionValueEvent, MotionValue } from 'framer-motion';
-import { useRef, forwardRef } from 'react';
+import { useRef, useState, useEffect, forwardRef } from 'react';
+import { useChapterCursor } from '@/contexts/CursorContext';
 import { Chapter } from '@/components/scroll/Chapter';
 import { trackEvent } from '@/lib/analytics';
 import { useDomOpacity } from '@/lib/use-dom-opacity';
@@ -48,12 +49,52 @@ BeforeAfterWipe.displayName = 'BeforeAfterWipe';
 
 export default function Chapter04_MakeItRight() {
   const containerRef = useRef<HTMLDivElement>(null);
+  useChapterCursor(containerRef, 'line');
   const reduce = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
   });
+
+  // ── Ghost Typo ─────────────────────────────────────────────────────────
+  // Essence of "Make It Right": refinement shown as a live correction.
+  // Headline starts as "Refime until it lands." Once the user has actually
+  // arrived at the chapter AND the headline fade is complete, a blinking
+  // cursor appears after "Refim", erases the "m", then types an "n".
+  //
+  // Phases:
+  //   idle    — typo shown, no cursor (default on refresh & scroll-in)
+  //   cursor  — cursor blinks after the mutable char (user notices typo)
+  //   erase   — mutable char removed
+  //   type    — "n" typed in
+  //   done    — cursor hidden, headline reads correctly
+  const HEADLINE_PREFIX = 'Refi';
+  const HEADLINE_SUFFIX = 'e until it lands.';
+  type GhostPhase = 'idle' | 'cursor' | 'erase' | 'type' | 'done';
+  const [ghostPhase, setGhostPhase] = useState<GhostPhase>('idle');
+  const [mutableChar, setMutableChar] = useState('m');
+  const ghostArmedRef = useRef(false);
+  const ghostFiredRef = useRef(false);
+
+  useEffect(() => {
+    const node = containerRef.current;
+    if (!node) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            ghostArmedRef.current = true;
+            io.disconnect();
+            break;
+          }
+        }
+      },
+      { threshold: 0 }
+    );
+    io.observe(node);
+    return () => io.disconnect();
+  }, []);
 
   // ── Analytics ───────────────────────────────────────────────────────────
   const reachedRef = useRef(false);
@@ -66,6 +107,16 @@ export default function Chapter04_MakeItRight() {
     if (v > 0.95 && !completedRef.current) {
       completedRef.current = true;
       trackEvent('chapter_completed', { chapter: 4 });
+    }
+    // Trigger ghost typo sequence — armed + past headline fade.
+    if (ghostArmedRef.current && v > 0.15 && !ghostFiredRef.current) {
+      ghostFiredRef.current = true;
+      // Sequence: idle → (600ms dwell reading) → cursor appears → (700ms blink)
+      //         → erase m → (260ms) → type n → (700ms) → done/hide cursor
+      setTimeout(() => setGhostPhase('cursor'), 600);
+      setTimeout(() => { setGhostPhase('erase'); setMutableChar(''); }, 1300);
+      setTimeout(() => { setGhostPhase('type'); setMutableChar('n'); }, 1560);
+      setTimeout(() => setGhostPhase('done'), 2260);
     }
   });
 
@@ -132,6 +183,24 @@ export default function Chapter04_MakeItRight() {
   return (
     <div ref={containerRef}>
       <Chapter id="04-make-it-right" pinned height="400vh">
+        {/* Scan Line — quality control sweep */}
+        {(() => {
+          const scanY = useTransform(scrollYProgress, [0.05, 0.9], [0, 100]);
+          const scanTop = useTransform(scanY, (v: number) => `${v}%`);
+          const scanOpacity = useTransform(scrollYProgress, [0.05, 0.12, 0.85, 0.92], [0, 0.6, 0.6, 0]);
+          return (
+            <motion.div
+              className="absolute left-0 right-0 h-px pointer-events-none z-10"
+              style={{
+                top: scanTop,
+                opacity: scanOpacity,
+                background: 'white',
+                boxShadow: '0 0 20px 3px rgba(255,255,255,0.15), 0 0 60px 6px rgba(255,255,255,0.06)',
+              }}
+            />
+          );
+        })()}
+
         <div className="absolute inset-0 bg-black flex flex-col px-8 md:px-12 py-10 gap-4">
 
           {/* Header */}
@@ -145,7 +214,12 @@ export default function Chapter04_MakeItRight() {
               style={{ opacity: 0, y: headlineY }}
               className="font-display text-xl md:text-3xl font-bold text-white leading-tight"
             >
-              Refine until it lands.
+              {HEADLINE_PREFIX}
+              <span>{mutableChar}</span>
+              {ghostPhase !== 'idle' && ghostPhase !== 'done' && (
+                <span aria-hidden className="ghost-cursor" />
+              )}
+              {HEADLINE_SUFFIX}
             </motion.h2>
           </div>
 

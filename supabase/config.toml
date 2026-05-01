@@ -1,0 +1,7 @@
+project_id = "cotanyifydbfnzzwhxsb"
+
+[functions.content-ideas]
+verify_jwt = false
+
+[functions.notify-on-brief]
+verify_jwt = false

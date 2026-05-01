@@ -1,0 +1,869 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Undercat — Funnel Map & Action Plan</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0a0a0a; --paper:#f7f5f1; --muted:#8a857c; --line:#1a1a1a;
+    --accent:#c9a24b; --red:#d94a3a; --amber:#e6a94a; --green:#4a9068;
+  }
+  html,body{background:var(--paper);color:var(--ink);font-family:'IBM Plex Thai','Inter',sans-serif;}
+  .serif{font-family:'Inter','IBM Plex Thai',serif;letter-spacing:-0.02em;}
+  .hairline{border-color:rgba(10,10,10,.12);}
+  .stage{transition:all .3s;}
+  .stage:hover{transform:translateY(-2px);}
+  .tag{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;}
+  .chip{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:500;}
+  .chip-red{background:#fde8e5;color:#9b2e22;}
+  .chip-amber{background:#fbeed4;color:#8a6318;}
+  .chip-green{background:#dfefe5;color:#2d6a48;}
+  .chip-ink{background:#eae7e0;color:#3a362f;}
+  .funnel-arrow{width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:18px solid rgba(10,10,10,.15);margin:0 auto;}
+  .divider{height:1px;background:linear-gradient(to right,transparent,rgba(10,10,10,.2),transparent);}
+  .metric{font-variant-numeric:tabular-nums;}
+  .p1{color:var(--red);}
+  .p2{color:var(--amber);}
+  .p3{color:var(--green);}
+  .scroll-reveal{opacity:0;transform:translateY(12px);transition:all .6s;}
+  .scroll-reveal.in{opacity:1;transform:translateY(0);}
+  details summary{cursor:pointer;list-style:none;}
+  details summary::-webkit-details-marker{display:none;}
+  details[open] .chev{transform:rotate(90deg);}
+  .chev{transition:transform .2s;display:inline-block;}
+</style>
+</head>
+<body class="antialiased">
+
+<!-- Header -->
+<header class="border-b hairline">
+  <div class="max-w-6xl mx-auto px-6 py-10">
+    <div class="tag text-neutral-500 mb-3">Undercat Creative · Strategy Brief · 17 เม.ย. 2026</div>
+    <h1 class="serif text-4xl md:text-5xl font-semibold leading-tight">Funnel Map &amp; Conversion Plan</h1>
+    <p class="text-neutral-600 mt-3 max-w-2xl">แผนที่ทั้ง funnel ของ undercatcreatives.com — จาก Awareness ถึง Retention พร้อม gap analysis และ action list ที่เรียงตาม priority</p>
+    <div class="mt-6 flex flex-wrap gap-2 text-xs">
+      <span class="chip chip-ink">Scope: Full funnel</span>
+      <span class="chip chip-ink">Target: Mixed (Audi-tier + Greenline-tier)</span>
+      <span class="chip chip-ink">Baseline revenue: 690K / ปี 2568</span>
+      <span class="chip chip-ink">Goal: 200K profit/เดือน</span>
+    </div>
+  </div>
+</header>
+
+<!-- Context snapshot -->
+<section class="max-w-6xl mx-auto px-6 py-10">
+  <div class="grid md:grid-cols-4 gap-4">
+    <div class="border hairline p-5 rounded">
+      <div class="tag text-neutral-500">Revenue 2568</div>
+      <div class="serif text-3xl mt-2 metric">690K</div>
+      <div class="text-xs text-neutral-500 mt-1">กำไร 82K · margin 11.9%</div>
+    </div>
+    <div class="border hairline p-5 rounded">
+      <div class="tag text-neutral-500">Top clients</div>
+      <div class="serif text-2xl mt-2">Audi · Greenline</div>
+      <div class="text-xs text-neutral-500 mt-1">Redline · Driveline · Ranee · Omazz</div>
+    </div>
+    <div class="border hairline p-5 rounded">
+      <div class="tag text-neutral-500">Site live</div>
+      <div class="serif text-2xl mt-2">10 เม.ย. 2026</div>
+      <div class="text-xs text-neutral-500 mt-1">Cloudflare Pages · 7 วัน</div>
+    </div>
+    <div class="border hairline p-5 rounded">
+      <div class="tag text-neutral-500">Gap to goal</div>
+      <div class="serif text-3xl mt-2 metric">26.6x</div>
+      <div class="text-xs text-neutral-500 mt-1">monthly profit multiple</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider max-w-6xl mx-auto"></div>
+
+<!-- Funnel visualization -->
+<section class="max-w-6xl mx-auto px-6 py-14">
+  <div class="tag text-neutral-500 mb-2">01 / The Funnel</div>
+  <h2 class="serif text-3xl md:text-4xl font-semibold mb-2">ลูกค้าเดินจาก "ไม่รู้จัก" ถึง "ซื้อซ้ำ" ยังไง</h2>
+  <p class="text-neutral-600 max-w-2xl mb-10">แต่ละ stage มี: ลูกค้ามาจากไหน · เห็นอะไรที่ Undercat · ควรวัดอะไร · ปัจจุบันติดตรงไหน · ควรแก้อะไรก่อน</p>
+
+  <!-- TOFU -->
+  <article class="stage border hairline rounded-lg p-6 md:p-8 mb-3 bg-white/40">
+    <div class="flex items-start justify-between flex-wrap gap-4">
+      <div>
+        <div class="tag text-neutral-500">Stage 1 · TOFU</div>
+        <h3 class="serif text-2xl font-semibold mt-1">Awareness — "เขายังไม่รู้จักเรา"</h3>
+      </div>
+      <div class="text-right">
+        <div class="tag text-neutral-500">Est. conversion</div>
+        <div class="serif text-xl metric">100% → 3-5%</div>
+        <div class="text-[11px] text-neutral-500">visit → site visit</div>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-4 gap-4 mt-6 text-sm">
+      <div>
+        <div class="tag text-neutral-500 mb-2">Sources</div>
+        <ul class="space-y-1 text-neutral-700">
+          <li>Google organic (brand + keyword)</li>
+          <li>IG/Reels portfolio</li>
+          <li>LinkedIn (Pao as CD)</li>
+          <li>Client referral / word-of-mouth</li>
+          <li>LINE @undercatcreatives</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tag text-neutral-500 mb-2">Measure</div>
+        <ul class="space-y-1 text-neutral-700">
+          <li>Unique visitors/เดือน</li>
+          <li>Brand search volume</li>
+          <li>Referring domains</li>
+          <li>Source breakdown</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tag text-neutral-500 mb-2">Current state</div>
+        <ul class="space-y-1 text-neutral-700">
+          <li><span class="chip chip-red">critical</span> Google ยัง index content เก่า (MEOW, old tagline)</li>
+          <li><span class="chip chip-amber">weak</span> ไม่มี blog/editorial content</li>
+          <li><span class="chip chip-amber">weak</span> ไม่ได้ยิง ads / ไม่มี paid</li>
+          <li><span class="chip chip-ink">ok</span> IG + LINE ยังเดินอยู่</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tag text-neutral-500 mb-2">Priority actions</div>
+        <ul class="space-y-1 text-neutral-700">
+          <li><span class="p1 font-semibold">P1</span> Re-submit sitemap ใน GSC</li>
+          <li><span class="p1 font-semibold">P1</span> Request re-indexing หน้า /credentials</li>
+          <li><span class="p2 font-semibold">P2</span> เขียน 3 case study detail pages</li>
+          <li><span class="p3 font-semibold">P3</span> Editorial plan (1 post/เดือน)</li>
+        </ul>
+      </div>
+    </div>
+  </article>
+  <div class="funnel-arrow"></div>
+
+  <!-- MOFU -->
+  <article class="stage border hairline rounded-lg p-6 md:p-8 mb-3 bg-white/40">
+    <div class="flex items-start justify-between flex-wrap gap-4">
+      <div>
+        <div class="tag text-neutral-500">Stage 2 · MOFU</div>
+        <h3 class="serif text-2xl font-semibold mt-1">Interest — "เขาอ่านแล้ว กำลังชั่งว่าเราน่าเชื่อไหม"</h3>
+      </div>
+      <div class="text-right">
+        <div class="tag text-neutral-500">Est. conversion</div>
+        <div class="serif text-xl metric">~20-35%</div>
+        <div class="text-[11px] text-neutral-500">visit → engaged</div>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-4 gap-4 mt-6 text-sm">
+      <div>
+        <div class="tag text-neutral-500 mb-2">Touchpoints</div>
+        <ul class="space-y-1 text-neutral-700">
+          <li>Hero + Who We Are</li>
+          <li>Principles (4 ข้อ)</li>
+          <li>Industries (7 หมวด)</li>
+          <li>Featured Case Studies (6)</li>
+          <li>How We Work (5 steps)</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tag text-neutral-500 mb-2">Measure</div>
+        <ul class="space-y-1 text-neutral-700">
+          <li>Avg. time on page</li>
+          <li>Scroll depth (50/75/100)</li>
+          <li>Case study click rate</li>
+          <li>Bounce rate</li>
+          <li>Return visitor %</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tag text-neutral-500 mb-2">Current state</div>
+        <ul class="space-y-1 text-neutral-700">
+          <li><span class="chip chip-green">strong</span> Copy/Tone on-brand ("direction")</li>
+          <li><span class="chip chip-green">strong</span> Principles ชัดเจน differentiator</li>
+          <li><span class="chip chip-red">gap</span> Case study detail pages ยังไม่มี</li>
+          <li><span class="chip chip-red">gap</span> Testimonials/quotes เป็นตัวอักษร ไม่มี</li>
+          <li><span class="chip chip-amber">weak</span> ไม่มี press/award badges</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tag text-neutral-500 mb-2">Priority actions</div>
+        <ul class="space-y-1 text-neutral-700">
+          <li><span class="p1 font-semibold">P1</span> สร้าง 3 case study detail pages (Audi · Greenline · Redline)</li>
+          <li><span class="p1 font-semibold">P1</span> เพิ่ม testimonial section (3 quotes)</li>
+          <li><span class="p2 font-semibold">P2</span> Client logo strip ด้านบน case studies</li>
+          <li><span class="p3 font-semibold">P3</span> Process video (30-sec how-we-work)</li>
+        </ul>
+      </div>
+    </div>
+  </article>
+  <div class="funnel-arrow"></div>
+
+  <!-- BOFU -->
+  <article class="stage border hairline rounded-lg p-6 md:p-8 mb-3 bg-white/40">
+    <div class="flex items-start justify-between flex-wrap gap-4">
+      <div>
+        <div class="tag text-neutral-500">Stage 3 · BOFU</div>
+        <h3 class="serif text-2xl font-semibold mt-1">Intent — "เขาเริ่มถาม: ราคาเท่าไร ติดต่อยังไง"</h3>
+      </div>
+      <div class="text-right">
+        <div class="tag text-neutral-500">Est. conversion</div>
+        <div class="serif text-xl metric">~25-35%</div>
+        <div class="text-[11px] text-neutral-500">engaged → lead</div>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-4 gap-4 mt-6 text-sm">
+      <div>
+        <div class="tag text-neutral-500 mb-2">Touchpoints</div>
+        <ul class="space-y-1 text-neutral-700">
+          <li>Rate Card (3 packages)</li>
+          <li>CTA: Send a Brief → /briefing-room</li>
+          <li>CTA: LINE @undercatcreatives</li>
+          <li>CTA: Email direct</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tag text-neutral-500 mb-2">Measure</div>
+        <ul class="space-y-1 text-neutral-700">
+          <li>Brief submissions/เดือน</li>
+          <li>LINE open rate</li>
+          <li>Email inquiries</li>
+          <li>CTA click-through</li>
+          <li>Form completion rate</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tag text-neutral-500 mb-2">Current state</div>
+        <ul class="space-y-1 text-neutral-700">
+          <li><span class="chip chip-green">strong</span> Pricing ชัด 3 tiers (49/79/109K)</li>
+          <li><span class="chip chip-amber">weak</span> /briefing-room อาจหนักเกินสำหรับ first touch</li>
+          <li><span class="chip chip-red">gap</span> ไม่มี "Book a Call" (Calendly)</li>
+          <li><span class="chip chip-red">gap</span> ไม่มี lightweight lead capture</li>
+          <li><span class="chip chip-amber">weak</span> ไม่มี urgency/availability signal</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tag text-neutral-500 mb-2">Priority actions</div>
+        <ul class="space-y-1 text-neutral-700">
+          <li><span class="p1 font-semibold">P1</span> เพิ่ม "Book a 20-min call" (Calendly/Cal.com)</li>
+          <li><span class="p1 font-semibold">P1</span> เพิ่ม lead magnet: Pricing PDF (email gate)</li>
+          <li><span class="p2 font-semibold">P2</span> Sticky CTA bar mobile</li>
+          <li><span class="p2 font-semibold">P2</span> "Currently booking X Q3" availability signal</li>
+        </ul>
+      </div>
+    </div>
+  </article>
+  <div class="funnel-arrow"></div>
+
+  <!-- CLOSE -->
+  <article class="stage border hairline rounded-lg p-6 md:p-8 mb-3 bg-white/40">
+    <div class="flex items-start justify-between flex-wrap gap-4">
+      <div>
+        <div class="tag text-neutral-500">Stage 4 · CLOSE</div>
+        <h3 class="serif text-2xl font-semibold mt-1">Decision — "เรากำลังคุยกันจริง มี QT แล้ว"</h3>
+      </div>
+      <div class="text-right">
+        <div class="tag text-neutral-500">Est. conversion</div>
+        <div class="serif text-xl metric">~15-30%</div>
+        <div class="text-[11px] text-neutral-500">lead → won</div>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-4 gap-4 mt-6 text-sm">
+      <div>
+        <div class="tag text-neutral-500 mb-2">Touchpoints</div>
+        <ul class="space-y-1 text-neutral-700">
+          <li>Discovery call</li>
+          <li>Quotation (billing-agent)</li>
+          <li>Proposal deck</li>
+          <li>Contract + deposit</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tag text-neutral-500 mb-2">Measure</div>
+        <ul class="space-y-1 text-neutral-700">
+          <li>Lead → QT %</li>
+          <li>QT → Win %</li>
+          <li>Avg. deal size</li>
+          <li>Sales cycle (days)</li>
+          <li>Win reason / Lost reason</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tag text-neutral-500 mb-2">Current state</div>
+        <ul class="space-y-1 text-neutral-700">
+          <li><span class="chip chip-green">strong</span> QT process clean (billing-agent)</li>
+          <li><span class="chip chip-amber">weak</span> ไม่มี tracker ใน Notion Pipeline DB</li>
+          <li><span class="chip chip-red">gap</span> ไม่มี proposal template สำหรับ brand-tier</li>
+          <li><span class="chip chip-amber">weak</span> Win/Loss analysis ไม่ทำ</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tag text-neutral-500 mb-2">Priority actions</div>
+        <ul class="space-y-1 text-neutral-700">
+          <li><span class="p2 font-semibold">P2</span> Log ทุก lead ใน Pipeline DB</li>
+          <li><span class="p2 font-semibold">P2</span> Proposal template: brand-tier + SME-tier</li>
+          <li><span class="p3 font-semibold">P3</span> Post-mortem ทุก lost deal</li>
+        </ul>
+      </div>
+    </div>
+  </article>
+  <div class="funnel-arrow"></div>
+
+  <!-- RETAIN -->
+  <article class="stage border hairline rounded-lg p-6 md:p-8 mb-3 bg-white/40">
+    <div class="flex items-start justify-between flex-wrap gap-4">
+      <div>
+        <div class="tag text-neutral-500">Stage 5 · RETAIN &amp; EXPAND</div>
+        <h3 class="serif text-2xl font-semibold mt-1">Loyalty — "เขาจ้างซ้ำ และแนะนำต่อ"</h3>
+      </div>
+      <div class="text-right">
+        <div class="tag text-neutral-500">Est. upside</div>
+        <div class="serif text-xl metric">3-5x LTV</div>
+        <div class="text-[11px] text-neutral-500">retainer vs one-off</div>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-4 gap-4 mt-6 text-sm">
+      <div>
+        <div class="tag text-neutral-500 mb-2">Touchpoints</div>
+        <ul class="space-y-1 text-neutral-700">
+          <li>Delivery handover</li>
+          <li>Retrospective / NPS</li>
+          <li>Retainer upsell</li>
+          <li>Referral ask</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tag text-neutral-500 mb-2">Measure</div>
+        <ul class="space-y-1 text-neutral-700">
+          <li>Repeat rate</li>
+          <li>Retainer %</li>
+          <li>Referral count</li>
+          <li>Client NPS</li>
+          <li>LTV by client</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tag text-neutral-500 mb-2">Current state</div>
+        <ul class="space-y-1 text-neutral-700">
+          <li><span class="chip chip-green">proven</span> Audi = retainer + Owned License</li>
+          <li><span class="chip chip-green">proven</span> Greenline = รายเดือน</li>
+          <li><span class="chip chip-red">gap</span> ไม่มี testimonial collection process</li>
+          <li><span class="chip chip-red">gap</span> ไม่มี referral program</li>
+          <li><span class="chip chip-amber">weak</span> Retainer upsell ไม่เป็นระบบ</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tag text-neutral-500 mb-2">Priority actions</div>
+        <ul class="space-y-1 text-neutral-700">
+          <li><span class="p1 font-semibold">P1</span> Post-project review → request testimonial + logo permission</li>
+          <li><span class="p2 font-semibold">P2</span> Retainer offer pitch deck</li>
+          <li><span class="p3 font-semibold">P3</span> Referral bonus (10% credit หรือ 1 เดือน retainer ฟรี)</li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+</section>
+
+<div class="divider max-w-6xl mx-auto"></div>
+
+<!-- Site Audit Summary -->
+<section class="max-w-6xl mx-auto px-6 py-14">
+  <div class="tag text-neutral-500 mb-2">02 / Live Site Audit</div>
+  <h2 class="serif text-3xl md:text-4xl font-semibold mb-8">undercatcreatives.com/credentials — จุดแข็ง vs gap</h2>
+
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="border hairline rounded p-6">
+      <h3 class="serif text-xl font-semibold mb-4 flex items-center gap-2">
+        <span class="chip chip-green">strong</span> ทำได้ดี
+      </h3>
+      <ul class="space-y-3 text-sm text-neutral-700">
+        <li><strong>Hero clarity</strong> — "Content with direction. Production with taste." สื่อ positioning ใน 5 วินาที</li>
+        <li><strong>Who We Are fragment</strong> — scroll-linked word reveal ให้ memorable moment</li>
+        <li><strong>Principles ชัด 4 ข้อ</strong> — "Visuals must have a reason" คือ differentiator จริง ไม่ใช่ cliché</li>
+        <li><strong>Pricing transparency</strong> — 3 tiers 49/79/109K ตัดข้ามคู่แข่งที่ไม่ยอมโชว์ราคา</li>
+        <li><strong>Dual CTA</strong> — Brief form + LINE ครบสำหรับตลาด TH</li>
+        <li><strong>Production quality</strong> — YouTube hero video, Framer Motion ดูเหมือน agency premium</li>
+      </ul>
+    </div>
+
+    <div class="border hairline rounded p-6">
+      <h3 class="serif text-xl font-semibold mb-4 flex items-center gap-2">
+        <span class="chip chip-red">gap</span> ต้องแก้
+      </h3>
+      <ul class="space-y-3 text-sm text-neutral-700">
+        <li><strong>SEO index เก่าค้างอยู่</strong> — Google ยัง serve "MEOW philosophy" แม้ site ใหม่ deploy 10 เม.ย. แล้ว</li>
+        <li><strong>Case study detail pages ว่าง</strong> — 6 cards บอก "เราทำ" แต่ไม่มีที่ให้กดเข้าไปอ่านลึก</li>
+        <li><strong>Testimonial quotes ไม่มี</strong> — โชว์ client logo ได้ แต่ไม่มีเสียงลูกค้าจริงบอกว่าได้อะไร</li>
+        <li><strong>ไม่มี "Book a Call"</strong> — brief form หนักเกินสำหรับคนเพิ่งรู้จัก, Audi-tier คาดหวัง call ก่อน</li>
+        <li><strong>ไม่มี schema markup / Organization JSON-LD</strong> — ทำให้ SERP ไม่ rich</li>
+        <li><strong>ไม่มี lead magnet</strong> — ไม่มี email capture สำหรับคนที่ยังไม่พร้อมคุย</li>
+        <li><strong>ไม่มี availability/urgency signal</strong> — ไม่มี "booking Q3 now" หรือ "2 slots left"</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider max-w-6xl mx-auto"></div>
+
+<!-- Priority Action List -->
+<section class="max-w-6xl mx-auto px-6 py-14">
+  <div class="tag text-neutral-500 mb-2">03 / Action List</div>
+  <h2 class="serif text-3xl md:text-4xl font-semibold mb-2">เรียง priority ตาม impact/effort</h2>
+  <p class="text-neutral-600 mb-8 max-w-2xl">🔴 P1 = ทำ week นี้ · 🟡 P2 = ทำใน 30 วัน · 🟢 P3 = 60-90 วัน</p>
+
+  <!-- P1 -->
+  <div class="mb-8">
+    <h3 class="serif text-2xl font-semibold mb-4 flex items-center gap-2"><span class="p1">🔴</span> Priority 1 — ทำภายใน 7 วัน</h3>
+    <div class="space-y-3">
+      <details class="border hairline rounded p-5" open>
+        <summary class="flex items-center gap-3">
+          <span class="chev">▸</span>
+          <span class="font-semibold">P1.1 · Fix SEO re-indexing</span>
+          <span class="ml-auto text-xs text-neutral-500">effort: 1 ชม · impact: สูงมาก</span>
+        </summary>
+        <div class="mt-4 pl-6 text-sm text-neutral-700 space-y-2">
+          <p><strong>ปัญหา:</strong> Google ยัง index content เก่า (MEOW philosophy, "Bangkok's untold stories") แม้ site ใหม่ deploy 7 วันแล้ว</p>
+          <p><strong>Action:</strong></p>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Generate sitemap.xml ใส่ใน /public</li>
+            <li>Submit sitemap ใน Google Search Console</li>
+            <li>Use URL Inspection tool กด "Request Indexing" ให้ทั้ง / และ /credentials</li>
+            <li>Verify robots.txt ไม่ block crawling</li>
+          </ul>
+          <p><strong>ผลที่ได้:</strong> Google serve content ใหม่ใน 3-7 วัน, brand search จะเจอ positioning ที่ update แล้ว</p>
+        </div>
+      </details>
+
+      <details class="border hairline rounded p-5">
+        <summary class="flex items-center gap-3">
+          <span class="chev">▸</span>
+          <span class="font-semibold">P1.2 · สร้าง 3 case study detail pages</span>
+          <span class="ml-auto text-xs text-neutral-500">effort: 2-3 วัน · impact: สูง</span>
+        </summary>
+        <div class="mt-4 pl-6 text-sm text-neutral-700 space-y-2">
+          <p><strong>ปัญหา:</strong> หน้า credentials มี 6 case cards แต่กดเข้าไปไม่มี detail — คนที่ serious จะหลุดไป</p>
+          <p><strong>Action:</strong> สร้าง /case-study/[slug] สำหรับ 3 ตัวที่สำคัญที่สุด:</p>
+          <ul class="list-disc pl-5 space-y-1">
+            <li><strong>Audi Launch Films</strong> — positioning brand-tier buyer</li>
+            <li><strong>Greenline Golf Lab</strong> — positioning retainer/SME buyer</li>
+            <li><strong>Lim Lao Ngow</strong> — positioning local heritage/F&amp;B buyer</li>
+          </ul>
+          <p><strong>Format per page:</strong> Challenge → Direction → Execution → Outcome (ตัวเลขได้ยิ่งดี) → Client quote</p>
+          <p><strong>Brief สำหรับ brand-voice:</strong> เล่าแบบ business case ไม่ใช่ "reel โชว์ฝีมือ"</p>
+        </div>
+      </details>
+
+      <details class="border hairline rounded p-5">
+        <summary class="flex items-center gap-3">
+          <span class="chev">▸</span>
+          <span class="font-semibold">P1.3 · เพิ่ม testimonial section</span>
+          <span class="ml-auto text-xs text-neutral-500">effort: 1 วัน · impact: สูง</span>
+        </summary>
+        <div class="mt-4 pl-6 text-sm text-neutral-700 space-y-2">
+          <p><strong>ปัญหา:</strong> ไม่มี social proof จากปากลูกค้า — คู่แข่งทุกเจ้ามี เราไม่มี</p>
+          <p><strong>Action:</strong> ขอ quote + permission-to-use 3 คน — โฟกัสที่ "ได้อะไร" ไม่ใช่ "ทำสวย"</p>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Audi contact (โฟกัส direction/taste)</li>
+            <li>โปรอู๋ Greenline (โฟกัส retainer reliability)</li>
+            <li>ลิ้ม Redline หรือ Ranee (โฟกัส business outcome)</li>
+          </ul>
+          <p><strong>Placement:</strong> หลัง Case Studies section, ก่อน Rate Card</p>
+        </div>
+      </details>
+
+      <details class="border hairline rounded p-5">
+        <summary class="flex items-center gap-3">
+          <span class="chev">▸</span>
+          <span class="font-semibold">P1.4 · เพิ่ม "Book a 20-min call" CTA</span>
+          <span class="ml-auto text-xs text-neutral-500">effort: 2-3 ชม · impact: สูง</span>
+        </summary>
+        <div class="mt-4 pl-6 text-sm text-neutral-700 space-y-2">
+          <p><strong>ปัญหา:</strong> Brief form หนักเกินสำหรับ cold lead, Audi-tier ลูกค้าคาดว่าคุยก่อน</p>
+          <p><strong>Action:</strong> Setup Cal.com / Calendly — 20 นาที discovery call, ฟรี, ไม่มีเงื่อนไข</p>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>เพิ่ม CTA ใน Hero + หลัง Pricing + CTA section</li>
+            <li>Copy: "Not sure where to start? Book a 20-min fit call."</li>
+            <li>Embed widget หรือ link out</li>
+          </ul>
+          <p><strong>ผลที่ได้:</strong> Lead capture สำหรับคนที่ยังไม่พร้อม submit brief</p>
+        </div>
+      </details>
+
+      <details class="border hairline rounded p-5">
+        <summary class="flex items-center gap-3">
+          <span class="chev">▸</span>
+          <span class="font-semibold">P1.5 · Post-project testimonial process</span>
+          <span class="ml-auto text-xs text-neutral-500">effort: 1 ชม SOP · impact: compounding</span>
+        </summary>
+        <div class="mt-4 pl-6 text-sm text-neutral-700 space-y-2">
+          <p><strong>ปัญหา:</strong> ทุก project จบไปโดยไม่เก็บ asset สำหรับ marketing</p>
+          <p><strong>Action:</strong> SOP — ทุก delivery เสร็จ ให้ส่ง 3 คำถาม:</p>
+          <ol class="list-decimal pl-5 space-y-1">
+            <li>ก่อนเจอเรา คุณเจอปัญหาอะไร?</li>
+            <li>สิ่งที่เราส่งมอบเปลี่ยนอะไรในธุรกิจ?</li>
+            <li>ถ้าจะแนะนำเพื่อน จะพูดว่ายังไง?</li>
+          </ol>
+          <p>+ ขอ permission ใช้ logo + quote + behind-the-scenes photos</p>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <!-- P2 -->
+  <div class="mb-8">
+    <h3 class="serif text-2xl font-semibold mb-4 flex items-center gap-2"><span class="p2">🟡</span> Priority 2 — ทำใน 30 วัน</h3>
+    <div class="space-y-3">
+      <details class="border hairline rounded p-5">
+        <summary class="flex items-center gap-3">
+          <span class="chev">▸</span>
+          <span class="font-semibold">P2.1 · Schema markup + technical SEO</span>
+          <span class="ml-auto text-xs text-neutral-500">effort: 1 วัน · impact: กลาง-สูง</span>
+        </summary>
+        <div class="mt-4 pl-6 text-sm text-neutral-700 space-y-2">
+          <p><strong>Action:</strong></p>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Organization JSON-LD (name, logo, address, sameAs social)</li>
+            <li>LocalBusiness schema (address, priceRange, serviceArea Bangkok)</li>
+            <li>CreativeWork schema สำหรับ case study pages</li>
+            <li>Open Graph + Twitter Cards สำหรับทุกหน้า</li>
+            <li>Verify meta tags ตรงทุก route</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="border hairline rounded p-5">
+        <summary class="flex items-center gap-3">
+          <span class="chev">▸</span>
+          <span class="font-semibold">P2.2 · Pricing PDF lead magnet</span>
+          <span class="ml-auto text-xs text-neutral-500">effort: 1-2 วัน · impact: กลาง</span>
+        </summary>
+        <div class="mt-4 pl-6 text-sm text-neutral-700 space-y-2">
+          <p><strong>Action:</strong> สร้าง "Undercat Rate Card &amp; FAQ" PDF 4-6 หน้า — gate ด้วย email</p>
+          <p>ให้ 3 ข้อ: (1) pricing ละเอียด (2) what's included/not (3) timeline &amp; process</p>
+          <p><strong>Email flow:</strong> send PDF ทันที + follow-up sequence 3 email ใน 2 สัปดาห์</p>
+          <p><strong>Brief สำหรับ brand-voice:</strong> ใช้เสียง Undercat, ไม่ใช่ sales brochure</p>
+        </div>
+      </details>
+
+      <details class="border hairline rounded p-5">
+        <summary class="flex items-center gap-3">
+          <span class="chev">▸</span>
+          <span class="font-semibold">P2.3 · Pipeline DB ใน Notion — log ทุก lead</span>
+          <span class="ml-auto text-xs text-neutral-500">effort: 2 ชม setup · impact: compounding</span>
+        </summary>
+        <div class="mt-4 pl-6 text-sm text-neutral-700 space-y-2">
+          <p><strong>Action:</strong> Hook brief form + Calendly booking → Notion Pipeline DB</p>
+          <p>Fields: source, stage, deal size est, next action, win/loss reason</p>
+          <p>Weekly review — รู้ว่า lead มาจากไหน ปิดได้กี่ % เพื่อ optimize funnel</p>
+        </div>
+      </details>
+
+      <details class="border hairline rounded p-5">
+        <summary class="flex items-center gap-3">
+          <span class="chev">▸</span>
+          <span class="font-semibold">P2.4 · Proposal template 2 versions</span>
+          <span class="ml-auto text-xs text-neutral-500">effort: 2 วัน · impact: กลาง-สูง</span>
+        </summary>
+        <div class="mt-4 pl-6 text-sm text-neutral-700 space-y-2">
+          <p><strong>Brand-tier (Audi style):</strong> 10-12 slides, business impact upfront, case study ที่ relevant, pricing tail</p>
+          <p><strong>SME-tier (Greenline style):</strong> 6-8 slides, process focus, retainer math, quick win examples</p>
+          <p><strong>Brief สำหรับ brand-voice:</strong> ทั้งสอง version ต้องใช้ voice เดียวกัน แต่ depth ต่าง</p>
+        </div>
+      </details>
+
+      <details class="border hairline rounded p-5">
+        <summary class="flex items-center gap-3">
+          <span class="chev">▸</span>
+          <span class="font-semibold">P2.5 · Availability/urgency signal บนเว็บ</span>
+          <span class="ml-auto text-xs text-neutral-500">effort: 2 ชม · impact: กลาง</span>
+        </summary>
+        <div class="mt-4 pl-6 text-sm text-neutral-700 space-y-2">
+          <p><strong>Action:</strong> เพิ่ม badge subtle: "Currently booking Q3 2026 · 2 slots remaining"</p>
+          <p>Update ทุกเดือน — สร้าง urgency แบบไม่ fake, และสื่อว่าเราไม่ได้ desperate</p>
+        </div>
+      </details>
+
+      <details class="border hairline rounded p-5">
+        <summary class="flex items-center gap-3">
+          <span class="chev">▸</span>
+          <span class="font-semibold">P2.6 · Sticky CTA bar (mobile)</span>
+          <span class="ml-auto text-xs text-neutral-500">effort: 3 ชม · impact: กลาง</span>
+        </summary>
+        <div class="mt-4 pl-6 text-sm text-neutral-700 space-y-2">
+          <p>เพิ่ม fixed bottom bar บน mobile: "LINE · Book Call · Brief" 3 ปุ่มใหญ่</p>
+          <p>ลด friction ระหว่าง scroll — มือถือ 60%+ ของ traffic ทั่วไปใน TH</p>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <!-- P3 -->
+  <div class="mb-8">
+    <h3 class="serif text-2xl font-semibold mb-4 flex items-center gap-2"><span class="p3">🟢</span> Priority 3 — 60-90 วัน</h3>
+    <div class="space-y-3">
+      <details class="border hairline rounded p-5">
+        <summary class="flex items-center gap-3">
+          <span class="chev">▸</span>
+          <span class="font-semibold">P3.1 · Editorial content engine (1 post/เดือน)</span>
+          <span class="ml-auto text-xs text-neutral-500">effort: ongoing · impact: compounding SEO</span>
+        </summary>
+        <div class="mt-4 pl-6 text-sm text-neutral-700 space-y-2">
+          <p>Topic cluster ที่แนะนำ:</p>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>"ทำไมหนังแบรนด์ที่ดูดีแต่ไม่ขาย — 5 สัญญาณที่ direction ขาด"</li>
+            <li>"Case study: Audi วาง brand film ทั้งปียังไง"</li>
+            <li>"Production ราคา 50K vs 500K ต่างกันตรงไหนจริง"</li>
+            <li>"Retainer vs one-off — เมื่อไหร่ควรเลือกแบบไหน"</li>
+          </ul>
+          <p>Goal: Rank สำหรับ "production house กรุงเทพ", "brand film bangkok", "creative agency retainer"</p>
+        </div>
+      </details>
+
+      <details class="border hairline rounded p-5">
+        <summary class="flex items-center gap-3">
+          <span class="chev">▸</span>
+          <span class="font-semibold">P3.2 · Process video 30-60 วิ</span>
+          <span class="ml-auto text-xs text-neutral-500">effort: 1 สัปดาห์ · impact: trust</span>
+        </summary>
+        <div class="mt-4 pl-6 text-sm text-neutral-700 space-y-2">
+          <p>วิดีโอสั้นแสดง 5 steps ของเรา — ให้คนเห็น "inside the studio" ซึ่งคู่แข่งไม่มี</p>
+          <p>Place หลัง "How We Work" section + ใช้บน IG Reels + LinkedIn</p>
+        </div>
+      </details>
+
+      <details class="border hairline rounded p-5">
+        <summary class="flex items-center gap-3">
+          <span class="chev">▸</span>
+          <span class="font-semibold">P3.3 · Referral program</span>
+          <span class="ml-auto text-xs text-neutral-500">effort: 2 วัน · impact: กลาง</span>
+        </summary>
+        <div class="mt-4 pl-6 text-sm text-neutral-700 space-y-2">
+          <p>Structure: ลูกค้าเดิมแนะนำ → ถ้า close → ได้ credit 10% หรือ 1 เดือน retainer ฟรี</p>
+          <p>Email announcement ถึงลูกค้าเดิม + เพิ่ม section "Partner with us" บนเว็บ</p>
+        </div>
+      </details>
+
+      <details class="border hairline rounded p-5">
+        <summary class="flex items-center gap-3">
+          <span class="chev">▸</span>
+          <span class="font-semibold">P3.4 · LinkedIn presence ของ Pao (CD brand)</span>
+          <span class="ml-auto text-xs text-neutral-500">effort: ongoing · impact: สูงใน brand-tier</span>
+        </summary>
+        <div class="mt-4 pl-6 text-sm text-neutral-700 space-y-2">
+          <p>Brand-tier buyer (Audi-level marketing directors) ค้นคนก่อนค้นบริษัท</p>
+          <p>Post: 1-2 ครั้ง/สัปดาห์ — work behind the scenes, direction thinking, case framing</p>
+          <p>Link to /credentials จาก headline + featured</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<div class="divider max-w-6xl mx-auto"></div>
+
+<!-- Competitive Landscape -->
+<section class="max-w-6xl mx-auto px-6 py-14">
+  <div class="tag text-neutral-500 mb-2">04 / Competitive Landscape</div>
+  <h2 class="serif text-3xl md:text-4xl font-semibold mb-2">Undercat อยู่ตรงไหนในตลาด TH</h2>
+  <p class="text-neutral-600 mb-10 max-w-2xl">Positioning map: แกน pricing × แกน positioning (production-only ↔ strategy+production)</p>
+
+  <!-- Positioning grid -->
+  <div class="border hairline rounded-lg p-6 mb-8">
+    <div class="grid grid-cols-3 gap-2 h-80 text-xs">
+      <!-- Top Row: High price -->
+      <div class="border hairline rounded p-3 bg-neutral-50">
+        <div class="tag text-neutral-500 mb-1">Premium / Production-only</div>
+        <div class="text-neutral-700 space-y-1 mt-2">
+          <div>Highly Persuasive</div>
+          <div>electriclime°</div>
+          <div>Benetone</div>
+        </div>
+      </div>
+      <div class="border hairline rounded p-3 bg-neutral-50">
+        <div class="tag text-neutral-500 mb-1">Premium / Balanced</div>
+        <div class="text-neutral-700 space-y-1 mt-2">
+          <div>TAPROD</div>
+          <div>Invisible Ink</div>
+        </div>
+      </div>
+      <div class="border hairline rounded p-3 bg-neutral-50">
+        <div class="tag text-neutral-500 mb-1">Premium / Direction-led</div>
+        <div class="text-neutral-700 space-y-1 mt-2">
+          <div>Eyedropper Fill</div>
+          <div class="text-xs text-neutral-500 italic">(craft + concept agency)</div>
+        </div>
+      </div>
+      <!-- Mid Row -->
+      <div class="border hairline rounded p-3 bg-neutral-50">
+        <div class="tag text-neutral-500 mb-1">Mid / Production-only</div>
+        <div class="text-neutral-700 space-y-1 mt-2">
+          <div>Bangkok Production Co</div>
+          <div>Spartan Studio</div>
+          <div>Lexicon</div>
+        </div>
+      </div>
+      <div class="border hairline rounded p-3 bg-yellow-100" style="border-color:#c9a24b;border-width:2px">
+        <div class="tag font-bold" style="color:#8a6318">Undercat HERE</div>
+        <div class="text-neutral-800 space-y-1 mt-2 font-semibold">
+          <div>49K-109K</div>
+          <div>Direction + Craft</div>
+          <div>Business-aware</div>
+        </div>
+      </div>
+      <div class="border hairline rounded p-3 bg-neutral-50">
+        <div class="tag text-neutral-500 mb-1">Mid / Direction-led</div>
+        <div class="text-neutral-700 space-y-1 mt-2">
+          <div>Mandolin</div>
+          <div>Greenlight</div>
+          <div>Mbrella</div>
+        </div>
+      </div>
+      <!-- Bottom Row: Low price -->
+      <div class="border hairline rounded p-3 bg-neutral-50">
+        <div class="tag text-neutral-500 mb-1">Budget / Production-only</div>
+        <div class="text-neutral-700 space-y-1 mt-2">
+          <div>Qwerty (25K+)</div>
+          <div>Freelancers</div>
+          <div>Digital Distinct</div>
+        </div>
+      </div>
+      <div class="border hairline rounded p-3 bg-neutral-50">
+        <div class="tag text-neutral-500 mb-1">Budget / Balanced</div>
+        <div class="text-neutral-700 space-y-1 mt-2">
+          <div class="text-neutral-500 italic">sparse — opportunity</div>
+        </div>
+      </div>
+      <div class="border hairline rounded p-3 bg-neutral-50">
+        <div class="tag text-neutral-500 mb-1">Budget / Direction-led</div>
+        <div class="text-neutral-700 space-y-1 mt-2">
+          <div class="text-neutral-500 italic">almost empty</div>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-between text-xs text-neutral-500 mt-3">
+      <span>← Production-only</span>
+      <span>Balanced</span>
+      <span>Strategy-led →</span>
+    </div>
+  </div>
+
+  <div class="grid md:grid-cols-3 gap-6">
+    <div class="border hairline rounded p-5">
+      <div class="tag text-neutral-500 mb-2">Undercat's Differentiation</div>
+      <ul class="space-y-2 text-sm text-neutral-700">
+        <li><strong>Direction-first framing</strong> — คู่แข่งส่วนใหญ่โชว์ "ของที่ทำ", Undercat โชว์ "ทำไมมันได้ผล"</li>
+        <li><strong>Business-aware craft</strong> — Principles เขียนจริงเป็นภาษาลูกค้า ("content must serve the business")</li>
+        <li><strong>Pricing transparency</strong> — 3 tiers บนเว็บ = ตัดข้าม 80% ของคู่แข่งที่ไม่โชว์ราคา</li>
+        <li><strong>Dual-tier offering</strong> — รับทั้ง brand-tier (Audi) และ SME-tier (Greenline) ด้วยเสียงเดียวกัน</li>
+      </ul>
+    </div>
+    <div class="border hairline rounded p-5">
+      <div class="tag text-neutral-500 mb-2">Gaps vs Premium Competitors</div>
+      <ul class="space-y-2 text-sm text-neutral-700">
+        <li>Press/award mentions น้อยกว่า — Highly Persuasive, electriclime° มี festival badges</li>
+        <li>International roster บางกว่า — แต่ไม่ใช่ priority สำหรับ TH SME</li>
+        <li>Scale/team size ยังเล็ก — boutique positioning จะช่วย reframe</li>
+        <li>Case study depth ต่ำกว่าคู่แข่ง premium ทุกเจ้า</li>
+      </ul>
+    </div>
+    <div class="border hairline rounded p-5">
+      <div class="tag text-neutral-500 mb-2">Market Opportunity</div>
+      <ul class="space-y-2 text-sm text-neutral-700">
+        <li><strong>ช่องว่าง "mid + direction-led"</strong> — คู่แข่งในช่องนี้น้อย, ส่วนใหญ่ต้อง trade price vs direction</li>
+        <li><strong>SME-tier retainer</strong> — ตลาดใหญ่ ไม่มี agency serious จับจริง</li>
+        <li><strong>Thai-first voice</strong> — ส่วนใหญ่เขียน EN อย่างเดียว, Undercat bilingual native = ได้ SEO + trust</li>
+        <li><strong>Transparent pricing</strong> — trend 2026 บอกว่า B2B buyer ต้องการ, คู่แข่งช้าที่จะ adopt</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider max-w-6xl mx-auto"></div>
+
+<!-- SEO Landscape -->
+<section class="max-w-6xl mx-auto px-6 py-14">
+  <div class="tag text-neutral-500 mb-2">05 / SEO Landscape</div>
+  <h2 class="serif text-3xl md:text-4xl font-semibold mb-8">Keywords &amp; on-page plan</h2>
+
+  <div class="grid md:grid-cols-2 gap-6 mb-8">
+    <div class="border hairline rounded p-5">
+      <div class="tag text-neutral-500 mb-2">Target Keywords (TH)</div>
+      <table class="w-full text-sm">
+        <thead class="text-left text-xs text-neutral-500 border-b hairline">
+          <tr><th class="py-2">Keyword</th><th>Intent</th><th>Priority</th></tr>
+        </thead>
+        <tbody class="text-neutral-700">
+          <tr class="border-b hairline"><td class="py-2">production house กรุงเทพ</td><td>commercial</td><td><span class="p1">P1</span></td></tr>
+          <tr class="border-b hairline"><td class="py-2">บริษัทผลิตวิดีโอ</td><td>commercial</td><td><span class="p1">P1</span></td></tr>
+          <tr class="border-b hairline"><td class="py-2">creative agency ไทย</td><td>commercial</td><td><span class="p2">P2</span></td></tr>
+          <tr class="border-b hairline"><td class="py-2">รับทำ brand film</td><td>commercial</td><td><span class="p2">P2</span></td></tr>
+          <tr class="border-b hairline"><td class="py-2">ราคาผลิตวิดีโอ</td><td>informational</td><td><span class="p2">P2</span></td></tr>
+          <tr><td class="py-2">production house สายรถยนต์</td><td>long-tail</td><td><span class="p3">P3</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="border hairline rounded p-5">
+      <div class="tag text-neutral-500 mb-2">Target Keywords (EN)</div>
+      <table class="w-full text-sm">
+        <thead class="text-left text-xs text-neutral-500 border-b hairline">
+          <tr><th class="py-2">Keyword</th><th>Intent</th><th>Priority</th></tr>
+        </thead>
+        <tbody class="text-neutral-700">
+          <tr class="border-b hairline"><td class="py-2">video production bangkok</td><td>commercial</td><td><span class="p1">P1</span></td></tr>
+          <tr class="border-b hairline"><td class="py-2">brand film bangkok</td><td>commercial</td><td><span class="p1">P1</span></td></tr>
+          <tr class="border-b hairline"><td class="py-2">creative agency thailand</td><td>commercial</td><td><span class="p2">P2</span></td></tr>
+          <tr class="border-b hairline"><td class="py-2">automotive video production thailand</td><td>long-tail</td><td><span class="p2">P2</span></td></tr>
+          <tr class="border-b hairline"><td class="py-2">boutique production house bangkok</td><td>long-tail</td><td><span class="p3">P3</span></td></tr>
+          <tr><td class="py-2">retainer video production</td><td>long-tail</td><td><span class="p3">P3</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="border hairline rounded p-6">
+    <div class="tag text-neutral-500 mb-2">Meta tag direction (brief สำหรับ brand-voice)</div>
+    <div class="space-y-4 text-sm">
+      <div>
+        <div class="font-semibold mb-1">Homepage /</div>
+        <div class="text-neutral-700"><strong>Title:</strong> สื่อ positioning + brand name + city (TH-EN hybrid ได้)</div>
+        <div class="text-neutral-700"><strong>Description:</strong> ต้องมี "production house" หรือ "creative agency" + Bangkok + differentiator ใน 155 ตัวอักษร</div>
+      </div>
+      <div>
+        <div class="font-semibold mb-1">/credentials</div>
+        <div class="text-neutral-700 italic">ปัจจุบันเขียนดีแล้ว — title mentions Audi/Greenline = trust signal</div>
+      </div>
+      <div>
+        <div class="font-semibold mb-1">/case-study/[slug] (ใหม่)</div>
+        <div class="text-neutral-700"><strong>Title pattern:</strong> [Client] [Project Type] — Case Study | Undercat</div>
+        <div class="text-neutral-700"><strong>Description:</strong> Challenge → Outcome ใน 1 ประโยค</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="border-t hairline mt-10">
+  <div class="max-w-6xl mx-auto px-6 py-10 text-sm text-neutral-500">
+    <div class="flex flex-wrap justify-between items-start gap-4">
+      <div>
+        <div class="serif text-lg text-neutral-800 mb-1">Undercat Creative — Strategy Brief</div>
+        <div>Generated 17 เม.ย. 2026 · by credentials-strategist skill</div>
+      </div>
+      <div class="text-right text-xs">
+        <div>All copy execution → <span class="font-semibold">undercat-brand-voice</span> skill</div>
+        <div>Source data: Notion Finance DB · Clients DB · Pipeline DB</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const io = new IntersectionObserver((es) => es.forEach(e => e.isIntersecting && e.target.classList.add('in')), {threshold: 0.1});
+  document.querySelectorAll('.scroll-reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
