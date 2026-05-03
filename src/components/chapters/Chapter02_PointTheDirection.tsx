@@ -1,5 +1,6 @@
 import { motion, useReducedMotion, useScroll, useTransform, useMotionValueEvent, type MotionValue } from 'framer-motion';
 import { useRef, forwardRef } from 'react';
+import { useChapterCursor } from '@/contexts/CursorContext';
 import { Chapter } from '@/components/scroll/Chapter';
 import { trackEvent } from '@/lib/analytics';
 import { useDomOpacity } from '@/lib/use-dom-opacity';
@@ -40,6 +41,7 @@ Moodboard.displayName = 'Moodboard';
 
 export default function Chapter02_PointTheDirection() {
   const containerRef = useRef<HTMLDivElement>(null);
+  useChapterCursor(containerRef, 'crosshair');
   const reduce = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
@@ -118,6 +120,28 @@ export default function Chapter02_PointTheDirection() {
   return (
     <div ref={containerRef}>
       <Chapter id="02-point-the-direction" pinned height="400vh">
+        {/* Grid Scaffold — blueprint framework revealing as you scroll */}
+        {(() => {
+          const gridClip = useTransform(scrollYProgress, [0.05, 0.6], [100, 0]);
+          const gridOpacity = useTransform(scrollYProgress, [0.05, 0.2, 0.7, 0.9], [0, 0.2, 0.2, 0]);
+          const clipPath = useTransform(gridClip, (v: number) => `inset(0 0 ${v}% 0)`);
+          return (
+            <motion.div
+              className="absolute inset-0 pointer-events-none z-10"
+              style={{ opacity: gridOpacity, clipPath }}
+            >
+              <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <pattern id="scaffold-grid" width="80" height="80" patternUnits="userSpaceOnUse">
+                    <path d="M 80 0 L 0 0 0 80" fill="none" stroke="white" strokeWidth="0.5" />
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#scaffold-grid)" />
+              </svg>
+            </motion.div>
+          );
+        })()}
+
         <div className="absolute inset-0 bg-black grid grid-cols-1 md:grid-cols-[38%_62%]">
 
           {/* Left — text */}

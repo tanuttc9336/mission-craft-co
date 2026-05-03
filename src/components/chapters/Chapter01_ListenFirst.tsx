@@ -1,5 +1,6 @@
 import { motion, useReducedMotion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import { useRef } from 'react';
+import { useChapterCursor } from '@/contexts/CursorContext';
 import { Link } from 'react-router-dom';
 import { Chapter } from '@/components/scroll/Chapter';
 import { trackEvent } from '@/lib/analytics';
@@ -15,6 +16,7 @@ function Placeholder({ label, className }: { label: string; className?: string }
 
 export default function Chapter01_ListenFirst() {
   const containerRef = useRef<HTMLDivElement>(null);
+  useChapterCursor(containerRef, 'ring');
   const reduce = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
@@ -86,6 +88,23 @@ export default function Chapter01_ListenFirst() {
   return (
     <div ref={containerRef}>
       <Chapter id="01-listen-first" pinned height="300vh">
+        {/* Sound Wave Ripple — concentric rings spreading from center */}
+        <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden z-10">
+          {[0, 1, 2, 3].map((i) => {
+            const start = 0.05 + i * 0.12;
+            const end = Math.min(start + 0.5, 1);
+            const s = useTransform(scrollYProgress, [start, end], [0.15, 2.2]);
+            const o = useTransform(scrollYProgress, [start, start + 0.15, end - 0.1, end], [0, 0.25, 0.12, 0]);
+            return (
+              <motion.div
+                key={i}
+                className="absolute w-[60vw] h-[60vw] max-w-[700px] max-h-[700px] rounded-full border border-white/15"
+                style={{ scale: s, opacity: o }}
+              />
+            );
+          })}
+        </div>
+
         <div className="absolute inset-0 bg-black grid grid-cols-1 md:grid-cols-[40%_60%]">
 
           {/* Left — stills */}
