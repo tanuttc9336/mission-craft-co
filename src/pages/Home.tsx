@@ -571,7 +571,7 @@ export default function Home() {
                 ))}
               </nav>
               <div className="mt-auto text-[10px] tracking-[0.28em] uppercase text-bone/30 font-mono">
-                tanut.tc9336@gmail.com
+                hello@undercatcreatives.com
               </div>
             </motion.div>
           )}
@@ -1361,11 +1361,11 @@ export default function Home() {
               </div>
               <LineReveal asView delay={0.08}>
                 <a
-                  href="mailto:tanut.tc9336@gmail.com"
+                  href="mailto:hello@undercatcreatives.com"
                   className="group inline-flex items-baseline gap-4 md:gap-6 font-serif text-bone hover:text-oxblood transition-colors duration-500"
                   style={{ fontSize: 'clamp(26px, 3.6vw, 60px)' }}
                 >
-                  <span>tanut.tc9336@gmail.com</span>
+                  <span>hello@undercatcreatives.com</span>
                   <motion.span
                     className="inline-block text-bone/40 group-hover:text-oxblood"
                     animate={{ x: [0, 6, 0] }}
@@ -1407,10 +1407,10 @@ export default function Home() {
                 <LineReveal asView delay={0.13} block>
                   <div className="flex flex-col gap-2 text-bone/70 text-sm leading-[1.85] tracking-wide">
                     <a
-                      href="mailto:tanut.tc9336@gmail.com"
+                      href="mailto:hello@undercatcreatives.com"
                       className="hover:text-bone transition-colors"
                     >
-                      tanut.tc9336@gmail.com
+                      hello@undercatcreatives.com
                     </a>
                     <a
                       href="tel:+66949869882"

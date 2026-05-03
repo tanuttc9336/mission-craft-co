@@ -157,7 +157,7 @@ export default function Confirmation() {
             <p className="text-xs text-muted-foreground mt-1">@undercatcreatives — quickest reach</p>
           </a>
           <a
-            href="mailto:tanut.tc9336@gmail.com"
+            href="mailto:hello@undercatcreatives.com"
             onClick={() => trackEvent('confirmation_email_click', { briefId: id ?? null })}
             className="border border-border p-4 hover:border-foreground transition-colors"
           >

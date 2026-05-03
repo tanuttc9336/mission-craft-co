@@ -10,14 +10,14 @@
 //      OR explicit invocation { brief_id: '...' } as fallback.
 //   2. Skip if status === 'draft' (only notify on real submissions).
 //   3. Format email summary in Pao's voice.
-//   4. Send via Resend API → tanut.tc9336@gmail.com.
+//   4. Send via Resend API → hello@undercatcreatives.com.
 //   5. UPDATE brief_requests.pao_notified = true.
 //
 // ENV required (set via supabase secrets set):
 //   - SUPABASE_URL
 //   - SUPABASE_SERVICE_ROLE_KEY
 //   - RESEND_API_KEY
-//   - NOTIFY_TO_EMAIL          (default: tanut.tc9336@gmail.com)
+//   - NOTIFY_TO_EMAIL          (default: hello@undercatcreatives.com)
 //   - NOTIFY_FROM_EMAIL        (default: brief@undercatcreatives.com — needs Resend domain verify)
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -223,7 +223,7 @@ serve(async (req) => {
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-    const NOTIFY_TO_EMAIL = Deno.env.get("NOTIFY_TO_EMAIL") ?? "tanut.tc9336@gmail.com";
+    const NOTIFY_TO_EMAIL = Deno.env.get("NOTIFY_TO_EMAIL") ?? "hello@undercatcreatives.com";
     const NOTIFY_FROM_EMAIL =
       Deno.env.get("NOTIFY_FROM_EMAIL") ?? "Briefing Room <brief@undercatcreatives.com>";
 

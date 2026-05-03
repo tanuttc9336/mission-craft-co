@@ -283,7 +283,7 @@ export default function Blueprint() {
                   <p className="text-destructive font-medium">Couldn't send your brief.</p>
                   <p className="text-muted-foreground text-xs mt-1">{submitBrief.error}</p>
                   <p className="text-muted-foreground text-xs mt-1">
-                    Try again, or email <a href="mailto:tanut.tc9336@gmail.com" className="underline">tanut.tc9336@gmail.com</a> directly.
+                    Try again, or email <a href="mailto:hello@undercatcreatives.com" className="underline">hello@undercatcreatives.com</a> directly.
                   </p>
                 </div>
               </motion.div>

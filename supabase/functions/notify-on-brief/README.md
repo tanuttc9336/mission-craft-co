@@ -6,7 +6,7 @@ Edge function that emails Pao every time a brief is submitted (status transition
 
 ```bash
 supabase secrets set RESEND_API_KEY=re_xxxxxxxxxxxxxxxxx
-supabase secrets set NOTIFY_TO_EMAIL=tanut.tc9336@gmail.com
+supabase secrets set NOTIFY_TO_EMAIL=hello@undercatcreatives.com
 supabase secrets set NOTIFY_FROM_EMAIL="Briefing Room <brief@undercatcreatives.com>"
 ```
 
