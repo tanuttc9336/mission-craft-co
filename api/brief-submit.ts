@@ -13,9 +13,9 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { insertLeadToPipeline } from './_lib/notion';
-import { broadcastLineMessage } from './_lib/line';
-import type { Brief } from '../src/types/brief';
+import { insertLeadToPipeline } from './_lib/notion.js';
+import { broadcastLineMessage } from './_lib/line.js';
+import type { Brief } from '../src/types/brief.js';
 
 const ALLOWED_ORIGINS = new Set([
   'https://www.undercatcreatives.com',

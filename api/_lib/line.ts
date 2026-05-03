@@ -3,7 +3,7 @@
 // Sprint 1 · 2026-05
 // ─────────────────────────────────────────────────────────────────────────────
 
-import type { Brief } from '../../src/types/brief';
+import type { Brief } from '../../src/types/brief.js';
 
 const LINE_CHANNEL_ACCESS_TOKEN = process.env.LINE_CHANNEL_ACCESS_TOKEN;
 const LINE_BROADCAST_URL = 'https://api.line.me/v2/bot/message/broadcast';

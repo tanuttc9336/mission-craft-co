@@ -3,7 +3,7 @@
 // Sprint 1 · 2026-05
 // ─────────────────────────────────────────────────────────────────────────────
 
-import type { Brief } from '../../src/types/brief';
+import type { Brief } from '../../src/types/brief.js';
 
 const NOTION_API_KEY = process.env.NOTION_API_KEY;
 const PIPELINE_DATA_SOURCE_ID = '1cf730bc-09ea-4567-b767-1cc7d2851d12';
