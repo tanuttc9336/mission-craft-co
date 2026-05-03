@@ -76,21 +76,12 @@ const App = () => (
                 <Route path="/ideas" element={<Navigate to="/lens" replace />} />
                 <Route path="/lens" element={<Layout><Lens /></Layout>} />
 
-                {/* Portal auth */}
-                <Route path="/login" element={<Login />} />
-
-                {/* Portal routes — own layout */}
-                <Route path="/portal" element={<PortalLayout />}>
-                  <Route index element={<Dashboard />} />
-                  <Route path="timeline" element={<Timeline />} />
-                  <Route path="deliverables" element={<Deliverables />} />
-                  <Route path="reviews" element={<Reviews />} />
-                  <Route path="files" element={<Files />} />
-                  <Route path="brief" element={<Brief />} />
-                  <Route path="next-steps" element={<NextSteps />} />
-                  <Route path="account" element={<Account />} />
-                  <Route path="project/:id" element={<ProjectDetail />} />
-                </Route>
+                {/* Portal — archived 2026-05 (Sprint 1).
+                   Redirects /login + /portal/* to /credentials.
+                   Code preserved at pages/portal/* for future resurrection. */}
+                <Route path="/login" element={<Navigate to="/credentials" replace />} />
+                <Route path="/portal" element={<Navigate to="/credentials" replace />} />
+                <Route path="/portal/*" element={<Navigate to="/credentials" replace />} />
 
                 <Route path="*" element={<Layout><NotFound /></Layout>} />
               </Routes>

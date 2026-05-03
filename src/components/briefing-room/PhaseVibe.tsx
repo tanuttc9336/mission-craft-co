@@ -6,6 +6,7 @@ import { Slider } from '@/components/ui/slider';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMemo, useState, useEffect, useRef } from 'react';
 import { matchForVibe, matchForMission } from '@/utils/caseMatch';
+import { LivingGrain } from '@/components/effects';
 import ExploreCard from './ExploreCard';
 
 const sliders: { key: keyof ReturnType<typeof useBrief>['brief']['styleDNA']; left: string; right: string; leftDesc: string; rightDesc: string; explainer: string }[] = [

@@ -1,19 +1,18 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// useSubmitBrief — submits a finalized Brief to the Briefing Worker
-// 2026-04-26 — BriefingRoom v3 Sprint 1
+// useSubmitBrief — submits a finalized Brief to the brief-submit endpoint
+// 2026-05 · Sprint 1 (Vercel function backend)
 //
-// Architecture (Notion-backed v1):
-//   Form → useSubmitBrief.submit() → POST {WORKER_URL}/submit →
-//   Cloudflare Worker validates + maps → Notion API pages.create →
-//   row appears in "📥 Briefing Room Inbox" DB → Notion Automation emails Pao
+// Architecture (current):
+//   Form → useSubmitBrief.submit() → POST /api/brief-submit (Vercel function) →
+//   1) Insert Notion Pipeline DB (Deals, stage=Lead, source=Inbound)
+//   2) Broadcast LINE notification to bot followers
+//   3) Return { ok, brief_id, url } to client
 //
-// Worker source: apps/briefing-worker/worker.js
-// Worker URL set via VITE_BRIEFING_WORKER_URL env var
-//   (default: https://briefing-worker.<subdomain>.workers.dev — override per env)
+// Vercel function source: api/brief-submit.ts (+ api/_lib/notion.ts, api/_lib/line.ts)
 //
-// The earlier Supabase-direct path is parked at supabase/migrations/20260426*.sql +
-// supabase/functions/notify-on-brief/. Keep for v2 backend when Notion DB capacity
-// or rate limit becomes the bottleneck.
+// Parked alternatives (kept for reference, not used):
+//   - apps/briefing-worker/worker.js (Cloudflare Worker → "Briefing Room Inbox" DB)
+//   - supabase/functions/notify-on-brief/ (Supabase Edge Function)
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useState, useCallback } from 'react';
@@ -39,12 +38,14 @@ interface SubmitParams {
   locale?: 'th' | 'en';
 }
 
-const DEFAULT_WORKER_URL = 'https://briefing-worker.tanut-tc9336.workers.dev';
+const DEFAULT_SUBMIT_URL = '/api/brief-submit';
 
-function getWorkerUrl(): string {
-  const fromEnv = import.meta.env.VITE_BRIEFING_WORKER_URL;
+function getSubmitUrl(): string {
+  // Allow override via env (e.g. point preview deploys at production API, or
+  // point local dev at a deployed preview while developing the form).
+  const fromEnv = import.meta.env.VITE_BRIEF_SUBMIT_URL;
   if (typeof fromEnv === 'string' && fromEnv.length) return fromEnv.replace(/\/$/, '');
-  return DEFAULT_WORKER_URL;
+  return DEFAULT_SUBMIT_URL;
 }
 
 export function useSubmitBrief() {
@@ -66,26 +67,33 @@ export function useSubmitBrief() {
         throw new Error('Name is required to submit a brief');
       }
 
-      const workerUrl = getWorkerUrl();
+      const submitUrl = getSubmitUrl();
 
-      // Slim payload — Worker maps to Notion props server-side.
-      const payload = {
-        brief,
+      // Normalise lead onto brief — server maps brief.lead → Notion props.
+      const briefWithLead: Brief = {
+        ...brief,
         lead: {
+          ...brief.lead,
           name: brief.lead.name.trim(),
           company: brief.lead.company?.trim() ?? '',
           email: brief.lead.email.trim().toLowerCase(),
           phone: brief.lead.phone?.trim() ?? '',
           consent: brief.lead.consent ?? false,
         },
+      };
+
+      const payload = {
+        brief: briefWithLead,
         entryPath,
         locale,
         // Honeypot (must remain empty for real submissions). Bots fill all fields.
-        // Form should NOT render an input named "website" or "_gotcha".
-        // If a hidden field is added later for honeypot, send its value here.
+        // The form should NOT render an input named "website" — but if one is added
+        // later for honeypot, pass its value here. Server returns ok+spam-ignored
+        // when this field is non-empty, without inserting anything.
+        website: '',
       };
 
-      const resp = await fetch(`${workerUrl}/submit`, {
+      const resp = await fetch(submitUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
