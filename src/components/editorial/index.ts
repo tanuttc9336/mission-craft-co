@@ -14,3 +14,4 @@ export { DisplayHeadline } from './DisplayHeadline';
 export { EditorialSection } from './EditorialSection';
 export { PageTopBar } from './PageTopBar';
 export { PageFooter } from './PageFooter';
+export { MobileStickyCTA } from './MobileStickyCTA';

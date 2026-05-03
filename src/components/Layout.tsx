@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronDown, Instagram, Youtube, Phone, Mail, MapPin } from 'lucide-react';
 import { industryConfigs } from '@/data/industryConfig';
+import { MobileStickyCTA } from '@/components/editorial/MobileStickyCTA';
 import logo from '@/assets/undercat-logo.png';
 
 type DropdownKey = 'capabilities' | 'industries' | 'services' | null;
@@ -213,6 +214,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </header>}
 
       <main id="main-content" className={`flex-1 ${isEditorial ? '' : 'pt-16'}`}>{children}</main>
+
+      {/* Sticky mobile CTA — shows after first scroll on every public
+          route except destination/post-conversion pages (handled inside
+          the component). Apply globally so editorial + non-editorial
+          pages get the same affordance. */}
+      <MobileStickyCTA />
 
       {!isEditorial && <footer className="no-print border-t border-border py-16 md:py-20">
         <div className="container">
