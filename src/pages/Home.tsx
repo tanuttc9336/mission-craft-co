@@ -239,15 +239,29 @@ type RailItem = {
   height: string;
 };
 
+/**
+ * Hero rail — 7 cases curated to represent Undercat's positioning DNA
+ * across audiences (founder-led / mid-market / global regional offices)
+ * and craft modes (cinematic launch / brand storytelling / sport scale /
+ * luxury real estate / F&B founder).
+ *
+ * Selected over the full 18-case archive because premium buyers respond
+ * to "depth, not breadth" (NN/g). The 11 remaining cases live on /work
+ * with their own detail pages — nothing is hidden, just not surfaced
+ * on the home rail.
+ *
+ * If a case here ever needs to come down (e.g. client moves on, brief
+ * shift), swap the id and the rail layout absorbs it. Keep the count
+ * at 7 — the rail visual rhythm depends on it.
+ */
 const railIds = [
-  'audi-launch-films',
-  'greenline-golf-lab',
-  'ducati-xdiavel-nera',
-  'audi-cleanup-mission',
-  'audi-benzilla',
-  'rajadamnern-world-series',
-  'lkp-corporate-film',
-  'fc-bayern-bangkok',
+  'audi-launch-films',       // Automotive flagship — quiet luxury, cinematic
+  'greenline-golf-lab',      // Founder-led, sport — strategy + storytelling depth
+  'ducati-xdiavel-nera',     // Automotive maximal — loud energy counterpoint
+  'fc-bayern-bangkok',       // Global brand regional office — recognizable scale
+  'sonle-residences',        // Luxury real estate, founder-led — premium-tier
+  'audi-cleanup-mission',    // Same client, different angle — "they trust us with everything"
+  'lim-lao-ngow',            // F&B founder-led — Thai cultural depth
 ];
 
 const railLayout: RailItem[] = [
@@ -261,11 +275,10 @@ const railLayout: RailItem[] = [
   { caseId: railIds[4], left: '168vw', top: '14%', width: '32vw', height: '50vh' },
   { caseId: railIds[5], left: '204vw', top: '52%', width: '24vw', height: '36vh' },
   { caseId: railIds[6], left: '232vw', top: '18%', width: '28vw', height: '44vh' },
-  { caseId: railIds[7], left: '264vw', top: '50%', width: '22vw', height: '34vh' },
-  // ↓ Closing panel lives past 286vw ↓
+  // ↓ Closing panel lives past 264vw ↓
 ];
 
-const RAIL_TRAVEL_VW = 220;
+const RAIL_TRAVEL_VW = 195;
 
 /* ────────────────────────────────
    Live GMT+7 clock — editorial detail
@@ -975,6 +988,67 @@ export default function Home() {
                 />
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════
+            INTERLUDE — in-line CTA between rail and studio
+            Marginalia, not banner. Hairline frame, uppercase mono
+            label, oxblood underline. Visitor has just finished the
+            selected-work rail; this is the moment they decide
+            whether to dig deeper or reach out.
+            ══════════════════════════════════════════ */}
+        <section className="relative px-6 md:px-20 py-20 md:py-24 border-t border-b border-bone/10">
+          <div className="max-w-[1600px] mx-auto">
+            <LineReveal asView block>
+              <div className="grid md:grid-cols-12 gap-6 items-baseline">
+                <div className="md:col-span-1">
+                  <span className="text-[10px] tracking-[0.28em] uppercase text-bone/30 font-mono">
+                    — Pause
+                  </span>
+                </div>
+                <div className="md:col-span-7">
+                  <p
+                    className="font-serif text-bone/85 leading-[1.25] tracking-[-0.01em]"
+                    style={{ fontSize: 'clamp(20px, 2.4vw, 32px)' }}
+                  >
+                    Recognise something? The rest of the work lives at{' '}
+                    <Link
+                      to="/work"
+                      className="border-b border-bone/40 hover:text-bone hover:border-oxblood transition-colors"
+                    >
+                      /work
+                    </Link>
+                    . Or skip the scroll —
+                  </p>
+                </div>
+                <div className="md:col-span-4 md:text-right">
+                  <Link
+                    to="/briefing-room"
+                    className="group inline-flex items-baseline gap-3"
+                  >
+                    <span className="text-[10px] tracking-[0.28em] uppercase text-bone/45 font-mono">
+                      Have a project?
+                    </span>
+                    <span className="font-serif text-bone group-hover:text-oxblood transition-colors duration-300 border-b border-oxblood/70 pb-0.5">
+                      Start a brief
+                    </span>
+                    <motion.span
+                      aria-hidden
+                      animate={{ x: [0, 4, 0] }}
+                      transition={{
+                        duration: 2.4,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                      }}
+                      className="text-bone/60 group-hover:text-oxblood"
+                    >
+                      →
+                    </motion.span>
+                  </Link>
+                </div>
+              </div>
+            </LineReveal>
           </div>
         </section>
 

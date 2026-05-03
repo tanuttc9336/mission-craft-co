@@ -150,40 +150,104 @@ export function breadcrumbSchema(items: [label: string, path: string][]) {
 }
 
 /**
+ * Convert a YouTube watch URL to its embed URL counterpart for
+ * schema.org's `embedUrl` property. Falls back to the original URL
+ * for non-YouTube sources.
+ */
+function toEmbedUrl(url?: string): string | undefined {
+  if (!url) return undefined;
+  // YouTube watch URL → embed URL
+  const ytWatch = url.match(/youtube\.com\/watch\?v=([^&]+)/);
+  if (ytWatch) return `https://www.youtube.com/embed/${ytWatch[1]}`;
+  // youtu.be short → embed
+  const ytShort = url.match(/youtu\.be\/([^?]+)/);
+  if (ytShort) return `https://www.youtube.com/embed/${ytShort[1]}`;
+  return url;
+}
+
+/**
+ * Boost low-res YouTube thumbnails to maxres when available. Falls
+ * back to whatever was passed in.
+ */
+function hiResThumb(url?: string): string | undefined {
+  if (!url) return undefined;
+  if (url.includes('i.ytimg.com') && url.includes('hqdefault')) {
+    return url.replace('hqdefault', 'maxresdefault');
+  }
+  return url;
+}
+
+/**
  * CreativeWork schema for a single case study.
  *
  * Maps Undercat case data → schema.org entity that AEO answer engines
  * (Perplexity, ChatGPT, Google AI Overview) can extract when someone
  * asks "Bangkok production house Audi" or similar.
+ *
+ * The nested VideoObject is the highest-ROI schema add for a film
+ * studio in 2026 — Google Video search and AI answer engines use it
+ * to surface specific films when users search for them by client
+ * name, project type, or location. Properties prioritised:
+ *   - `creator` + `productionCompany` linked to Org @id (E-E-A-T)
+ *   - `inLanguage` for bilingual reach
+ *   - `embedUrl` so engines can render inline
+ *   - `thumbnailUrl` boosted to maxres when YouTube
  */
 export function creativeWorkSchema(c: CaseStudy) {
+  const embedUrl = toEmbedUrl(c.videoUrl);
+  const thumb = hiResThumb(c.thumbnail);
+
   return {
     '@type': 'CreativeWork',
     '@id': `${SITE_URL}/work/${c.id}`,
     name: c.title,
     description: c.description,
     url: `${SITE_URL}/work/${c.id}`,
-    image: c.thumbnail,
+    image: thumb,
     creator: orgRef(),
     publisher: orgRef(),
+    producer: orgRef(),
     creditText: 'Undercat Creatives',
     inLanguage: ['en', 'th'],
     genre: c.industry,
+    audience: c.audience
+      ? { '@type': 'Audience', audienceType: c.audience }
+      : undefined,
     keywords: [
       c.industry,
       ...(c.outputs || []),
       ...(c.styleDNA || []),
-    ].join(', '),
+      ...(c.platforms || []),
+    ]
+      .filter(Boolean)
+      .join(', '),
     ...(c.videoUrl
       ? {
           video: {
             '@type': 'VideoObject',
+            '@id': `${SITE_URL}/work/${c.id}#video`,
             name: c.title,
             description: c.description,
-            thumbnailUrl: c.thumbnail,
+            thumbnailUrl: thumb,
             contentUrl: c.videoUrl,
+            embedUrl,
             uploadDate: '2025-01-01',
+            inLanguage: ['en', 'th'],
+            isFamilyFriendly: true,
+            creator: orgRef(),
+            director: founderRef(),
+            productionCompany: orgRef(),
             publisher: orgRef(),
+            keywords: [
+              c.industry,
+              ...(c.outputs || []),
+              ...(c.styleDNA || []),
+            ]
+              .filter(Boolean)
+              .join(', '),
+            ...(c.platforms?.length
+              ? { contentLocation: 'Bangkok, Thailand' }
+              : {}),
           },
         }
       : {}),
