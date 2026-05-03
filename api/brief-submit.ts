@@ -90,10 +90,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
     // 1) Insert into Notion Pipeline DB (must succeed)
     const notionResult = await insertLeadToPipeline(brief);
 
-    // 2) Broadcast LINE notification — fire-and-forget (don't block response on LINE)
-    broadcastLineMessage(brief, notionResult.url).catch((err) => {
+    // 2) Broadcast LINE notification — await so Vercel doesn't kill the process
+    //    before fetch() runs, but try/catch so a LINE failure doesn't block the
+    //    success response (Notion already has the lead).
+    try {
+      await broadcastLineMessage(brief, notionResult.url);
+    } catch (err) {
       console.error('[brief-submit] LINE broadcast failed:', err instanceof Error ? err.message : err);
-    });
+    }
 
     // 3) Respond — match useSubmitBrief expected shape
     res.status(200).json({
